@@ -125,6 +125,9 @@ nnoremap <C-s> :w<enter>
 nnoremap <C-x> :bdelete<enter>
 nnoremap <C-n> :bnext<enter>
 nnoremap <C-n> :bprevious<enter>
+" Retab mappings
+nnoremap <C-tab> :retab!<enter>
+nnoremap <C-S-tab> :setl expandtab!<enter> :set expandtab?<enter>
 " Unprintable Characters
 noremap <F4> :setl list!<enter>
 set listchars=eol:¶,tab:»\ ,trail:.
