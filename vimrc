@@ -110,6 +110,8 @@ endif
 
 
 " CUSTOM STUFF
+set bg=dark
+set number
 " Filetype stuff
 au BufNewFile,BufRead *.etlua set filetype=html
 " some options
@@ -130,6 +132,7 @@ nnoremap <S-tab> :retab!<enter>
 nnoremap <S-tab><S-tab> :setl expandtab!<enter> :set expandtab?<enter>
 " Unprintable Characters
 noremap <F4> :setl list!<enter>
+noremap <F3> :setl number!<enter>
 set listchars=eol:¶,tab:»\ ,trail:.
 " Commands
 com! Setwd :cd %:p:h
