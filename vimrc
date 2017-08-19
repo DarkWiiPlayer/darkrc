@@ -106,7 +106,7 @@ endif
 "
 " The matchit plugin makes the % command work better, but it is not backwards
 " compatible.
-packadd matchit
+"packadd matchit
 
 
 " CUSTOM STUFF
