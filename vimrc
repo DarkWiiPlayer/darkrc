@@ -110,6 +110,12 @@ endif
 
 
 " CUSTOM STUFF
+noremap <space> :
+noremap <C-space> @:
+noremap <C-s> :w<enter>
+noremap <C-x> :bdelete<enter>
+noremap <C-n> :bnext<enter>
+noremap <C-p> :bprevious<enter>
 set bg=dark
 set number
 " Filetype stuff
@@ -121,19 +127,22 @@ set tabstop=2 softtabstop=2 shiftwidth=2 noexpandtab
 set t_Co=256
 " Remapping some things
 vmap <C-f> :fold<CR>
-" nmap <C-b> :bprevious<CR>
-nnoremap <space> :
-nnoremap <C-s> :w<enter>
-nnoremap <C-x> :bdelete<enter>
-nnoremap <C-n> :bnext<enter>
-nnoremap <C-n> :bprevious<enter>
 " Retab mappings
 nnoremap <S-tab> :retab!<enter>
-nnoremap <S-tab><S-tab> :setl expandtab!<enter> :set expandtab?<enter>
-" Unprintable Characters
+nnoremap <S-tab><S-tab> :setl expandtab!<enter>:set expandtab?<enter>
+noremap <F1> :setl number!<enter>
+noremap <F2> :setl relativenumber!<enter>
+noremap <F3> :setl autowriteall!<enter>:setl autowriteall?<enter>
 noremap <F4> :setl list!<enter>
-noremap <F3> :setl number!<enter>
 set listchars=eol:¶,tab:»\ ,trail:.
+set showbreak=+->\
 " Commands
 com! Setwd :cd %:p:h
 com! Removetrailingspaces :%s/\ \+$//ge
+set statusline=(%n)\ %f\ [%M%R]\ [%Y]%=%l,%c%V\ %4.P
+set laststatus=2
+set cmdheight=1
+set winheight=10
+set winminheight=4
+set winheight=9999
+set timeoutlen=300
