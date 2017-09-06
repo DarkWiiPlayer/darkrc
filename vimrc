@@ -139,6 +139,7 @@ set showbreak=+->\
 " Commands
 com! Setwd :cd %:p:h
 com! Removetrailingspaces :%s/\ \+$//ge
+nmap <leader>t :Removetrailingspaces<enter>
 set statusline=(%n)\ %f\ [%M%R]\ [%Y]%=%l,%c%V\ %4.P
 set laststatus=2
 set cmdheight=1
@@ -146,3 +147,4 @@ set winheight=10
 set winminheight=4
 set winheight=9999
 set timeoutlen=300
+let mapleader = "\\"
