@@ -154,3 +154,4 @@ set winminheight=4
 set winheight=9999
 set timeoutlen=300
 let mapleader = "\\"
+nnoremap <C-d> :copy .<CR>
