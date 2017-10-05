@@ -127,15 +127,12 @@ set tabstop=2 softtabstop=2 shiftwidth=2 noexpandtab
 set t_Co=256
 " Remapping some things
 vmap <C-f> :fold<CR>
-<<<<<<< HEAD
 " nmap <C-b> :bprevious<CR>
 noremap <space> :
 nnoremap <C-s> :w<enter>
 nnoremap <C-x> :bdelete<enter>
 nnoremap <C-n> :bnext<enter>
 nnoremap <C-p> :bprevious<enter>
-=======
->>>>>>> 621eebbe99c4cf7a82a1ee8875b122be5b59cff4
 " Retab mappings
 nnoremap <S-tab> :retab!<enter>
 nnoremap <S-tab><S-tab> :setl expandtab!<enter>:set expandtab?<enter>
