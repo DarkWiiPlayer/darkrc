@@ -106,7 +106,7 @@ endif
 "
 " The matchit plugin makes the % command work better, but it is not backwards
 " compatible.
-"packadd matchit
+"packadd
 
 
 " CUSTOM STUFF
@@ -122,11 +122,11 @@ set t_Co=256
 " Remapping some things
 vmap <C-f> :fold<CR>
 " nmap <C-b> :bprevious<CR>
-nnoremap <space> :
+noremap <space> :
 nnoremap <C-s> :w<enter>
 nnoremap <C-x> :bdelete<enter>
 nnoremap <C-n> :bnext<enter>
-nnoremap <C-n> :bprevious<enter>
+nnoremap <C-p> :bprevious<enter>
 " Retab mappings
 nnoremap <S-tab> :retab!<enter>
 nnoremap <S-tab><S-tab> :setl expandtab!<enter> :set expandtab?<enter>
