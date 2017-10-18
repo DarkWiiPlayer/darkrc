@@ -28,3 +28,4 @@ nnoremap <C-F9> :colorscheme elflord<CR>
 nnoremap <C-F10> :colorscheme murphy<CR>
 nnoremap <C-F11> :colorscheme torte<CR>
 nnoremap <C-F12> :call Randomcolor()<CR>
+so $MYVIMRC 

@@ -121,7 +121,10 @@ vnoremap * <C-c>`>a*<C-c>`<i*<C-c>
 vnoremap _ <C-c>`>a__<C-c>`<i__<C-c>
 
 " === GENERAL ABBREVIATIONS ===
+cabbr rcpath fnamemodify($MYVIMRC, ":p:h")
+
 cabbr <expr> %% expand('%:p:h')
+
 digraph <3 9829
 digraph ue 252
 digraph UE 220
@@ -232,8 +235,8 @@ endif
 " === FILETYPE SPECIFIC STUFF ===
 
 " Vimscript Stuff
-au BufNewFile,BufRead .vimrc,_vimrc,*.vim :nnoremap <buffer> <F5> :so %<CR>
-au BufNewFile,BufRead .vimrc,_vimrc,*.vim :nnoremap <leader>c A<space>"<space>
+au BufNewFile,BufRead .vimrc,_vimrc,*.vim,vimrc :nnoremap <buffer> <F5> :so %<CR>
+au BufNewFile,BufRead .vimrc,_vimrc,*.vim,vimrc :nnoremap <leader>c A<space>"<space>
 au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> ; m'$a;<C-c>`'
 
 " Ruby Stuff
