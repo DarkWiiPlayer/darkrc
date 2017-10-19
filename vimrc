@@ -1,4 +1,3 @@
-
 " makes use of marker '
 
 " some conditional configs
@@ -111,7 +110,9 @@ nnoremap <leader>t :Removetrailingspaces<CR>
 nnoremap <C-d> :copy .<CR>
 nnoremap dx 0"_d$
 nnoremap dcx 0d$
-
+nnoremap <C-i> Bi <esc>i
+nnoremap <C-a> Ea <esc>a
+ 
 " Empty Lines
 nnoremap <ENTER> o<esc>
 nnoremap <S-ENTER> O<esc>
@@ -235,8 +236,10 @@ endif
 " === FILETYPE SPECIFIC STUFF ===
 
 " Vimscript Stuff
-au BufNewFile,BufRead .vimrc,_vimrc,*.vim,vimrc :nnoremap <buffer> <F5> :so %<CR>
-au BufNewFile,BufRead .vimrc,_vimrc,*.vim,vimrc :nnoremap <leader>c A<space>"<space>
+au BufNewFile,BufRead *.vim,*vimrc :nnoremap <buffer> <F5> :so %<CR>
+au BufNewFile,BufRead *.vim,*vimrc :nnoremap <leader>c A<space>"<space>
+
+" C / C++ Stuff
 au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> ; m'$a;<C-c>`'
 
 " Ruby Stuff
