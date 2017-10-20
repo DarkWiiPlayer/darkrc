@@ -156,8 +156,13 @@ function! s:updateWUC()
 			call matchdelete(b:hlwuc)
 		end
 	end
+	if exists("b:word_hl")
+		let hl = b:word_hl
+	else
+		let hl = "Underlined"
+	endif
 	let str = "\\<".escape(expand("<cword>"), "\\")."\\>"
-	let b:hlwuc = matchadd("Underlined", str)
+	let b:hlwuc = matchadd(hl, str)
 	"echom str
 endfunc
 function! s:toggleWUC()
