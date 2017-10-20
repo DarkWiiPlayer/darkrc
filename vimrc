@@ -76,7 +76,7 @@ set modeline " Allows setting vim options in other files
 set statusline=(%n)\ %f\ [%M%R]\ [%Y]%=%l,%c%V\ %4.P
 set laststatus=2
 set cmdheight=1
-set timeoutlen=600
+set timeoutlen=1200
 
 " Clipboard and Copy/Paste things
 set clipboard=unnamed " Allow copying to and from OS clipboard
@@ -112,10 +112,22 @@ nnoremap dx 0"_d$
 nnoremap dcx 0d$
 nnoremap <C-i> Bi <esc>i
 nnoremap <C-a> Ea <esc>a
+nnoremap <leader>: :let @* = @:<CR>
  
 " Empty Lines
-nnoremap <ENTER> o<esc>
-nnoremap <S-ENTER> O<esc>
+nnoremap <ENTER> :call <SID>Enter(0)<CR>
+nnoremap <S-ENTER> :call <SID>Enter(1)<CR>
+function! s:Enter(shift)
+	if !a:shift
+		if col(".")-1
+			exe "normal o\<esc>"
+		else
+			exe "normal O\<esc>j0"
+		end
+	else
+		exe "normal O\<esc>j"
+	endif
+endfunction
 
 " Markdown Stuff
 vnoremap * <C-c>`>a*<C-c>`<i*<C-c>
@@ -238,11 +250,22 @@ endif
 " Vimscript Stuff
 au BufNewFile,BufRead *.vim,*vimrc :nnoremap <buffer> <F5> :so %<CR>
 au BufNewFile,BufRead *.vim,*vimrc :nnoremap <leader>c A<space>"<space>
+au BufNewFile,BufRead *.vim,*vimrc :nnoremap <leader>if ofunction! <C-o>m'()<enter>endfunction<C-o>`'<C-o>l
 
-" C / C++ Stuff
+" --- C / C++ Stuff ---
+
+" Insert Stuff
+au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> <leader>ii o#include <><esc>i
+au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> <buffer> <leader>ip oprintf("<C-o>m'\n");<esc>`'a
+au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> <leader>im oint main(int argc, char *args[]) {<CR>}<esc>O
+" Other Stuff
 au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> ; m'$a;<C-c>`'
 
-" Ruby Stuff
+" --- Ruby Stuff ---
+" Insert Stuff
+au BufNewFile,BufRead *.rb :nnoremap <buffer> <leader>ic oclass <C-o>m'<enter>end<esc>`'a
+au BufNewFile,BufRead *.rb :nnoremap <buffer> <leader>id odef <C-o>m'()<enter>end<esc>`'a
+" Other Stuff
 au BufNewFile,BufRead *.rb setl expandtab
 au BufNewFile,BufRead *.rb nnoremap <buffer> <F5> :w<CR>:!ruby %<CR>
 au BufNewFile,BufRead *.rb nnoremap <buffer> <F6> :w<CR>:!ruby -wc %<CR>
