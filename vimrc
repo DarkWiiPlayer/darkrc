@@ -158,7 +158,7 @@ function! s:updateWUC()
 	end
 	let str = "\\<".escape(expand("<cword>"), "\\")."\\>"
 	let b:hlwuc = matchadd("Underlined", str)
-	echom str
+	"echom str
 endfunc
 function! s:toggleWUC()
 	augroup hlwuc
