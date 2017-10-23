@@ -66,7 +66,7 @@ set shiftwidth=2
 set gdefault
 
 set wrap
-" au BufEnter,BufRead * set linebreak
+au BufEnter,BufRead * set linebreak
 set breakat=\ .,{
 set display+=lastline
 set showbreak=+->\ 
@@ -93,7 +93,7 @@ noremap Q @q
 nnoremap <S-space> gQ
 noremap <C-s> :w<CR>
 noremap <C-x> :hide<CR>
-noremap <C-q> :close<CR>
+noremap <C-q> :bdelete<CR>
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-p> :bprevious<CR>
 noremap <F1> :setl number!<CR>
@@ -120,12 +120,12 @@ nnoremap <S-ENTER> :call <SID>Enter(1)<CR>
 function! s:Enter(shift)
 	if !a:shift
 		if col(".")-1
-			exe "normal o\<esc>"
+			exe "normal o\<esc>0d$"
 		else
-			exe "normal O\<esc>j0"
+			exe "normal O\<esc>0d$j0"
 		end
 	else
-		exe "normal O\<esc>j"
+		exe "normal O\<esc>0d$j"
 	endif
 endfunction
 
