@@ -100,8 +100,6 @@ noremap <F1> :setl number!<CR>
 noremap <F2> :setl relativenumber!<CR>
 noremap <F3> :setl autowriteall!<CR>:setl autowriteall?<CR>
 noremap <F4> :setl list!<CR>
-nnoremap <S-tab> :retab!<CR>
-nnoremap <C-tab> :setl expandtab!<CR>:set expandtab?<CR>
 nnoremap <C-e> ge
 nnoremap <C-E> gE
 com! Setwd :cd %:p:h
@@ -113,6 +111,11 @@ nnoremap dcx 0d$
 nnoremap <C-i> Bi <esc>i
 nnoremap <C-a> Ea <esc>a
 nnoremap <leader>: :let @* = @:<CR>
+
+" Tabs vs. Spaces
+nnoremap <S-tab> :retab!<CR>
+nnoremap <C-tab> :setl expandtab!<CR>:set expandtab?<CR>
+" todo: custom function to retab only indentation
  
 " Empty Lines
 nnoremap <ENTER> :call <SID>Enter(0)<CR>
@@ -120,12 +123,12 @@ nnoremap <S-ENTER> :call <SID>Enter(1)<CR>
 function! s:Enter(shift)
 	if !a:shift
 		if col(".")-1
-			exe "normal o\<esc>0d$"
+			exe "normal o\<esc>0\"_d$"
 		else
-			exe "normal O\<esc>0d$j0"
+			exe "normal O\<esc>0\"_d$j"
 		end
 	else
-		exe "normal O\<esc>0d$j"
+		exe "normal O\<esc>0\"_d$"
 	endif
 endfunction
 
