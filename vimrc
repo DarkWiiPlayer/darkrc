@@ -1,4 +1,4 @@
-" makes use of marker '
+"!!! makes use of marker '
 
 " Sessions
 set sessionoptions=blank,buffers,curdir,folds,help,options,tabpages
@@ -14,8 +14,8 @@ endif
 
 set nocompatible
 """"""""""""""""
-set history=50		" keep 50 lines of command line history
-set nonumber " Switch these two if it proves to be annoying
+set history=50 " keep 50 lines of command line history
+set nonumber
 set relativenumber
 set langmenu=en_UK
 let $LANG = 'en_UK'
@@ -27,10 +27,10 @@ set guioptions-=l
 set guioptions-=L
 set gfn=Courier_New:h12:cANSI
 try
-"	set undodir=~/.vim_runtime/temp_dirs/undodir
-	set undodir=C:\vim\undodir
+	set undodir=$HOME/.vimundo
 	set undofile
 catch
+	echom "Undofile doesn't work :("
 endtry
 filetype plugin on
 filetype indent on
