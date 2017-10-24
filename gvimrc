@@ -1,3 +1,6 @@
+set guioptions-=T
+set guioptions-=m
+
 augroup filecolors
 autocmd!
 " au BufLeave * :colorscheme slate
@@ -11,7 +14,6 @@ function! Randomcolor()
 	let random = localtime() % len(s:colors)
 	execute "colorscheme ".s:colors[random]
 endfunction
-call Randomcolor()
 
 " Color Stuff
 nnoremap <C-F1> :colorscheme slate<CR>
@@ -28,4 +30,4 @@ nnoremap <C-F9> :colorscheme elflord<CR>
 nnoremap <C-F10> :colorscheme murphy<CR>
 nnoremap <C-F11> :colorscheme torte<CR>
 nnoremap <C-F12> :call Randomcolor()<CR>
-so $MYVIMRC 
+call Randomcolor()

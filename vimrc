@@ -1,5 +1,8 @@
 " makes use of marker '
 
+" Sessions
+set sessionoptions=blank,buffers,curdir,folds,help,options,tabpages
+
 " some conditional configs
 if has('mouse')
 	set mouse=a
@@ -22,7 +25,6 @@ set guioptions-=r
 set guioptions-=R
 set guioptions-=l
 set guioptions-=L
-colorscheme slate
 set gfn=Courier_New:h12:cANSI
 try
 "	set undodir=~/.vim_runtime/temp_dirs/undodir
@@ -279,9 +281,6 @@ au BufNewFile,BufRead *.rb :nnoremap <buffer> <leader>id odef <C-o>m'()<enter>en
 au BufNewFile,BufRead *.rb setl expandtab
 au BufNewFile,BufRead *.rb nnoremap <buffer> <F5> :w<CR>:!ruby %<CR>
 au BufNewFile,BufRead *.rb nnoremap <buffer> <F6> :w<CR>:!ruby -wc %<CR>
-au BufNewFile,BufRead *.rb setl foldmethod=syntax
-au BufNewFile,BufRead *.rb folddoclosed foldopen
-au BufNewFile,BufRead *.diff setl foldmethod=diff
 
 au BufNewFile,BufRead *.rb :nnoremap <buffer> <leader>C :call <SID>RubyComment(0)<CR>
 au BufNewFile,BufRead *.rb :nnoremap <buffer> <leader>c :call <SID>RubyComment(1)<CR>
