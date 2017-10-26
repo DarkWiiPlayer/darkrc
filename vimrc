@@ -262,7 +262,7 @@ nnoremap <leader>- :call AddWinMinHeight(-1)<cr>
 nnoremap <leader>0 :Equal<cr>
 
 " Window Width Stuff
-command! EqualW call EqualW()
+command! EqualW silent! call EqualW()
 function! EqualW()
 	set winminwidth=0
 	set winwidth=1
@@ -328,7 +328,7 @@ endfunction
 " --- C / C++ Stuff ---
 
 " Insert Stuff
-au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> <leader>ii o#include <><esc>i
+au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> <leader>ii O#include <><esc>i
 au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> <buffer> <leader>ip oprintf("<C-o>m'\n");<esc>`'a
 au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> <leader>im oint main(int argc, char *args[]) {<CR>}<esc>O
 " Other Stuff
