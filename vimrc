@@ -90,6 +90,9 @@ noremap <leader>x x
 " === GENERAL COMMANDS ===
 command! L lopen | set number | set norelativenumber
 
+command! Fixme cex MatchingLines("\\cfixme.*")
+command! Todo cex MatchingLines("\\ctodo.*")
+
 " === GENERAL KEY MAPPINGS ===
 let mapleader = "\\"
 nnoremap <S-l> :L<cr>
@@ -104,8 +107,8 @@ nnoremap <C-n> :bnext<CR>
 nnoremap <C-p> :bprevious<CR>
 nnoremap <leader>n :lnext<cr>
 nnoremap <leader>p :lNext<cr>
-nnoremap <leader>cn :cnext<cr>
-nnoremap <leader>cp :cNext<cr>
+nnoremap <leader><leader>n :cnext<cr>
+nnoremap <leader><leader>p :cNext<cr>
 nnoremap <C-i> Bi <esc>i
 nnoremap <C-a> Ea <esc>a
 " This one does nothing, but I'm adding it to remember not to remap the tab key
@@ -127,7 +130,7 @@ nnoremap <leader>: :let @* = @:<CR>
 
 " Tabs vs. Spaces
 nnoremap <C-tab> :setl expandtab!<CR>:set expandtab?<CR>
-" todo: custom function to retab only indentation
+" TODO: custom function to retab only indentation
  
 " Empty Lines
 nnoremap <ENTER> :call <SID>Enter(0)<CR>
