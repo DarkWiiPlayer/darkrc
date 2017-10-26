@@ -87,8 +87,12 @@ noremap <leader>d "_d
 noremap x "_x
 noremap <leader>x x
 
+" === GENERAL COMMANDS ===
+command! L lopen | set number | set norelativenumber
+
 " === GENERAL KEY MAPPINGS ===
 let mapleader = "\\"
+nnoremap <S-l> :L<cr>
 noremap <space> :
 noremap <C-space> @:
 noremap Q @q
@@ -159,7 +163,7 @@ digraph OE 214
 digraph ss 223
 
 " === GENERAL UTILITIES ===
-function! Matchinglines(pattern)
+function! MatchingLines(pattern)
 	let list = []
 	let pattern = a:pattern
 	exec "g/".pattern."/ call add(list, expand('%').'('.line('.').') : '.matchstr(getline('.'), '".pattern."'))"
@@ -284,9 +288,16 @@ endif
 " === FILETYPE SPECIFIC STUFF ===
 
 " Vimscript Stuff
-au BufNewFile,BufRead *.vim,*vimrc :nnoremap <buffer> <F5> :so %<CR>
-au BufNewFile,BufRead *.vim,*vimrc :nnoremap <leader>c A<space>"<space>
-au BufNewFile,BufRead *.vim,*vimrc :nnoremap <leader>if ofunction! <C-o>m'()<enter>endfunction<C-o>`'<C-o>l
+au BufNewFile,BufRead *.vim,*vimrc :call <sid>init_vim_file()
+
+function! s:init_vim_file()
+	nnoremap <buffer> <F5> :so %<CR>
+	nnoremap <leader>c A<space>"<space>
+	nnoremap <leader>if ofunction! <C-o>m'()<enter>endfunction<C-o>`'<C-o>l
+
+	command! -buffer Functions lex MatchingLines("^\\s*fun\\(ction\\)\\?\\>!.*$")
+	command! -buffer Commands  lex MatchingLines("^\\s*com\\(mand\\)\\?\\>!.*$")
+endfunction
 
 " --- C / C++ Stuff ---
 
@@ -298,21 +309,27 @@ au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> <leader>im oint mai
 au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> ; m'$a;<C-c>`'
 
 " --- Ruby Stuff ---
-" Insert Stuff
-au BufNewFile,BufRead *.rb :command! -buffer Defines lex Matchinglines("^\\s\\+def\\>")
-au BufNewFile,BufRead *.rb :command! -buffer Classes lex Matchinglines("^\\s\\+class\\>")
-au BufNewFile,BufRead *.rb :command! -buffer Modules lex Matchinglines("^\\s\\+module\\>")
-au BufNewFile,BufRead *.rb :nnoremap <buffer> <leader>ic oclass <C-o>m'<enter>end<esc>`'a
-au BufNewFile,BufRead *.rb :nnoremap <buffer> <leader>id odef <C-o>m'()<enter>end<esc>`'a
-" Other Stuff
-au BufNewFile,BufRead *.rb setl expandtab
-au BufNewFile,BufRead *.rb nnoremap <buffer> <F5> :w<CR>:!ruby %<CR>
-au BufNewFile,BufRead *.rb nnoremap <buffer> <F6> :w<CR>:!ruby -wc %<CR>
+au BufNewFile,BufRead *.rb :call <sid>init_ruby_file()
 
-au BufNewFile,BufRead *.rb :nnoremap <buffer> <leader>C :call <SID>RubyComment(0)<CR>
-au BufNewFile,BufRead *.rb :nnoremap <buffer> <leader>c :call <SID>RubyComment(1)<CR>
-au BufNewFile,BufRead *.rb :vnoremap <buffer> <leader>C :call <SID>RubyComment(0)<CR>
-au BufNewFile,BufRead *.rb :vnoremap <buffer> <leader>c :call <SID>RubyComment(1)<CR>
+function! s:init_ruby_file()
+	command! -buffer Defines lex MatchingLines("^\\s*def\\>.*$")
+		command! -buffer Functions Defines " Alias
+		command! -buffer Methods Defines " Alias
+	command! -buffer Classes lex MatchingLines("^\\s*class\\>.*$")
+	command! -buffer Modules lex MatchingLines("^\\s*module\\>.*$")
+
+	nnoremap <buffer> <leader>ic oclass <C-o>m'<enter>end<esc>`'a
+	nnoremap <buffer> <leader>id odef <C-o>m'()<enter>end<esc>`'a
+
+	setl expandtab
+	nnoremap <buffer> <F5> :w<CR>:!ruby %<CR>
+	nnoremap <buffer> <F6> :w<CR>:!ruby -wc %<CR>
+	nnoremap <buffer> <leader>~ :call <SID>RubyComment(0)<CR>
+	nnoremap <buffer> <leader># :call <SID>RubyComment(1)<CR>
+	vnoremap <buffer> <leader>~ :call <SID>RubyComment(0)<CR>
+	vnoremap <buffer> <leader># :call <SID>RubyComment(1)<CR>
+endfunction
+
 function! s:RubyComment(a)
 	if a:a==0
 		silent! exec '.s/\m^\s*\zs#*//'
