@@ -98,6 +98,15 @@ noremap <C-x> :hide<CR>
 noremap <C-q> :bdelete<CR>
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-p> :bprevious<CR>
+nnoremap <leader>n :lnext<cr>
+nnoremap <leader>p :lNext<cr>
+nnoremap <leader>cn :cnext<cr>
+nnoremap <leader>cp :cNext<cr>
+nnoremap <C-i> Bi <esc>i
+nnoremap <C-a> Ea <esc>a
+" This one does nothing, but I'm adding it to remember not to remap the tab key
+nnoremap <tab> <C-S-I>
+nnoremap <S-tab> <C-S-O>
 noremap <F1> :setl number!<CR>
 noremap <F2> :setl relativenumber!<CR>
 noremap <F3> :setl autowriteall!<CR>:setl autowriteall?<CR>
@@ -110,12 +119,9 @@ nnoremap <leader>t :Removetrailingspaces<CR>
 nnoremap <C-d> :copy .<CR>
 nnoremap dx 0"_d$
 nnoremap dcx 0d$
-nnoremap <C-i> Bi <esc>i
-nnoremap <C-a> Ea <esc>a
 nnoremap <leader>: :let @* = @:<CR>
 
 " Tabs vs. Spaces
-nnoremap <S-tab> :retab!<CR>
 nnoremap <C-tab> :setl expandtab!<CR>:set expandtab?<CR>
 " todo: custom function to retab only indentation
  
@@ -151,6 +157,14 @@ digraph AE 196
 digraph oe 246
 digraph OE 214
 digraph ss 223
+
+" === GENERAL UTILITIES ===
+function! Matchinglines(pattern)
+	let list = []
+	let pattern = a:pattern
+	exec "g/".pattern."/ call add(list, expand('%').'('.line('.').') : '.matchstr(getline('.'), '".pattern."'))"
+	return list
+endfunc
 
 " === GENERAL AUTOCOMMANDS ===
 
@@ -238,6 +252,7 @@ function! AddWinMinHeight(num)
 endfunc
 nnoremap <leader>= :call AddWinMinHeight(1)<cr>
 nnoremap <leader>- :call AddWinMinHeight(-1)<cr>
+nnoremap <leader>0 :Equal<cr>
 
 
 if has("autocmd")
@@ -284,6 +299,9 @@ au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> ; m'$a;<C-c>`'
 
 " --- Ruby Stuff ---
 " Insert Stuff
+au BufNewFile,BufRead *.rb :command! -buffer Defines lex Matchinglines("^\\s\\+def\\>")
+au BufNewFile,BufRead *.rb :command! -buffer Classes lex Matchinglines("^\\s\\+class\\>")
+au BufNewFile,BufRead *.rb :command! -buffer Modules lex Matchinglines("^\\s\\+module\\>")
 au BufNewFile,BufRead *.rb :nnoremap <buffer> <leader>ic oclass <C-o>m'<enter>end<esc>`'a
 au BufNewFile,BufRead *.rb :nnoremap <buffer> <leader>id odef <C-o>m'()<enter>end<esc>`'a
 " Other Stuff
