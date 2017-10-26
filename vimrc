@@ -215,10 +215,19 @@ function! s:GrepOperator(type)
 endfunction
 
 " Window Height stuff
+command! Equal call Equal()
+function! Equal()
+	set winminheight=0
+	set winheight=1
+	set equalalways!
+	set equalalways!
+endfunc
 function! SetWinMinHeight(num)
 	execute "set winminheight=".0
-	execute "set winheight=".(a:num+1)
-	execute "set winminheight=".a:num
+	if a:num>=0
+		execute "set winheight=".(a:num+1)
+		execute "set winminheight=".a:num
+	endif
 	execute "set winheight=".9999
 endfunc
 call SetWinMinHeight(2)
