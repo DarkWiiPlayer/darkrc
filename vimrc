@@ -258,6 +258,31 @@ nnoremap <leader>= :call AddWinMinHeight(1)<cr>
 nnoremap <leader>- :call AddWinMinHeight(-1)<cr>
 nnoremap <leader>0 :Equal<cr>
 
+" Window Width Stuff
+command! EqualW call EqualW()
+function! EqualW()
+	set winminwidth=0
+	set winwidth=1
+	set equalalways!
+	set equalalways!
+endfunc
+function! SetWinMinWidth(num)
+	execute "set winminwidth=".0
+	if a:num>=0
+		execute "set winwidth=".(a:num+1)
+		execute "set winminwidth=".a:num
+	endif
+	execute "set winwidth=".9999
+endfunc
+function! AddWinMinWidth(num)
+	let a:new = &winminwidth + a:num
+	call SetWinMinWidth(a:new)
+	set winminwidth?
+endfunc
+nnoremap <leader>+ :call AddWinMinWidth(1)<cr>
+nnoremap <leader>_ :call AddWinMinWidth(-1)<cr>
+nnoremap <leader>) :EqualW<cr>
+
 
 if has("autocmd")
 
@@ -268,8 +293,6 @@ if has("autocmd")
 	filetype plugin indent on
 
 	" Put these in an autocmd group, so that we can delete them easily.
-	augroup vimrcEx
-	au!
 
 	" For all text files set 'textwidth' to 78 characters.
 	autocmd FileType text setlocal textwidth=78
