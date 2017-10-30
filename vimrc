@@ -87,11 +87,52 @@ noremap <leader>d "_d
 noremap x "_x
 noremap <leader>x x
 
+" === GENERAL UTILITIES ===
+function! MatchingLines(pattern)
+	let list = []
+	let pattern = a:pattern
+	exec "g/".pattern."/ call add(list, expand('%').'('.line('.').') : '.matchstr(getline('.'), '".pattern."'))"
+	return list
+endfunc
+
+function! s:mld_helper(list, pattern)
+	" Helper function for MatchingLinesDict
+	call add(a:list, {'filename': expand("%"), 'lnum': line("."),	'col':	match(getline("."), a:pattern)+1, 'text': matchstr(getline("."), a:pattern)})
+endfunc
+function! MatchingLinesDict(pattern)
+	let list = []
+	silent! exec "g/".a:pattern."/ call s:mld_helper(list, a:pattern)"
+	return list
+endfunc
+
+function! LocationAddLineCol(filename, lnum, text, col)
+	call setloclist(0, [{'filename': a:filename, 'lnum': a:lnum, 'desc': a:text, 'col': a:col}], 'a')
+endfunction
+
+function! QuickfixAddLineCol(filename, lnum, text, col)
+	call setqflist([{'filename': a:filename, 'lnum': a:lnum, 'desc': a:text, 'col': a:col}], 'a')
+endfunction
+
+function! LocationAddLine(filename, lnum, text)
+	call setloclist(0, [{'filename': a:filename, 'lnum': a:lnum, 'desc': a:text}], 'a')
+endfunction
+
+function! QuickfixAddLine(filename, lnum, text)
+	call setqflist([{'filename': a:filename, 'lnum': a:lnum, 'desc': a:text}], 'a')
+endfunction
+
 " === GENERAL COMMANDS ===
 command! L lopen | set number | set norelativenumber
+command! LAddLine call LocationAddLine(expand("%"), line("."), getline("."))
+command! QAddLine call QuickfixAddLine(expand("%"), line("."), getline("."))
+command! LAddCursor call LocationAddLineCol(expand("%"), line("."), getline("."), col("."))
+command! QAddCursor call QuickfixAddLineCol(expand("%"), line("."), getline("."), col("."))
 
-command! Fixme cex MatchingLines("\\cfixme.*")
-command! Todo cex MatchingLines("\\ctodo.*")
+command! Fixme lex MatchingLines("\\c\\<fixme.*")
+command! Todo lex MatchingLines("\\c\\<todo.*")
+
+command! -nargs=1 LFind call setloclist(0, MatchingLinesDict(<args>))
+command! -nargs=1 QFind call setqflist(MatchingLinesDict(<args>))
 
 " === GENERAL KEY MAPPINGS ===
 let mapleader = "\\"
@@ -164,14 +205,6 @@ digraph AE 196
 digraph oe 246
 digraph OE 214
 digraph ss 223
-
-" === GENERAL UTILITIES ===
-function! MatchingLines(pattern)
-	let list = []
-	let pattern = a:pattern
-	exec "g/".pattern."/ call add(list, expand('%').'('.line('.').') : '.matchstr(getline('.'), '".pattern."'))"
-	return list
-endfunc
 
 " === GENERAL AUTOCOMMANDS ===
 
@@ -323,6 +356,7 @@ function! s:init_vim_file()
 
 	command! -buffer Functions lex MatchingLines("^\\s*fun\\(ction\\)\\?\\>!.*$")
 	command! -buffer Commands  lex MatchingLines("^\\s*com\\(mand\\)\\?\\>!.*$")
+	command! -buffer Autocommands  lex MatchingLines("^\\s*au\\(tocmd\\)\\?\\>!\\@!.*$")
 endfunction
 
 " --- C / C++ Stuff ---
@@ -338,11 +372,11 @@ au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> ; m'$a;<C-c>`'
 au BufNewFile,BufRead *.rb :call <sid>init_ruby_file()
 
 function! s:init_ruby_file()
-	command! -buffer Defines lex MatchingLines("^\\s*def\\>.*$")
+	command! -buffer Defines lex MatchingLines("^\\s*def\\>\\s\\+\\zs.*$")
 		command! -buffer Functions Defines " Alias
 		command! -buffer Methods Defines " Alias
-	command! -buffer Classes lex MatchingLines("^\\s*class\\>.*$")
-	command! -buffer Modules lex MatchingLines("^\\s*module\\>.*$")
+	command! -buffer Classes lex MatchingLines("^\\s*class\\>\\s\\+\\zs.*$")
+	command! -buffer Modules lex MatchingLines("^\\s*module\\>\\s\\+\\zs.*$")
 
 	nnoremap <buffer> <leader>ic oclass <C-o>m'<enter>end<esc>`'a
 	nnoremap <buffer> <leader>id odef <C-o>m'()<enter>end<esc>`'a
@@ -365,7 +399,7 @@ function! s:RubyComment(a)
 endfunction
 
 augroup rbindent
-autocmd!
+	autocmd!
 	au BufNewFile,BufRead *.rb :set noexpandtab
 	au BufNewFile,BufRead *.rb :retab!
 
@@ -374,12 +408,25 @@ autocmd!
 	au BufWritePre *.rb :retab
 
 	au BufWritepost *.rb :set noexpandtab
-	au BufWritepost *.rb :retab!
+	au BufWritepost *.rb :silent! :undo :normal <S-tab>
 augroup END
 
-" --- LUA STUFF ---
+" --- Lua Stuff ---
 au BufNewFile,BufRead *.lua :call <sid>init_lua_file()
 
 function! s:init_lua_file()
 	command! -buffer Requires lex MatchingLines("^\\s*require\\>.*$")
 endfunction!
+
+" --- HTML Stuff ---
+au BufNewFile,BufRead *.html,*.htm :call <sid>init_html_file()
+
+function! s:init_html_file()
+	command! -buffer -nargs=1 Tag normal
+				\ i<<args>><<C-o>m'/<args>><ESC>`'
+	nnoremap <buffer> <leader>t ""ciw<<C-o>""p><C-o>m'</<C-o>""p><C-o>`'<C-o>l
+	nnoremap <buffer> <leader>T ""diw<C-o>"_cc<<C-o>""p><C-o>o</<C-o>""p><C-o>O
+
+	inoremap <buffer> <C-space> <C-o>""ciw<<C-o>""p><C-o>m'</<C-o>""p><C-o>`'<C-o>l
+	inoremap <buffer> <C-CR> <C-o>""diw<C-o>"_cc<<C-o>""p><C-o>o</<C-o>""p><C-o>O
+endfunction
