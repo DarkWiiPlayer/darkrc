@@ -376,3 +376,10 @@ autocmd!
 	au BufWritepost *.rb :set noexpandtab
 	au BufWritepost *.rb :retab!
 augroup END
+
+" --- LUA STUFF ---
+au BufNewFile,BufRead *.lua :call <sid>init_lua_file()
+
+function! s:init_lua_file()
+	command! -buffer Requires lex MatchingLines("^\\s*require\\>.*$")
+endfunction!
