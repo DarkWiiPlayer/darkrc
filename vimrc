@@ -372,11 +372,11 @@ au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> ; m'$a;<C-c>`'
 au BufNewFile,BufRead *.rb :call <sid>init_ruby_file()
 
 function! s:init_ruby_file()
-	command! -buffer Defines lex MatchingLines("^\\s*def\\>.*$")
+	command! -buffer Defines lex MatchingLines("^\\s*def\\>\\s\\+\\zs.*$")
 		command! -buffer Functions Defines " Alias
 		command! -buffer Methods Defines " Alias
-	command! -buffer Classes lex MatchingLines("^\\s*class\\>.*$")
-	command! -buffer Modules lex MatchingLines("^\\s*module\\>.*$")
+	command! -buffer Classes lex MatchingLines("^\\s*class\\>\\s\\+\\zs.*$")
+	command! -buffer Modules lex MatchingLines("^\\s*module\\>\\s\\+\\zs.*$")
 
 	nnoremap <buffer> <leader>ic oclass <C-o>m'<enter>end<esc>`'a
 	nnoremap <buffer> <leader>id odef <C-o>m'()<enter>end<esc>`'a
@@ -399,7 +399,7 @@ function! s:RubyComment(a)
 endfunction
 
 augroup rbindent
-autocmd!
+	autocmd!
 	au BufNewFile,BufRead *.rb :set noexpandtab
 	au BufNewFile,BufRead *.rb :retab!
 
@@ -408,5 +408,18 @@ autocmd!
 	au BufWritePre *.rb :retab
 
 	au BufWritepost *.rb :set noexpandtab
-	au BufWritepost *.rb :silent! :undo
+	au BufWritepost *.rb :silent! :undo :normal <S-tab>
 augroup END
+
+" --- HTML Stuff ---
+au BufNewFile,BufRead *.html,*.htm :call <sid>init_html_file()
+
+function! s:init_html_file()
+	command! -buffer -nargs=1 Tag normal
+				\ i<<args>><<C-o>m'/<args>><ESC>`'
+	nnoremap <buffer> <leader>t ""ciw<<C-o>""p><C-o>m'</<C-o>""p><C-o>`'<C-o>l
+	nnoremap <buffer> <leader>T ""diw<C-o>"_cc<<C-o>""p><C-o>o</<C-o>""p><C-o>O
+
+	inoremap <buffer> <C-space> <C-o>""ciw<<C-o>""p><C-o>m'</<C-o>""p><C-o>`'<C-o>l
+	inoremap <buffer> <C-CR> <C-o>""diw<C-o>"_cc<<C-o>""p><C-o>o</<C-o>""p><C-o>O
+endfunction
