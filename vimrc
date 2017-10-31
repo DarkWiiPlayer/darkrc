@@ -81,7 +81,11 @@ set cmdheight=1
 set timeoutlen=1200
 
 " Clipboard and Copy/Paste things
-set clipboard=unnamed " Allow copying to and from OS clipboard
+if has('unnamedplus') " Allow copying to and from OS clipboard
+	set clipboard=unnamedplus
+else
+	set clipboard=unnamed
+end
 noremap <leader>d "_d
 noremap <leader>d "_d
 noremap x "_x
@@ -119,6 +123,19 @@ endfunction
 
 function! QuickfixAddLine(filename, lnum, text)
 	call setqflist([{'filename': a:filename, 'lnum': a:lnum, 'desc': a:text}], 'a')
+endfunction
+
+" https://stackoverflow.com/a/6271254/4984564
+function! VisualSelection()
+    let [line_start, column_start] = getpos("'<")[1:2]
+    let [line_end, column_end] = getpos("'>")[1:2]
+    let lines = getline(line_start, line_end)
+    if len(lines) == 0
+        return ''
+    endif
+    let lines[-1] = lines[-1][: column_end - 2]
+    let lines[0] = lines[0][column_start - 1:]
+    return join(lines, "\n")
 endfunction
 
 " === GENERAL COMMANDS ===
@@ -168,7 +185,8 @@ nnoremap <C-d> :copy .<CR>
 nnoremap dx 0"_d$
 nnoremap dcx 0d$
 nnoremap <leader>: :let @* = @:<CR>
-nnoremap <expr> <S-r> ":%s/".expand("<cword>")."/"
+nnoremap <expr> <S-r> ":%s/\\<".expand("<cword>")."\\>/"
+vnoremap <expr> <S-r> "\<C-c>:redraw<CR>:%s/".VisualSelection()."/"
 
 " Tabs vs. Spaces
 nnoremap <C-tab> :setl expandtab!<CR>:set expandtab?<CR>
