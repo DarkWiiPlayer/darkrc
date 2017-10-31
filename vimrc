@@ -168,6 +168,7 @@ nnoremap <C-d> :copy .<CR>
 nnoremap dx 0"_d$
 nnoremap dcx 0d$
 nnoremap <leader>: :let @* = @:<CR>
+nnoremap <expr> <S-r> ":%s/".expand("<cword>")."/"
 
 " Tabs vs. Spaces
 nnoremap <C-tab> :setl expandtab!<CR>:set expandtab?<CR>
