@@ -101,7 +101,7 @@ endfunc
 
 function! s:mld_helper(list, pattern)
 	" Helper function for MatchingLinesDict
-	call add(a:list, {'filename': expand("%"), 'lnum': line("."),	'col':	match(getline("."), a:pattern)+1, 'text': matchstr(getline("."), a:pattern)})
+	call add(a:list, {'filename': expand("%"), 'lnum': line("."), 'col':	match(getline("."), a:pattern)+1, 'text': matchstr(getline("."), a:pattern)})
 endfunc
 function! MatchingLinesDict(pattern)
 	let list = []
@@ -125,18 +125,31 @@ function! QuickfixAddLine(filename, lnum, text)
 	call setqflist([{'filename': a:filename, 'lnum': a:lnum, 'desc': a:text}], 'a')
 endfunction
 
-" https://stackoverflow.com/a/6271254/4984564
+" Original implementation: https://stackoverflow.com/a/6271254/4984564
 function! VisualSelection()
-    let [line_start, column_start] = getpos("'<")[1:2]
-    let [line_end, column_end] = getpos("'>")[1:2]
-    let lines = getline(line_start, line_end)
-    if len(lines) == 0
-        return ''
-    endif
-    let lines[-1] = lines[-1][: column_end - 2]
-    let lines[0] = lines[0][column_start - 1:]
-    return join(lines, "\n")
+	if mode()=="v"
+		let [line_start, column_start] = getpos("v")[1:2]
+		let [line_end, column_end] = getpos(".")[1:2]
+	else
+		let [line_start, column_start] = getpos("'<")[1:2]
+		let [line_end, column_end] = getpos("'>")[1:2]
+	end
+	if (line2byte(line_start)+column_start) > (line2byte(line_end)+column_end)
+		let [line_start, column_start, line_end, column_end] =
+		\   [line_end, column_end, line_start, column_start]
+	end
+	let lines = getline(line_start, line_end)
+	if len(lines) == 0
+			return ''
+	endif
+	let lines[-1] = lines[-1][: column_end - 1]
+	let lines[0] = lines[0][column_start - 1:]
+	return join(lines, "\n")
 endfunction
+
+function! StringReverse(str)
+	return join(reverse(split(str, ".\\zs")), "")
+endfunc
 
 " === GENERAL COMMANDS ===
 command! L lopen | set number | set norelativenumber
@@ -186,7 +199,16 @@ nnoremap dx 0"_d$
 nnoremap dcx 0d$
 nnoremap <leader>: :let @* = @:<CR>
 nnoremap <expr> <S-r> ":%s/\\<".expand("<cword>")."\\>/"
-vnoremap <expr> <S-r> "\<C-c>:redraw<CR>:%s/".VisualSelection()."/"
+vnoremap <expr> <S-r> ":<C-u>%s/".VisualSelection()."/"
+" Put in new line with indentation
+nnoremap ]p :let [content, type]=
+		\[getreg(v:register), getregtype(v:register)] \|
+		\call setreg(v:register, content, "V")<CR>]p
+		\:call setreg(v:register, content, type)<CR>
+nnoremap [p :let [content, type]=
+		\[getreg(v:register), getregtype(v:register)] \|
+		\call setreg(v:register, content, "V")<CR>[p
+		\:call setreg(v:register, content, type)<CR>
 
 " Tabs vs. Spaces
 nnoremap <C-tab> :setl expandtab!<CR>:set expandtab?<CR>
@@ -419,11 +441,11 @@ endfunction
 
 augroup rbindent
 	autocmd!
-	au BufNewFile,BufRead *.rb :set noexpandtab :retab!
+	au BufNewFile,BufRead *.rb :set noexpandtab | :retab!
 
 	au BufWritePre *.rb :let ts = &tabstop | set expandtab | set tabstop=2 | retab | let &tabstop=ts
 
-	au BufWritepost *.rb :set noexpandtab :silent! :undo :normal <S-tab>
+	au BufWritepost *.rb :set noexpandtab | :silent! :undo | :normal <S-tab>
 augroup END
 
 " --- Lua Stuff ---
