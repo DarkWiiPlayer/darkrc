@@ -419,15 +419,11 @@ endfunction
 
 augroup rbindent
 	autocmd!
-	au BufNewFile,BufRead *.rb :set noexpandtab
-	au BufNewFile,BufRead *.rb :retab!
+	au BufNewFile,BufRead *.rb :set noexpandtab :retab!
 
-	au BufWritePre *.rb :set expandtab
-	au BufWritePre *.rb :set tabstop=2 " TODO: find a way to change it back to whatever it was before
-	au BufWritePre *.rb :retab
+	au BufWritePre *.rb :let ts = &tabstop | set expandtab | set tabstop=2 | retab | let &tabstop=ts
 
-	au BufWritepost *.rb :set noexpandtab
-	au BufWritepost *.rb :silent! :undo :normal <S-tab>
+	au BufWritepost *.rb :set noexpandtab :silent! :undo :normal <S-tab>
 augroup END
 
 " --- Lua Stuff ---
