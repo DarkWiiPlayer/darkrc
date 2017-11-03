@@ -171,7 +171,9 @@ noremap <space> :
 noremap <C-space> @:
 noremap Q @q
 nnoremap <S-space> gQ
-noremap <C-s> :w<CR>
+" noremap <C-s> :w<CR>
+noremap <C-s> :echo "Calm the fuck down! There's
+			\ no need to save every 10 seconds FFS!"<CR>
 noremap <C-x> :hide<CR>
 noremap <C-q> :bdelete<CR>
 nnoremap <C-n> :bnext<CR>
@@ -192,7 +194,7 @@ noremap <F4> :setl list!<CR>
 nnoremap <C-e> ge
 nnoremap <C-E> gE
 com! Setwd :cd %:p:h
-com! Removetrailingspaces :%s/\v(\\@<!\s)+$//ge
+com! Removetrailingspaces let _s=@/ | %s/\v(\\@<!\s)+$//ge | let @/=_s
 nnoremap <leader>t :Removetrailingspaces<CR>
 nnoremap <C-d> :copy .<CR>
 nnoremap dx 0"_d$
@@ -213,7 +215,7 @@ nnoremap [p :let [content, type]=
 " Tabs vs. Spaces
 nnoremap <C-tab> :setl expandtab!<CR>:set expandtab?<CR>
 " TODO: custom function to retab only indentation
- 
+
 " Empty Lines
 nnoremap <ENTER> :call <SID>Enter(0)<CR>
 nnoremap <S-ENTER> :call <SID>Enter(1)<CR>
@@ -281,15 +283,15 @@ function! s:toggleWUC()
 	augroup END
 endfunction
 
-function! Autosave()
+" Autosave when vim loses focus :)
+function! TryAutosave()
 	if &autowriteall==1
 		silent w
-		echo "Lost focus, buffer saved."
 		redraw
 	endif
 endfunction
-au FocusLost * call Autosave()
-au WinLeave * call Autosave()
+au FocusLost * call TryAutosave()
+au WinLeave * call TryAutosave()
 
 vnoremap <leader>g :<C-u>call <SID>GrepOperator(visualmode())<CR>
 nnoremap <leader>g :set operatorfunc=<SID>GrepOperator<CR>g@
@@ -422,7 +424,7 @@ function! s:init_ruby_file()
 	nnoremap <buffer> <leader>ic oclass <C-o>m'<enter>end<esc>`'a
 	nnoremap <buffer> <leader>id odef <C-o>m'()<enter>end<esc>`'a
 
-	setl expandtab
+	set expandtab
 	nnoremap <buffer> <F5> :w<CR>:!ruby %<CR>
 	nnoremap <buffer> <F6> :w<CR>:!ruby -wc %<CR>
 	nnoremap <buffer> <leader>~ :call <SID>RubyComment(0)<CR>
@@ -439,14 +441,14 @@ function! s:RubyComment(a)
 	end
 endfunction
 
-augroup rbindent
-	autocmd!
-	au BufNewFile,BufRead *.rb :set noexpandtab | :retab!
-
-	au BufWritePre *.rb :let ts = &tabstop | set expandtab | set tabstop=2 | retab | let &tabstop=ts
-
-	au BufWritepost *.rb :set noexpandtab | :silent! :undo | :normal <S-tab>
-augroup END
+"	augroup rbindent
+"		autocmd!
+"		au BufNewFile,BufRead *.rb :set noexpandtab | :retab! |
+"	
+"		au BufWritePre *.rb :let ts = &tabstop | set expandtab | set tabstop=2 | retab | let &tabstop=ts | :set noexpandtab
+"	
+"		au BufWritepost *.rb :silent! :undo | :exe "normal \<C-O>"
+"	augroup END
 
 " --- Lua Stuff ---
 au BufNewFile,BufRead *.lua :call <sid>init_lua_file()
