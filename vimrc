@@ -456,7 +456,7 @@ function! s:init_lua_file()
 endfunction!
 
 " --- HTML Stuff ---
-au BufNewFile,BufRead *.html,*.htm :call <sid>init_html_file()
+au BufNewFile,BufRead *.html,*.htm,*.etlua,*.erb :call <sid>init_html_file()
 
 function! s:init_html_file()
 	command! -buffer -nargs=1 Tag normal
