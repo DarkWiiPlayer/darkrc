@@ -27,3 +27,6 @@ alias pi='ssh pi -t ''tmux a -t home \|\| tmux new-session -s home'''
 alias server='ssh server -t ''tmux a -t home \|\| tmux new-session -s home'''
 alias ltc='getclip | luac -l -'
 stty -ixon
+
+# Enable Vi editing mode
+set -o vi
