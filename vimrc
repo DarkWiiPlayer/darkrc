@@ -58,7 +58,7 @@ set showmatch
 " Backup and file stuff
 set nobackup
 set nowb
-set noswapfile
+" set noswapfile
 
 " Indentation, etc.
 set tabstop=2
