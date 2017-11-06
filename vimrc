@@ -12,6 +12,10 @@ if &t_Co > 2 || has("gui_running")
 	set hlsearch "Highlight search results
 endif
 
+if v:version > 702
+	set cm=blowfish
+end
+
 set nocompatible
 """"""""""""""""
 set linespace=0
