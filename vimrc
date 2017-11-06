@@ -70,7 +70,6 @@ set noexpandtab
 set smarttab
 set autoindent
 set smartindent
-
 set smarttab
 set shiftwidth=2
 set gdefault
@@ -95,10 +94,6 @@ if has('unnamedplus') " Allow copying to and from OS clipboard
 else
 	set clipboard=unnamed
 end
-noremap <leader>d "_d
-noremap <leader>d "_d
-noremap x "_x
-noremap <leader>x x
 
 " === GENERAL UTILITIES ===
 function! MatchingLines(pattern)
@@ -175,6 +170,12 @@ command! -nargs=1 QFind call setqflist(MatchingLinesDict(<args>))
 
 " === GENERAL KEY MAPPINGS ===
 let mapleader = "\\"
+
+" --- /dev/null ---
+noremap <leader>d "_d
+noremap <leader>d "_d
+noremap x "_x
+noremap <leader>x x
 
 " --- MOVEMENT ---
 nnoremap j gj
