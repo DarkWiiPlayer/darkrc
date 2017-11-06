@@ -7,6 +7,7 @@ set sessionoptions=blank,buffers,curdir,folds,help,options,tabpages
 if has('mouse')
 	set mouse=a
 endif
+
 if &t_Co > 2 || has("gui_running")
 	syntax on
 	set hlsearch "Highlight search results
@@ -59,6 +60,7 @@ set showmatch
 set nobackup
 set nowb
 " set noswapfile
+set swapfile
 
 " Indentation, etc.
 set tabstop=2
