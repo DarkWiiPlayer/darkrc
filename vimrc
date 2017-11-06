@@ -14,6 +14,8 @@ endif
 
 set nocompatible
 """"""""""""""""
+set linespace=0
+set scrolloff=6
 set history=50 " keep 50 lines of command line history
 set nonumber
 set relativenumber
@@ -72,7 +74,8 @@ au BufEnter,BufRead * set linebreak
 set breakat=\ .,{
 set display+=lastline
 set showbreak=+->\ 
-set listchars=eol:¶,tab:»\ ,trail:.
+set listchars=eol:¶,tab:»\ ,trail:.,nbsp:.
+set cursorline " Highlight cursor line
 
 set modeline " Allows setting vim options in other files
 set statusline=(%n)\ %f\ [%M%R]\ [%Y]%=%l,%c%V\ %4.P
@@ -158,14 +161,27 @@ command! QAddLine call QuickfixAddLine(expand("%"), line("."), getline("."))
 command! LAddCursor call LocationAddLineCol(expand("%"), line("."), getline("."), col("."))
 command! QAddCursor call QuickfixAddLineCol(expand("%"), line("."), getline("."), col("."))
 
-command! Fixme lex MatchingLines("\\c\\<fixme.*")
-command! Todo lex MatchingLines("\\c\\<todo.*")
+command! Fixme call setloclist(0, MatchingLinesDict("\\c\\<fixme.*"))
+command! Todo call setloclist(0, MatchingLinesDict("\\c\\<todo.*"))
 
 command! -nargs=1 LFind call setloclist(0, MatchingLinesDict(<args>))
 command! -nargs=1 QFind call setqflist(MatchingLinesDict(<args>))
 
 " === GENERAL KEY MAPPINGS ===
 let mapleader = "\\"
+
+" --- MOVEMENT ---
+nnoremap j gj
+nnoremap k gk
+
+" --- CLIPBOARD ---
+nnoremap Y y$
+
+" --- OTHER ---
+" Don't exit visual mode when shifting
+vnoremap < <gv
+vnoremap > >gv
+
 nnoremap <S-l> :L<cr>
 noremap <space> :
 noremap <C-space> @:
