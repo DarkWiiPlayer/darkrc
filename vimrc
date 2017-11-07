@@ -266,7 +266,8 @@ noremap <F3> :setl autowriteall!<CR>:setl autowriteall?<CR>
 noremap <F4> :setl list!<CR>
 nnoremap <C-e> ge
 nnoremap <C-E> gE
-com! Setwd :cd %:p:h
+com! SetWD :cd %:p:h
+com! SetLWD :lcd %:p:h
 com! Removetrailingspaces let _s=@/ | %s/\v(\\@<!\s)+$//ge | let @/=_s
 nnoremap <leader>t :Removetrailingspaces<CR>
 nnoremap <C-d> :copy .<CR>
@@ -532,6 +533,10 @@ au BufNewFile,BufRead *.lua :call <sid>init_lua_file()
 
 function! s:init_lua_file()
 	command! -buffer Requires lex MatchingLines("^\\s*require\\>.*$")
+
+	call s:autoClose_AddPair("[", "]")
+	call s:autoClose_AddPair("(", ")")
+	call s:autoClose_AddPair("{", "}")
 endfunction!
 
 " --- HTML Stuff ---
