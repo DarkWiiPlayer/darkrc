@@ -32,7 +32,7 @@ set guioptions-=r
 set guioptions-=R
 set guioptions-=l
 set guioptions-=L
-set gfn=Courier_New:h12:cANSI
+" set gfn=Courier_New:h12:cANSI
 try
 	set undodir=$HOME/.vimundo
 	set undofile
@@ -222,6 +222,10 @@ noremap <leader>d "_d
 noremap <leader>d "_d
 noremap x "_x
 noremap <leader>x x
+
+" --- Numbvers ---
+nnoremap <leader>] <C-a>
+nnoremap <leader>[ <C-x>
 
 " --- MOVEMENT ---
 nnoremap j gj
