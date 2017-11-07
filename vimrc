@@ -107,9 +107,10 @@ function! s:autoClose_HelperOpen(open, close)
 endfunc
 
 function! s:autoClose_HelperClose(open, close)
-	let next_c = getline(".")[col(".")-1]
-	if next_c ==# a:close
+	if getline(".")[col(".")-1] ==# a:close
 		return "\<Right>"
+	elseif match(getline("."+1), "\M^\s*".escape(a:close, "\\"))
+		return "\<Down>\<Home>\<C-o>f".a:close."\<Right>"
 	else
 		return a:close
 	end
@@ -502,6 +503,7 @@ function! s:init_ruby_file()
 
 	call s:autoClose_AddPair("{", "}")
 	call s:autoClose_AddPair("(", ")")
+	call s:autoClose_AddPair("[", "]")
 endfunction
 
 function! s:RubyComment(a)
