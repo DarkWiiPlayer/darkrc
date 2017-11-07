@@ -96,6 +96,51 @@ else
 end
 
 " === GENERAL UTILITIES ===
+
+function! s:autoClose_HelperOpen(open, close)
+	let next_c = getline(".")[col(".")-1]
+	if match(next_c, "\s")
+		return a:open.a:close."\<Left>"
+	else
+		return a:open
+	end
+endfunc
+
+function! s:autoClose_HelperClose(open, close)
+	let next_c = getline(".")[col(".")-1]
+	if next_c ==# a:close
+		return "\<Right>"
+	else
+		return a:close
+	end
+endfunc
+
+function! s:autoClose_HelperEnter()
+	if exists("b:autoClose_Pairs")
+		let next_c = getline(".")[col(".")-1]
+		let prev_c = getline(".")[col(".")-2]
+
+		if (next_c !=# "") && (prev_c !=# "")
+			if exists("b:autoClose_Pairs[prev_c]")
+				if (next_c ==# b:autoClose_Pairs[prev_c])
+					return "\<C-o>m'\<enter>\<C-o>`'\<enter>"
+				end
+			end
+		end
+	return "\<enter>"
+endfunc
+
+function! s:autoClose_AddPair(open, close) "TODO: Improve with expand('<sfile>')
+	if !exists("b:autoClose_Pairs")
+		let b:autoClose_Pairs = {}
+	end
+	let b:autoClose_Pairs[a:open] = a:close
+
+	exe "inoremap <buffer> <expr> ".a:open." <SID>autoClose_HelperOpen('".a:open."', '".a:close."')"
+	exe "inoremap <buffer> <expr> ".a:close." <SID>autoClose_HelperClose('".a:open."', '".a:close."')"
+	inoremap <buffer> <expr> <enter> <SID>autoClose_HelperEnter()
+endfunc
+
 function! MatchingLines(pattern)
 	let list = []
 	let pattern = a:pattern
@@ -454,6 +499,9 @@ function! s:init_ruby_file()
 	nnoremap <buffer> <leader># :call <SID>RubyComment(1)<CR>
 	vnoremap <buffer> <leader>~ :call <SID>RubyComment(0)<CR>
 	vnoremap <buffer> <leader># :call <SID>RubyComment(1)<CR>
+
+	call s:autoClose_AddPair("{", "}")
+	call s:autoClose_AddPair("(", ")")
 endfunction
 
 function! s:RubyComment(a)
