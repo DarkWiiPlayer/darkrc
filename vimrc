@@ -32,7 +32,6 @@ set guioptions-=r
 set guioptions-=R
 set guioptions-=l
 set guioptions-=L
-" set gfn=Courier_New:h12:cANSI
 try
 	set undodir=$HOME/.vimundo
 	set undofile
