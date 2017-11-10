@@ -109,8 +109,10 @@ endfunc
 function! s:autoClose_HelperClose(open, close)
 	if getline(".")[col(".")-1] ==# a:close
 		return "\<Right>"
-	elseif match(getline("."+1), "\M^\s*".escape(a:close, "\\"))
-		return "\<Down>\<Home>\<C-o>f".a:close."\<Right>"
+	elseif getline(line(".")+1)
+		if match(getline(line(".")+1), "\M^\s*".escape(a:close, "\\"))
+			return "\<Down>\<Home>\<C-o>f".a:close."\<Right>"
+		end
 	else
 		return a:close
 	end
@@ -532,7 +534,8 @@ endfunction
 au BufNewFile,BufRead *.lua :call <sid>init_lua_file()
 
 function! s:init_lua_file()
-	command! -buffer Requires lex MatchingLines("^\\s*require\\>.*$")
+	command! -buffer Requires lex MatchingLines("^\\s*\zsrequire\\>.*$")
+	command! -buffer Functions lex MatchingLines("^\\(\\s*\\zsfunction\\s*[a-zA-Z0-9.:_]*(.*).*\\\\|.*function(.*).*\\)$")
 
 	call s:autoClose_AddPair("[", "]")
 	call s:autoClose_AddPair("(", ")")
