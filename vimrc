@@ -531,11 +531,15 @@ endfunction
 "	augroup END
 
 " --- Lua Stuff ---
+
+" Matches all types of Lua string!
+" \v(["'])\zs.{-}\ze\\@1<!\2|\[(\=*)\[\zs.{-}\ze\]\3\]
+
 au BufNewFile,BufRead *.lua :call <sid>init_lua_file()
 
 function! s:init_lua_file()
-	command! -buffer Requires lex MatchingLines("^\\s*\zsrequire\\>.*$")
-	command! -buffer Functions lex MatchingLines("^\\(\\s*\\zsfunction\\s*[a-zA-Z0-9.:_]*(.*).*\\\\|.*function(.*).*\\)$")
+	command! -buffer Requires call setloclist(0, MatchingLinesDict("\\vrequire\\s*\\(?(([\"'])\\zs.{-}\\ze\\\\@1<!\\2|\\[(\\=*)\\[\\zs.{-}\\ze\\]\\3\\])\\)?"))
+	command! -buffer Functions call setloclist(0, MatchingLinesDict("^\\v(\\s*\\zs(local\\s*)?function\\s*[a-zA-Z0-9.:_]*\\(.*\\)(\\s*--.*|\\ze.*)|.*function\\(.*\\)(\\s*--.*|\\ze.*))$")) 
 
 	call s:autoClose_AddPair("[", "]")
 	call s:autoClose_AddPair("(", ")")
