@@ -117,6 +117,14 @@ function! s:autoClose_HelperClose(open, close)
 	end
 endfunc
 
+function! s:autoClose_HelperDouble(open)
+	if getline(".")[col(".")-1] ==# a:open " Step over
+		return "\<Right>"
+	else
+		return a:open.a:open."\<left>"
+	end
+endfunc
+
 function! s:autoClose_HelperEnter()
 	if exists("b:autoClose_Pairs")
 		let next_c = getline(".")[col(".")-1]
@@ -138,8 +146,12 @@ function! s:autoClose_AddPair(open, close) "TODO: Improve with expand('<sfile>')
 	end
 	let b:autoClose_Pairs[a:open] = a:close
 
-	exe "inoremap <buffer> <expr> ".a:open." <SID>autoClose_HelperOpen('".a:open."', '".a:close."')"
-	exe "inoremap <buffer> <expr> ".a:close." <SID>autoClose_HelperClose('".a:open."', '".a:close."')"
+	if a:open!=#a:close
+		exe "inoremap <buffer> <expr> ".a:open." <SID>autoClose_HelperOpen('".a:open."', '".a:close."')"
+		exe "inoremap <buffer> <expr> ".a:close." <SID>autoClose_HelperClose('".a:open."', '".a:close."')"
+	else
+		exe "inoremap <buffer> <expr> ".a:open." <SID>autoClose_HelperDouble('".a:open."')"
+	end
 	inoremap <buffer> <expr> <enter> <SID>autoClose_HelperEnter()
 endfunc
 
@@ -202,6 +214,16 @@ function! StringReverse(str)
 	return join(reverse(split(str, ".\\zs")), "")
 endfunc
 
+function! ShiftMarker(m,n)
+	let [bufn,line,column,offset]=getpos("'".a:m)
+	call setpos("'".a:m,[bufn,line,column+a:n,offset])
+endfunc
+
+function! ShiftSelection(n)
+	call ShiftMarker("<", a:n)
+	call ShiftMarker(">", a:n)
+endfunc
+
 " === GENERAL COMMANDS ===
 command! L lopen | set number | set norelativenumber
 command! LAddLine call LocationAddLine(expand("%"), line("."), getline("."))
@@ -236,9 +258,15 @@ nnoremap k gk
 nnoremap Y y$
 
 " --- OTHER ---
-" Don't exit visual mode when shifting
+" Don't exit visual mode when "shifting"
 vnoremap < <gv
 vnoremap > >gv
+
+vnoremap <leader>" <C-[>`>a"<C-o>`<"<C-[>:call ShiftSelection(1)<CR>gv
+vnoremap <leader>' <C-[>`>a'<C-o>`<'<C-[>:call ShiftSelection(1)<CR>gv
+vnoremap <leader>( <C-[>`>a)<C-o>`<(<C-[>:call ShiftSelection(1)<CR>gv
+vnoremap <leader>[ <C-[>`>a]<C-o>`<[<C-[>:call ShiftSelection(1)<CR>gv
+vnoremap <leader>{ <C-[>`>a}<C-o>`<{<C-[>:call ShiftSelection(1)<CR>gv
 
 nnoremap <S-l> :L<cr>
 noremap <space> :
@@ -510,6 +538,7 @@ function! s:init_ruby_file()
 	call s:autoClose_AddPair("{", "}")
 	call s:autoClose_AddPair("(", ")")
 	call s:autoClose_AddPair("[", "]")
+	call s:autoClose_AddPair('"', '"')
 endfunction
 
 function! s:RubyComment(a)
@@ -543,6 +572,7 @@ function! s:init_lua_file()
 	call s:autoClose_AddPair("[", "]")
 	call s:autoClose_AddPair("(", ")")
 	call s:autoClose_AddPair("{", "}")
+	call s:autoClose_AddPair('"', '"')
 endfunction!
 
 " --- HTML Stuff ---
