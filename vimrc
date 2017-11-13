@@ -276,8 +276,6 @@ nnoremap <S-space> gQ
 " noremap <C-s> :w<CR>
 noremap <C-s> :echo "Calm the fuck down! There's
 			\ no need to save every 10 seconds FFS!"<CR>
-noremap <C-x> :hide<CR>
-noremap <C-q> :bdelete<CR>
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-p> :bprevious<CR>
 nnoremap <leader>n :lnext<cr>
