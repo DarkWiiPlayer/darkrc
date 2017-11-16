@@ -230,6 +230,11 @@ function! ShiftSelection(n)
 	call ShiftMarker(">", a:n)
 endfunc
 
+" Auto-close quickfix list when leaving it
+function! s:autobd()
+	au! WinLeave <buffer> bd!
+endfun
+
 " === GENERAL COMMANDS ===
 command! L lopen | set number | set norelativenumber
 command! LAddLine call LocationAddLine(expand("%"), line("."), getline("."))
@@ -284,10 +289,10 @@ noremap <C-s> :echo "Calm the fuck down! There's
 			\ no need to save every 10 seconds FFS!"<CR>
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-p> :bprevious<CR>
-nnoremap <leader>n :lnext<cr>
-nnoremap <leader>p :lNext<cr>
-nnoremap <leader><leader>n :cnext<cr>
-nnoremap <leader><leader>p :cNext<cr>
+nnoremap <leader>j :lnext<cr>
+nnoremap <leader>k :lNext<cr>
+nnoremap <leader><leader>j :cnext<cr>
+nnoremap <leader><leader>k :cNext<cr>
 nnoremap <C-i> Bi <esc>i
 nnoremap <C-a> Ea <esc>a
 " This one does nothing, but I'm adding it to remember not to remap the tab key
@@ -466,6 +471,8 @@ function! AddWinMinWidth(num)
 endfunc
 
 
+" === GENERIC AUTOCOMMANDS ===
+
 if has("autocmd")
 
 	" Enable file type detection.
@@ -477,7 +484,7 @@ if has("autocmd")
 	" Put these in an autocmd group, so that we can delete them easily.
 
 	" For all text files set 'textwidth' to 78 characters.
-	autocmd FileType text setlocal textwidth=78
+	" autocmd FileType text setlocal textwidth=78
 
 	" When editing a file, always jump to the last known cursor position.
 	" Don't do it when the position is invalid or when inside an event handler
@@ -487,7 +494,6 @@ if has("autocmd")
 		\		exe "normal! g`\"" |
 		\ endif
 
-	augroup END
 endif
 
 " === FILETYPE SPECIFIC STUFF ===
@@ -528,11 +534,12 @@ au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> ; m'$a;<C-c>`'
 au BufNewFile,BufRead *.rb :call <sid>init_ruby_file()
 
 function! s:init_ruby_file()
-	command! -buffer Defines lex MatchingLines("^\\s*def\\>\\s\\+\\zs.*$")
+	command! -buffer Defines lex MatchingLines("^\\s*def\\>\\s\\+\\zs.*$") | lopen
 		command! -buffer Functions Defines " Alias
 		command! -buffer Methods Defines " Alias
-	command! -buffer Classes lex MatchingLines("^\\s*class\\>\\s\\+\\zs.*$")
-	command! -buffer Modules lex MatchingLines("^\\s*module\\>\\s\\+\\zs.*$")
+	command! -buffer Classes lex MatchingLines("^\\s*class\\>\\s\\+\\zs.*$") | lopen
+	command! -buffer Modules lex MatchingLines("^\\s*module\\>\\s\\+\\zs.*$") | lopen
+	command! -buffer Requires lex MatchingLines("^\\s*require\\(_relative\\)\\?\\>\\s\\+\\zs.*$") | lopen
 
 	nnoremap <buffer> <leader>ic oclass <C-o>m'<enter>end<esc>`'a
 	nnoremap <buffer> <leader>id odef <C-o>m'()<enter>end<esc>`'a
