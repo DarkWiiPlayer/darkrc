@@ -19,7 +19,7 @@ end
 
 set nocompatible
 """"""""""""""""
-set linespace=0
+" set linespace=0
 set scrolloff=6
 set history=50 " keep 50 lines of command line history
 set nonumber
@@ -247,8 +247,8 @@ noremap x "_x
 noremap <leader>x x
 
 " --- Numbvers ---
-nnoremap <leader>] <C-a>
-nnoremap <leader>[ <C-x>
+nnoremap <leader>] <C-x>
+nnoremap <leader>[ <C-a>
 
 " --- MOVEMENT ---
 nnoremap j gj
@@ -490,6 +490,16 @@ endif
 
 " === FILETYPE SPECIFIC STUFF ===
 
+" --- GENERIC STUFF ---
+au BufNewFile,BufRead * :call <sid>init_generic_file()
+
+function! s:init_generic_file()
+	call s:autoClose_AddPair("[", "]")
+	call s:autoClose_AddPair("(", ")")
+	call s:autoClose_AddPair("{", "}")
+	call s:autoClose_AddPair('"', '"')
+endfunc
+
 " Vimscript Stuff
 au BufNewFile,BufRead *.vim,*vimrc :call <sid>init_vim_file()
 
@@ -532,18 +542,17 @@ function! s:init_ruby_file()
 	nnoremap <buffer> <leader># :call <SID>RubyComment(1)<CR>
 	vnoremap <buffer> <leader>~ :call <SID>RubyComment(0)<CR>
 	vnoremap <buffer> <leader># :call <SID>RubyComment(1)<CR>
-
-	call s:autoClose_AddPair("{", "}")
-	call s:autoClose_AddPair("(", ")")
-	call s:autoClose_AddPair("[", "]")
-	call s:autoClose_AddPair('"', '"')
 endfunction
 
 function! s:RubyComment(a)
 	if a:a==0
-		silent! exec '.s/\m^\s*\zs#*//'
+		" silent! exec '.s/\m^\s*\zs#*//'
+		silent! exec '.s/\v^(\s|#)*//'
+		normal ==
 	elseif a:a==1
-		silent! exec '.s/\v^(\s*#)@!/#/'
+		" silent! exec '.s/\v^(\s*#)@!/#/'
+		silent! exec '.s/\v^(\s|#)*/# /'
+		normal ==
 	end
 endfunction
 
@@ -566,11 +575,6 @@ au BufNewFile,BufRead *.lua :call <sid>init_lua_file()
 function! s:init_lua_file()
 	command! -buffer Requires call setloclist(0, MatchingLinesDict("\\vrequire\\s*\\(?(([\"'])\\zs.{-}\\ze\\\\@1<!\\2|\\[(\\=*)\\[\\zs.{-}\\ze\\]\\3\\])\\)?"))
 	command! -buffer Functions call setloclist(0, MatchingLinesDict("^\\v(\\s*\\zs(local\\s*)?function\\s*[a-zA-Z0-9.:_]*\\(.*\\)(\\s*--.*|\\ze.*)|.*function\\(.*\\)(\\s*--.*|\\ze.*))$")) 
-
-	call s:autoClose_AddPair("[", "]")
-	call s:autoClose_AddPair("(", ")")
-	call s:autoClose_AddPair("{", "}")
-	call s:autoClose_AddPair('"', '"')
 endfunction!
 
 " --- HTML Stuff ---
