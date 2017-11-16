@@ -2,11 +2,23 @@ set guioptions-=T
 set guioptions-=m
 set guioptions-=e
 
-let g:colors=['slate', 'desert', 'blue', 'ron', 'elflord', 'murphy', 'torte']
+if !exists("g:colors")
+	let g:colors=['slate', 'desert', 'blue', 'ron', 'elflord', 'murphy', 'torte']
+end
 function! Randomcolor()
 	let random = localtime() % len(g:colors)
 	execute "colorscheme ".g:colors[random]
 endfunction
+
+function! SetFont()
+	if exists("g:font_size_template") && exists("g:font_size")
+		let &guifont=substitute(g:font_size_template, "%%", g:font_size, "g")
+	end
+endfun
+function! SetFontSize(size)
+	let g:font_size=a:size
+	call SetFont()
+endfun
 
 " Color list can be extended after including (sourcing) this file with
 " :let g:colors = extend(['list', 'of', 'color', 'schemes'], g:colors)
@@ -26,5 +38,3 @@ nnoremap <C-F9>  :exe "colorscheme ".g:colors[8 % len(g:colors)]<CR>
 nnoremap <C-F10> :exe "colorscheme ".g:colors[9 % len(g:colors)]<CR>
 nnoremap <C-F11> :exe "colorscheme ".g:colors[10 % len(g:colors)]<CR>
 nnoremap <C-F12> :call Randomcolor()<CR>
-
-call Randomcolor()
