@@ -77,7 +77,13 @@ set wrap
 au BufEnter,BufRead * set linebreak
 set breakat=\ .,{
 set display+=lastline
-set showbreak=+->\ 
+if v:version>=800
+	set breakindent
+	au WinNew * set breakindentopt=sbr
+	set showbreak=.\ 
+else
+	set showbreak=+->\ 
+end
 set listchars=eol:¶,tab:»\ ,trail:.,nbsp:.
 set cursorline " Highlight cursor line
 
@@ -247,8 +253,8 @@ noremap x "_x
 noremap <leader>x x
 
 " --- Numbvers ---
-nnoremap <leader>] <C-x>
-nnoremap <leader>[ <C-a>
+nnoremap <leader>- <C-x>
+nnoremap <leader>= <C-a>
 
 " --- MOVEMENT ---
 nnoremap j gj
@@ -413,7 +419,8 @@ function! s:GrepOperator(type)
 endfunction
 
 " Window Height stuff
-command! Equal call Equal()
+command! EqualH call Equal()
+command! -nargs=1 WinHeight call SetWinMinHeight(<f-args>)
 function! Equal()
 	set winminheight=0
 	set winheight=1
@@ -428,18 +435,16 @@ function! SetWinMinHeight(num)
 	endif
 	execute "set winheight=".9999
 endfunc
-call SetWinMinHeight(2)
+" call SetWinMinHeight(2)
 function! AddWinMinHeight(num)
 	let a:new = &winminheight + a:num
 	call SetWinMinHeight(a:new)
 	set winminheight?
 endfunc
-nnoremap <leader>= :call AddWinMinHeight(1)<cr>
-nnoremap <leader>- :call AddWinMinHeight(-1)<cr>
-nnoremap <leader>0 :Equal<cr>
 
 " Window Width Stuff
 command! EqualW silent! call EqualW()
+command! -nargs=1 WinWidth call SetWinMinWidth(<f-args>)
 function! EqualW()
 	set winminwidth=0
 	set winwidth=1
@@ -459,9 +464,6 @@ function! AddWinMinWidth(num)
 	call SetWinMinWidth(a:new)
 	set winminwidth?
 endfunc
-nnoremap <leader>+ :call AddWinMinWidth(1)<cr>
-nnoremap <leader>_ :call AddWinMinWidth(-1)<cr>
-nnoremap <leader>) :EqualW<cr>
 
 
 if has("autocmd")
@@ -504,7 +506,7 @@ endfunc
 au BufNewFile,BufRead *.vim,*vimrc :call <sid>init_vim_file()
 
 function! s:init_vim_file()
-	nnoremap <buffer> <F5> :so %<CR>
+	nnoremap <buffer> <F5> :w<CR>:so %<CR>
 	nnoremap <leader>c A<space>"<space>
 	nnoremap <leader>if ofunction! <C-o>m'()<enter>endfunction<C-o>`'<C-o>l
 
