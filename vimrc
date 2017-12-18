@@ -79,6 +79,7 @@ set breakat=\ .,{
 set display+=lastline
 if v:version>=800
 	set breakindent
+	set breakindentopt=sbr
 	au WinNew * set breakindentopt=sbr
 	set showbreak=.\ 
 else
