@@ -86,7 +86,6 @@ else
 	set showbreak=+->\ 
 end
 set listchars=eol:¶,tab:»\ ,trail:.,nbsp:.
-set cursorline " Highlight cursor line
 
 set modeline " Allows setting vim options in other files
 set statusline=(%n)\ %f\ [%M%R]\ [%Y]%=%l,%c%V\ %4.P

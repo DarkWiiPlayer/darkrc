@@ -2,6 +2,8 @@ set guioptions-=T
 set guioptions-=m
 set guioptions-=e
 
+set cursorline " Highlight cursor line
+
 if !exists("g:colors")
 	let g:colors=['slate', 'desert', 'blue', 'ron', 'elflord', 'murphy', 'torte']
 end
