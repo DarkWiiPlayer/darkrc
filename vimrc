@@ -143,7 +143,24 @@ function! s:autoClose_HelperEnter()
 				end
 			end
 		end
+	end
 	return "\<enter>"
+endfunc
+
+function! s:autoClose_HelperSpace()
+	if exists("b:autoClose_Pairs")
+		let next_c = getline(".")[col(".")-1]
+		let prev_c = getline(".")[col(".")-2]
+
+		if (next_c !=# "") && (prev_c !=# "")
+			if exists("b:autoClose_Pairs[prev_c]")
+				if (next_c ==# b:autoClose_Pairs[prev_c])
+					return "\<space>\<C-o>h\<space>"
+				end
+			end
+		end
+	end
+	return "\<space>"
 endfunc
 
 function! s:autoClose_AddPair(open, close) "TODO: Improve with expand('<sfile>')
@@ -159,6 +176,7 @@ function! s:autoClose_AddPair(open, close) "TODO: Improve with expand('<sfile>')
 		exe "inoremap <buffer> <expr> ".a:open." <SID>autoClose_HelperDouble('".a:open."')"
 	end
 	inoremap <buffer> <expr> <enter> <SID>autoClose_HelperEnter()
+	inoremap <buffer> <expr> <space> <SID>autoClose_HelperSpace()
 endfunc
 
 function! MatchingLines(pattern)
