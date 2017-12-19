@@ -16,6 +16,9 @@ endif
 if v:version > 702
 	set cm=blowfish
 end
+if v:version > 800
+	set cm=blowfish2
+end
 
 set nocompatible
 """"""""""""""""
