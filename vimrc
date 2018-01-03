@@ -533,6 +533,7 @@ endfunc
 au BufNewFile,BufRead *.vim,*vimrc :call <sid>init_vim_file()
 
 function! s:init_vim_file()
+	setl number
 	nnoremap <buffer> <F5> :w<CR>:so %<CR>
 	nnoremap <leader>c A<space>"<space>
 	nnoremap <leader>if ofunction! <C-o>m'()<enter>endfunction<C-o>`'<C-o>l
@@ -555,6 +556,7 @@ au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> ; m'$a;<C-c>`'
 au BufNewFile,BufRead *.rb :call <sid>init_ruby_file()
 
 function! s:init_ruby_file()
+	setl number
 	command! -buffer Defines lex MatchingLines("^\\s*def\\>\\s\\+\\zs.*$") | lopen
 		command! -buffer Functions Defines " Alias
 		command! -buffer Methods Defines " Alias
@@ -603,6 +605,7 @@ endfunction
 au BufNewFile,BufRead *.lua :call <sid>init_lua_file()
 
 function! s:init_lua_file()
+	setl number
 	command! -buffer Requires call setloclist(0, MatchingLinesDict("\\vrequire\\s*\\(?(([\"'])\\zs.{-}\\ze\\\\@1<!\\2|\\[(\\=*)\\[\\zs.{-}\\ze\\]\\3\\])\\)?"))
 	command! -buffer Functions call setloclist(0, MatchingLinesDict("^\\v(\\s*\\zs(local\\s*)?function\\s*[a-zA-Z0-9.:_]*\\(.*\\)(\\s*--.*|\\ze.*)|.*function\\(.*\\)(\\s*--.*|\\ze.*))$")) 
 endfunction!
@@ -611,6 +614,7 @@ endfunction!
 au BufNewFile,BufRead *.html,*.htm,*.etlua,*.erb :call <sid>init_html_file()
 
 function! s:init_html_file()
+	setl number
 	command! -buffer -nargs=1 Tag normal
 				\ i<<args>><<C-o>m'/<args>><ESC>`'
 	nnoremap <buffer> <leader>t ""ciw<<C-o>""p><C-o>m'</<C-o>""p><C-o>`'<C-o>l
