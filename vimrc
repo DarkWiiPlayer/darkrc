@@ -345,10 +345,6 @@ nnoremap [p :let [content, type]=
 		\call setreg(v:register, content, "V")<CR>[p
 		\:call setreg(v:register, content, type)<CR>
 
-" Tabs vs. Spaces
-nnoremap <C-tab> :setl expandtab!<CR>:set expandtab?<CR>
-" TODO: custom function to retab only indentation
-
 " Empty Lines
 nnoremap <ENTER> :call <SID>Enter(0)<CR>
 nnoremap <S-ENTER> :call <SID>Enter(1)<CR>
@@ -567,7 +563,6 @@ function! s:init_ruby_file()
 	nnoremap <buffer> <leader>ic oclass <C-o>m'<enter>end<esc>`'a
 	nnoremap <buffer> <leader>id odef <C-o>m'()<enter>end<esc>`'a
 
-	set expandtab
 	nnoremap <buffer> <F5> :w<CR>:!ruby %<CR>
 	nnoremap <buffer> <F6> :w<CR>:!ruby -wc %<CR>
 	nnoremap <buffer> <leader>~ :call <SID>RubyComment(0)<CR>
