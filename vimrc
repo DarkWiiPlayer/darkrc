@@ -417,10 +417,11 @@ function! TryAutosave()
 	if &autowriteall==1
 		silent w
 		redraw
+		echo "Autosaving buffers..."
 	endif
 endfunction
 au FocusLost * call TryAutosave()
-au WinLeave * call TryAutosave()
+" au WinLeave * call TryAutosave()
 
 vnoremap <leader>g :<C-u>call <SID>GrepOperator(visualmode())<CR>
 nnoremap <leader>g :set operatorfunc=<SID>GrepOperator<CR>g@
