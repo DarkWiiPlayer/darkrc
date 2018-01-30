@@ -392,9 +392,9 @@ nnoremap <ENTER> :call <SID>Enter(0)<CR>
 nnoremap <S-ENTER> :call <SID>Enter(1)<CR>
 function! s:Enter(shift)
 	if !a:shift
-		exe "normal o\<esc>0\"_d$"
+		silent exe "normal o\<esc>0\"_d$"
 	else
-		exe "normal O\<esc>0\"_d$"
+		silent exe "normal O\<esc>0\"_d$"
 	endif
 endfunction
 
