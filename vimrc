@@ -296,6 +296,7 @@ function! s:unsaved()
 		below new
 		set modifiable
 		r #
+		1,1del
 		diffthis
 		au BufUnload <buffer> diffoff!
 		let &filetype = l:filetype
