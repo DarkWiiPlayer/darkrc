@@ -289,36 +289,27 @@ function! s:hex(...)
 endfunction
 command! -nargs=* Hex call <sid>hex(<q-args>)
 
-function! s:unsaved_new()
-	let tmp_file = expand("%:p").".tmp"
-	exec "w ".tmp_file
-	exec "!gvim -d -R % ".tmp_file
-	call delete(tmp_file) 
-endfun
-
-function! s:unsaved_same()
-	diffthis
-	below new
-	set buftype=nofile
-	r #
-	diffthis
-	au BufUnload <buffer> diffoff!
-	exec "normal \<C-w>k"
-endfun
-
-function! s:unsaved(...)
+function! s:unsaved()
 	if &mod
-		if a:0
-			call <sid>unsaved_new()
-		else
-			call <sid>unsaved_same()
-		end
+		let l:filetype = &filetype
+		diffthis
+		below new
+		set modifiable
+		r #
+		diffthis
+		au BufUnload <buffer> diffoff!
+		let &filetype = l:filetype
+		set nomodifiable
+		set buftype=nofile
+		set bufhidden=delete
+		silent exec "file =".expand("#:t")."@".strftime("%H:%M")
+		exec "normal \<C-w>k"
+		set foldlevel=999
 	else
 		echom "No changes to show :)"
 	end
 endfun
-
-command! -nargs=? Unsaved call <sid>unsaved(<args>)
+command! Unsaved call <sid>unsaved()
 
 " === GENERAL KEY MAPPINGS ===
 let mapleader = "\\"
