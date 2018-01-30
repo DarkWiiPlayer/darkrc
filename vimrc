@@ -401,11 +401,7 @@ nnoremap <ENTER> :call <SID>Enter(0)<CR>
 nnoremap <S-ENTER> :call <SID>Enter(1)<CR>
 function! s:Enter(shift)
 	if !a:shift
-		if col(".")-1
-			exe "normal o\<esc>0\"_d$"
-		else
-			exe "normal O\<esc>0\"_d$j"
-		end
+		exe "normal o\<esc>0\"_d$"
 	else
 		exe "normal O\<esc>0\"_d$"
 	endif
