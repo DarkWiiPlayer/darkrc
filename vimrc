@@ -314,15 +314,18 @@ command! Unsaved call <sid>unsaved()
 function! s:snapshot()
 	let l:filetype = &filetype
 	let l:clipboard = @"
+	let l:pos = getpos(".")
 
 	silent 0,$yank "
 	below new
 	set modifiable
 	silent put "
+	1,1del
 	let &filetype = l:filetype
 	set nomodifiable
 	set buftype=nofile
 	set bufhidden=hide
+	call setpos(".", l:pos)
 	silent exec "file ¬".expand("#:t")."@".strftime("%H:%M")
 
 	exec "normal \<C-w>k"
@@ -679,4 +682,3 @@ function! s:init_html_file()
 	inoremap <buffer> <C-space> <C-o>""ciw<<C-o>""p><C-o>m'</<C-o>""p><C-o>`'<C-o>l
 	inoremap <buffer> <C-CR> <C-o>""diw<C-o>"_cc<<C-o>""p><C-o>o</<C-o>""p><C-o>O
 endfunction
-
