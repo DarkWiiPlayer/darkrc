@@ -289,18 +289,36 @@ function! s:hex(...)
 endfunction
 command! -nargs=* Hex call <sid>hex(<q-args>)
 
-function! s:unsaved()
+function! s:unsaved_new()
+	let tmp_file = expand("%:p").".tmp"
+	exec "w ".tmp_file
+	exec "!gvim -d -R % ".tmp_file
+	call delete(tmp_file) 
+endfun
+
+function! s:unsaved_same()
+	diffthis
+	below new
+	set buftype=nofile
+	r #
+	diffthis
+	au BufUnload <buffer> diffoff!
+	exec "normal \<C-w>k"
+endfun
+
+function! s:unsaved(...)
 	if &mod
-		let tmp_file = expand("%:p").".tmp"
-		exec "w ".tmp_file
-		exec "!gvim -d -R % ".tmp_file
-		call delete(tmp_file) 
+		if a:0
+			call <sid>unsaved_new()
+		else
+			call <sid>unsaved_same()
+		end
 	else
 		echom "No changes to show :)"
 	end
 endfun
 
-command! Unsaved call <sid>unsaved()
+command! -nargs=? Unsaved call <sid>unsaved(<args>)
 
 " === GENERAL KEY MAPPINGS ===
 let mapleader = "\\"
@@ -586,6 +604,7 @@ au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> ; m'$a;<C-c>`'
 au BufNewFile,BufRead *.rb :call <sid>init_ruby_file()
 
 function! s:init_ruby_file()
+  set makeprg=ruby\ -wc\ %
 	setl number
 	command! -buffer Defines lex MatchingLines("^\\s*def\\>\\s\\+\\zs.*$") | lopen
 		command! -buffer Functions Defines " Alias
@@ -598,7 +617,7 @@ function! s:init_ruby_file()
 	nnoremap <buffer> <leader>id odef <C-o>m'()<enter>end<esc>`'a
 
 	nnoremap <buffer> <F5> :w<CR>:!ruby %<CR>
-	nnoremap <buffer> <F6> :w<CR>:!ruby -wc %<CR>
+	nnoremap <buffer> <F6> :lmake<CR>:lopen<CR>
 	nnoremap <buffer> <leader>~ :call <SID>RubyComment(0)<CR>
 	nnoremap <buffer> <leader># :call <SID>RubyComment(1)<CR>
 	vnoremap <buffer> <leader>~ :call <SID>RubyComment(0)<CR>
@@ -652,3 +671,4 @@ function! s:init_html_file()
 	inoremap <buffer> <C-space> <C-o>""ciw<<C-o>""p><C-o>m'</<C-o>""p><C-o>`'<C-o>l
 	inoremap <buffer> <C-CR> <C-o>""diw<C-o>"_cc<<C-o>""p><C-o>o</<C-o>""p><C-o>O
 endfunction
+
