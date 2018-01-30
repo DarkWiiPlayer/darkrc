@@ -315,7 +315,7 @@ function! s:snapshot()
 	let l:filetype = &filetype
 	let l:clipboard = @"
 
-	silent 1,$yank "
+	silent 0,$yank "
 	below new
 	set modifiable
 	silent put "
@@ -415,7 +415,7 @@ function! s:Enter(shift)
 	if !a:shift
 		silent exe "normal o\<esc>0\"_d$"
 	else
-		silent exe "normal O\<esc>0\"_d$"
+		silent exe "normal O\<esc>0\"_d$j"
 	endif
 endfunction
 
