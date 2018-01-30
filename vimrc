@@ -269,6 +269,39 @@ command! Todo call setloclist(0, MatchingLinesDict("\\c\\<todo.*"))
 command! -nargs=1 LFind call setloclist(0, MatchingLinesDict(<args>))
 command! -nargs=1 QFind call setqflist(MatchingLinesDict(<args>))
 
+function! s:hex(...)
+	if !(a:000 == [""])
+		let l:args = map(copy(a:000), {i,val -> "-".val})
+	else
+		let l:args = []
+	end
+	if !exists("b:hex")
+		exec '%!xxd '.join(l:args, "  ")
+		let b:hex = 1
+		let b:prev_filetype = &filetype
+		let &filetype = "xxd"
+	else
+		exec '%!xxd -r '.join(l:args, "  ")
+		unlet b:hex
+		let &filetype = b:prev_filetype
+		unlet b:prev_filetype
+	end
+endfunction
+command! -nargs=* Hex call <sid>hex(<q-args>)
+
+function! s:unsaved()
+	if &mod
+		let tmp_file = expand("%:p").".tmp"
+		exec "w ".tmp_file
+		exec "!gvim -d -R % ".tmp_file
+		call delete(tmp_file) 
+	else
+		echom "No changes to show :)"
+	end
+endfun
+
+command! Unsaved call <sid>unsaved()
+
 " === GENERAL KEY MAPPINGS ===
 let mapleader = "\\"
 
