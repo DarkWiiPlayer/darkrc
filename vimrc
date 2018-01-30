@@ -311,6 +311,27 @@ function! s:unsaved()
 endfun
 command! Unsaved call <sid>unsaved()
 
+function! s:snapshot()
+	let l:filetype = &filetype
+	let l:clipboard = @"
+
+	silent 1,$yank "
+	below new
+	set modifiable
+	silent put "
+	let &filetype = l:filetype
+	set nomodifiable
+	set buftype=nofile
+	set bufhidden=hide
+	silent exec "file ¬".expand("#:t")."@".strftime("%H:%M")
+
+	exec "normal \<C-w>k"
+	set foldlevel=999
+
+	let @" = l:clipboard
+endfun
+command! Snapshot call <sid>snapshot()
+
 " === GENERAL KEY MAPPINGS ===
 let mapleader = "\\"
 
