@@ -13,11 +13,10 @@ if &t_Co > 2 || has("gui_running")
 	set hlsearch "Highlight search results
 endif
 
-if v:version > 702
-	set cm=blowfish
-end
-if v:version > 800
+if v:version >= 800
 	set cm=blowfish2
+elseif v:version >= 703
+	set cm=blowfish
 end
 
 set nocompatible
