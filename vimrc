@@ -270,20 +270,24 @@ command! -nargs=1 QFind call setqflist(MatchingLinesDict(<args>))
 
 function! s:hex(...)
 	if !(a:000 == [""])
-		let l:args = map(copy(a:000), {i,val -> "-".val})
+		let l:args = map(copy(a:000), {i,val -> "".val})
 	else
 		let l:args = []
 	end
 	if !exists("b:hex")
-		exec '%!xxd '.join(l:args, "  ")
+		silent exec '%!xxd '.join(l:args, "  ")
 		let b:hex = 1
 		let b:prev_filetype = &filetype
 		let &filetype = "xxd"
+		nnoremap <buffer> i i<ins>
+    echo "A witch turned your file into a hexadecimal toad!"
 	else
-		exec '%!xxd -r '.join(l:args, "  ")
+		nunmap <buffer> i
+		silent exec '%!xxd -r '.join(l:args, "  ")
 		unlet b:hex
 		let &filetype = b:prev_filetype
 		unlet b:prev_filetype
+    echo "The witch turned your file back into binary data"
 	end
 endfunction
 command! -nargs=* Hex call <sid>hex(<q-args>)
@@ -334,6 +338,8 @@ function! s:snapshot()
 	let @" = l:clipboard
 endfun
 command! Snapshot call <sid>snapshot()
+
+command! -nargs=? Scrantch | set buftype=nofile | set filetype=<args>
 
 " === GENERAL KEY MAPPINGS ===
 let mapleader = "\\"
@@ -554,7 +560,6 @@ endfunc
 " === GENERIC AUTOCOMMANDS ===
 
 if has("autocmd")
-
 	" Enable file type detection.
 	" Use the default filetype settings, so that mail gets 'tw' set to 72,
 	" 'cindent' is on in C files, etc.
@@ -678,6 +683,16 @@ function! s:init_html_file()
 				\ i<<args>><<C-o>m'/<args>><ESC>`'
 	nnoremap <buffer> <leader>t ""ciw<<C-o>""p><C-o>m'</<C-o>""p><C-o>`'<C-o>l
 	nnoremap <buffer> <leader>T ""diw<C-o>"_cc<<C-o>""p><C-o>o</<C-o>""p><C-o>O
+
+  function! s:insert_tag(tag, newline)
+    if !a:newline
+      let l:text = "<".a:tag."></".a:tag.">" 
+    else
+    end
+		put =l:text
+  endfunction
+
+  nnoremap <C-space> :call <sid>insert_tag(input(""), 0)<CR>
 
 	inoremap <buffer> <C-space> <C-o>""ciw<<C-o>""p><C-o>m'</<C-o>""p><C-o>`'<C-o>l
 	inoremap <buffer> <C-CR> <C-o>""diw<C-o>"_cc<<C-o>""p><C-o>o</<C-o>""p><C-o>O
