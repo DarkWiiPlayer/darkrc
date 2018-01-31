@@ -339,7 +339,7 @@ function! s:snapshot()
 endfun
 command! Snapshot call <sid>snapshot()
 
-command! -nargs=? Scrantch | set buftype=nofile | set filetype=<args>
+command! -nargs=? Scratch new | set buftype=nofile | set filetype=<args>
 
 " === GENERAL KEY MAPPINGS ===
 let mapleader = "\\"
