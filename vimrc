@@ -378,8 +378,14 @@ noremap <C-space> @:
 noremap Q @q
 nnoremap <S-space> gQ
 " noremap <C-s> :w<CR>
-noremap <C-s> :echo "Calm the fuck down! There's
-			\ no need to save every 10 seconds FFS!"<CR>
+function! s:saveprompt()
+  if input("Type 'save' to save: ") ==? "save"
+    write
+  else
+    echo "Calm the fuck down man!"
+  end
+endfun
+noremap <C-s> :call <sid>saveprompt()<CR>
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-p> :bprevious<CR>
 nnoremap <leader>j :lnext<cr>
@@ -481,15 +487,29 @@ function! s:toggleWUC()
 endfunction
 
 " Autosave when vim loses focus :)
-function! TryAutosave()
+function! TryAutosave(warn, single)
 	if &autowriteall==1
-		silent w
+		if a:single
+			if &mod
+				silent write
+				if a:warn
+					echo "Autosaving current buffer..."
+				end
+			end
+		else
+			silent wall
+			if a:warn
+				echo "Autosaving all buffers..."
+			end
+		end
 		redraw
-		echo "Autosaving buffers..."
 	endif
 endfunction
-au FocusLost * call TryAutosave()
-" au WinLeave * call TryAutosave()
+augroup autosave
+autocmd!
+autocmd FocusLost * call TryAutosave(0, 0)
+autocmd CursorHold * call TryAutosave(0, 1)
+augroup END
 
 vnoremap <leader>g :<C-u>call <SID>GrepOperator(visualmode())<CR>
 nnoremap <leader>g :set operatorfunc=<SID>GrepOperator<CR>g@
