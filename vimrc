@@ -1,3 +1,4 @@
+" vim: set noexpandtab :miv "
 "!!! makes use of marker '
 
 set nocompatible
@@ -226,7 +227,7 @@ function! VisualSelection()
 	end
 	if (line2byte(line_start)+column_start) > (line2byte(line_end)+column_end)
 		let [line_start, column_start, line_end, column_end] =
-		\   [line_end, column_end, line_start, column_start]
+		\		[line_end, column_end, line_start, column_start]
 	end
 	let lines = getline(line_start, line_end)
 	if len(lines) == 0
@@ -281,14 +282,14 @@ function! s:hex(...)
 		let b:prev_filetype = &filetype
 		let &filetype = "xxd"
 		nnoremap <buffer> i i<ins>
-    echo "A witch turned your file into a hexadecimal toad!"
+		echo "A witch turned your file into a hexadecimal toad!"
 	else
 		nunmap <buffer> i
-		silent exec '%!xxd -r '.join(l:args, "  ")
+		silent exec '%!xxd -r '.join(l:args, "	")
 		unlet b:hex
 		let &filetype = b:prev_filetype
 		unlet b:prev_filetype
-    echo "The witch turned your file back into binary data"
+		echo "The witch turned your file back into binary data"
 	end
 endfunction
 command! -nargs=* Hex call <sid>hex(<q-args>)
@@ -397,12 +398,12 @@ function! s:saveprompt()
 	if &swapfile
 		echo "You have swap files enabled, stop in-between-saving all the time!"
 	end
-  if input("Type 'save' to save: ") ==? "save"
-    write
+	if input("Type 'save' to save: ") ==? "save"
+		write
 		echo "File saved, but was it really necessary?"
-  else
-    echo "Calm the fuck down man!"
-  end
+	else
+		echo "Calm the fuck down man!"
+	end
 endfun
 noremap <C-s> :call <sid>saveprompt()<CR>
 nnoremap <C-n> :bnext<CR>
@@ -661,7 +662,7 @@ au BufNewFile,BufRead *.c,*.cpp,*.h,*.hpp :nnoremap <buffer> ; m'$a;<C-c>`'
 au BufNewFile,BufRead *.rb :call <sid>init_ruby_file()
 
 function! s:init_ruby_file()
-  set makeprg=ruby\ -wc\ %
+	set makeprg=ruby\ -wc\ %
 	setl number
 	command! -buffer Defines lex MatchingLines("^\\s*def\\>\\s\\+\\zs.*$") | lopen
 		command! -buffer Functions Defines " Alias
@@ -725,15 +726,15 @@ function! s:init_html_file()
 	nnoremap <buffer> <leader>t ""ciw<<C-o>""p><C-o>m'</<C-o>""p><C-o>`'<C-o>l
 	nnoremap <buffer> <leader>T ""diw<C-o>"_cc<<C-o>""p><C-o>o</<C-o>""p><C-o>O
 
-  function! s:insert_tag(tag, newline)
-    if !a:newline
-      let l:text = "<".a:tag."></".a:tag.">" 
-    else
-    end
+	function! s:insert_tag(tag, newline)
+		if !a:newline
+			let l:text = "<".a:tag."></".a:tag.">" 
+		else
+		end
 		put =l:text
-  endfunction
+	endfunction
 
-  nnoremap <C-space> :call <sid>insert_tag(input(""), 0)<CR>
+	nnoremap <C-space> :call <sid>insert_tag(input(""), 0)<CR>
 
 	inoremap <buffer> <C-space> <C-o>""ciw<<C-o>""p><C-o>m'</<C-o>""p><C-o>`'<C-o>l
 	inoremap <buffer> <C-CR> <C-o>""diw<C-o>"_cc<<C-o>""p><C-o>o</<C-o>""p><C-o>O
