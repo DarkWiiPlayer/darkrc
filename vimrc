@@ -294,6 +294,30 @@ function! s:hex(...)
 endfunction
 command! -nargs=* Hex call <sid>hex(<q-args>)
 
+function! s:uncommitted(...)
+	if a:0
+		let l:commit = a:1
+	else
+		let l:commit = "HEAD"
+	end
+	let l:filetype = &filetype
+	below new
+	set modifiable
+	exec "r!git show ".l:commit.":./#"
+	1,1del
+	au BufUnload <buffer> diffoff!
+	let &filetype = l:filetype
+	silent exec "file §".expand("#:t")."@".l:commit
+	set buftype=nofile
+	set bufhidden=delete
+	set nomodifiable
+	diffthis
+	exec "normal \<C-w>k"
+	diffthis
+	set foldlevel=999
+endfun
+command! -nargs=? Uncommitted call <sid>uncommitted(<f-args>)
+
 function! s:unsaved()
 	if &mod
 		let l:filetype = &filetype
