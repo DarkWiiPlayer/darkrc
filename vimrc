@@ -1,5 +1,8 @@
 "!!! makes use of marker '
 
+set nocompatible
+""""""""""""""""
+
 " Sessions
 set sessionoptions=blank,buffers,curdir,folds,help,options,tabpages
 
@@ -19,8 +22,6 @@ elseif v:version >= 703
 	set cm=blowfish
 end
 
-set nocompatible
-""""""""""""""""
 " set linespace=0
 set scrolloff=6
 set history=50 " keep 50 lines of command line history
@@ -344,19 +345,31 @@ command! -nargs=? Scratch new | set buftype=nofile | set filetype=<args>
 " === GENERAL KEY MAPPINGS ===
 let mapleader = "\\"
 
+let g:jmp_dist = 8
+nmap <C-j> :exec "normal ".g:jmp_dist."j"<CR>
+nmap <C-k> :exec "normal ".g:jmp_dist."k"<CR>
+" Yes, not 'noremap', do whatever is mapped to J and K assuming
+" it is some sort of custom up-down motion, but g:jmp_dist times
+
 " --- /dev/null ---
 noremap <leader>d "_d
 noremap <leader>d "_d
 noremap x "_x
 noremap <leader>x x
 
-" --- Numbvers ---
+" --- Numbers ---
 nnoremap <leader>- <C-x>
 nnoremap <leader>= <C-a>
 
+" --- Text ---
+nnoremap U ~h
+
 " --- MOVEMENT ---
-nnoremap j gj
-nnoremap k gk
+noremap j gj
+noremap k gk
+
+noremap gj j
+noremap gk k
 
 " --- CLIPBOARD ---
 nnoremap Y y$
@@ -379,11 +392,13 @@ noremap Q @q
 nnoremap <S-space> gQ
 " noremap <C-s> :w<CR>
 function! s:saveprompt()
+	let b:rightsave=1
   if input("Type 'save' to save: ") ==? "save"
     write
   else
     echo "Calm the fuck down man!"
   end
+	unlet b:rightsave
 endfun
 noremap <C-s> :call <sid>saveprompt()<CR>
 nnoremap <C-n> :bnext<CR>
@@ -453,6 +468,8 @@ digraph OE 214
 digraph ss 223
 
 " === GENERAL AUTOCOMMANDS ===
+
+command! HLProgress syntax match Comment /\_.*\ze\n.*\%#/
 
 nnoremap <leader>h :call <SID>toggleWUC()<CR>
 function! s:updateWUC()
