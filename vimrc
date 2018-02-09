@@ -390,15 +390,19 @@ noremap <space> :
 noremap <C-space> @:
 noremap Q @q
 nnoremap <S-space> gQ
-" noremap <C-s> :w<CR>
+" This part is just supposed to make saving as inconvenient as possible
+" because I have a tendency to just save stuff pretty much as soon as I start
+" typing because I'm bored and possibly a bit paranoid.
 function! s:saveprompt()
-	let b:rightsave=1
+	if &swapfile
+		echo "You have swap files enabled, stop in-between-saving all the time!"
+	end
   if input("Type 'save' to save: ") ==? "save"
     write
+		echo "File saved, but was it really necessary?"
   else
     echo "Calm the fuck down man!"
   end
-	unlet b:rightsave
 endfun
 noremap <C-s> :call <sid>saveprompt()<CR>
 nnoremap <C-n> :bnext<CR>
