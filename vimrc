@@ -376,11 +376,14 @@ nmap <C-k> :exec "normal ".g:jmp_dist."k"<CR>
 " Yes, not 'noremap', do whatever is mapped to J and K assuming
 " it is some sort of custom up-down motion, but g:jmp_dist times
 
+" --- modes ---
+nnoremap <ins> <ins><ins>
+
 " --- /dev/null ---
 noremap <leader>d "_d
 noremap <leader>d "_d
-noremap x "_x
-noremap <leader>x x
+noremap <del> "_x
+noremap <S-del> 0"_x$
 
 " --- Numbers ---
 nnoremap <leader>- <C-x>
@@ -534,18 +537,15 @@ endfunction
 
 " Autosave when vim loses focus :)
 function! TryAutosave(warn, mode)
-	if &autowriteall==0 " All buffers
-		if a:mode == 0
+	if a:mode == 0
+		if &autowriteall || &autowrite
 			silent wall
 			if a:warn
 				echo "Autosaving all buffers..."
 			end
-		elseif a:mode == 1
-			silent wall " Lie to the user and save everything :)
-			if a:warn
-				echo "Autosaving all buffers in tab..."
-			end
-		elseif a:mode == 2
+		end
+	elseif a:mode == 1
+		if &autowriteall
 			if &mod
 				silent write
 				if a:warn
@@ -553,15 +553,16 @@ function! TryAutosave(warn, mode)
 				end
 			end
 		end
-		redraw
-	endif
+	end
+
+	redraw
 endfunction
+
 augroup autosave
 autocmd!
 autocmd FocusLost * call TryAutosave(0, 0)
-autocmd TabLeave * call TryAutosave(0, 1)
-autocmd BufLeave * call TryAutosave(0, 2)
-autocmd CursorHold * call TryAutosave(0, 2)
+autocmd BufLeave * call TryAutosave(0, 1)
+autocmd CursorHold * call TryAutosave(0, 1)
 augroup END
 
 vnoremap <leader>g :<C-u>call <SID>GrepOperator(visualmode())<CR>
