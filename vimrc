@@ -404,9 +404,7 @@ nnoremap Y y$
 
 " --- VISUAL EXECUTE ---
 vnoremap <C-CR> :<C-U>exec "'<,'>!".g:exe_prg<CR>
-vnoremap <CR> ""y<CR>
-			      \ :call setreg("\"", substitute(getreg("\""), "\n", "", ""), "v")<CR>
-			      \ :<C-r>"<CR>`<
+vnoremap <CR> :<C-U>exec "'<,'>!".b:exe_prg<CR>
 
 " --- OTHER ---
 " Don't exit visual mode when "shifting"
@@ -671,9 +669,10 @@ function! s:init_generic_file()
 	call s:autoClose_AddPair("(", ")")
 	call s:autoClose_AddPair("{", "}")
 	call s:autoClose_AddPair('"', '"')
+	let b:exe_prg = g:exe_prg
 endfunc
 
-" Vimscript Stuff
+" --- VIMSCRIPT STUFF ---
 au BufNewFile,BufRead *.vim,*vimrc :call <sid>init_vim_file()
 
 function! s:init_vim_file()
@@ -685,6 +684,10 @@ function! s:init_vim_file()
 	command! -buffer Functions lex MatchingLines("^\\s*fun\\(ction\\)\\?\\>!.*$")
 	command! -buffer Commands  lex MatchingLines("^\\s*com\\(mand\\)\\?\\>!.*$")
 	command! -buffer Autocommands  lex MatchingLines("^\\s*au\\(tocmd\\)\\?\\>!\\@!.*$")
+
+	vnoremap <buffer> <CR> ""y<CR>
+				\ :call setreg("\"", substitute(getreg("\""), "\n", "", ""), "v")<CR>
+				\ :<C-r>"<CR>`<
 endfunction
 
 " --- C / C++ Stuff ---
