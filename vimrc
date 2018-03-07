@@ -371,8 +371,8 @@ command! -nargs=? Scratch new | set buftype=nofile | set filetype=<args>
 let mapleader = "\\"
 
 let g:jmp_dist = 8
-nmap <C-j> :exec "normal ".g:jmp_dist."j"<CR>
-nmap <C-k> :exec "normal ".g:jmp_dist."k"<CR>
+map <C-j> :exec "normal ".g:jmp_dist."j"<CR>
+map <C-k> :exec "normal ".g:jmp_dist."k"<CR>
 " Yes, not 'noremap', do whatever is mapped to J and K assuming
 " it is some sort of custom up-down motion, but g:jmp_dist times
 
@@ -401,6 +401,12 @@ noremap gk k
 
 " --- CLIPBOARD ---
 nnoremap Y y$
+
+" --- VISUAL EXECUTE ---
+vnoremap <C-CR> :<C-U>exec "'<,'>!".g:exe_prg<CR>
+vnoremap <CR> ""y<CR>
+			      \ :call setreg("\"", substitute(getreg("\""), "\n", "", ""), "v")<CR>
+			      \ :<C-r>"<CR>`<
 
 " --- OTHER ---
 " Don't exit visual mode when "shifting"
