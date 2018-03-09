@@ -409,10 +409,10 @@ noremap gk k
 nnoremap Y y$
 
 " --- VISUAL EXECUTE ---
-let $LUA_PATH = $LUA_PATH.";".expand("<sfile>:p:h")."/lua/?.lua"
+let $LUA_PATH = expand("<sfile>:p:h")."/lua/?.lua"
 let g:mooncompile = "!moonc ".expand("<sfile>:p:h")."/lua"
 command! Mooncompile silent exec g:mooncompile
-let g:exe_prg = "moonc -- | lua -l vim -"
+let g:exe_prg = "moonc -- \| lua -l vim -"
 vnoremap <CR> :<C-U>exec "'<,'>!".g:exe_prg<CR>
 vnoremap <C-CR> ""y<CR>
 				\ :call setreg("\"", substitute(getreg("\""), "\n", "", ""), "v")<CR>
