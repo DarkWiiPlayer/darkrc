@@ -368,7 +368,12 @@ command! Snapshot call <sid>snapshot()
 
 command! -nargs=? Scratch new | set buftype=nofile | set filetype=<args>
 
-" === GENERAL KEY MAPPINGS ===
+"        ┌──────────────────────────┐
+"        ├─┬──────────────────────┐ │
+"        ├─┤ GENERAL KEY MAPPINGS ├─┤
+"        │ └──────────────────────┴─┤
+"        └──────────────────────────┘
+
 let mapleader = "\\"
 
 let g:jmp_dist = 8
@@ -404,8 +409,13 @@ noremap gk k
 nnoremap Y y$
 
 " --- VISUAL EXECUTE ---
-vnoremap <C-CR> :<C-U>exec "'<,'>!".g:exe_prg<CR>
-vnoremap <CR> :<C-U>exec "'<,'>!".b:exe_prg<CR>
+let $LUA_PATH = $LUA_PATH.";".expand("<sfile>:p:h")."/lua/?.lua"
+command! Mooncompile silent exec "!moonc ".expand("<sfile>:p:h")."/lua"
+let g:exe_prg = "moonc -- | lua -l vim -"
+vnoremap <CR> :<C-U>exec "'<,'>!".g:exe_prg<CR>
+vnoremap <C-CR> ""y<CR>
+				\ :call setreg("\"", substitute(getreg("\""), "\n", "", ""), "v")<CR>
+				\ :<C-r>"<CR>`<
 
 " --- OTHER ---
 " Don't exit visual mode when "shifting"
@@ -670,7 +680,6 @@ function! s:init_generic_file()
 	call s:autoClose_AddPair("(", ")")
 	call s:autoClose_AddPair("{", "}")
 	call s:autoClose_AddPair('"', '"')
-	let b:exe_prg = g:exe_prg
 endfunc
 
 " --- VIMSCRIPT STUFF ---
@@ -685,10 +694,6 @@ function! s:init_vim_file()
 	command! -buffer Functions lex MatchingLines("^\\s*fun\\(ction\\)\\?\\>!.*$")
 	command! -buffer Commands  lex MatchingLines("^\\s*com\\(mand\\)\\?\\>!.*$")
 	command! -buffer Autocommands  lex MatchingLines("^\\s*au\\(tocmd\\)\\?\\>!\\@!.*$")
-
-	vnoremap <buffer> <CR> ""y<CR>
-				\ :call setreg("\"", substitute(getreg("\""), "\n", "", ""), "v")<CR>
-				\ :<C-r>"<CR>`<
 endfunction
 
 " --- C / C++ Stuff ---
