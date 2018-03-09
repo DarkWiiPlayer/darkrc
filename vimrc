@@ -410,7 +410,8 @@ nnoremap Y y$
 
 " --- VISUAL EXECUTE ---
 let $LUA_PATH = $LUA_PATH.";".expand("<sfile>:p:h")."/lua/?.lua"
-command! Mooncompile silent exec "!moonc ".expand("<sfile>:p:h")."/lua"
+let g:mooncompile = "!moonc ".expand("<sfile>:p:h")."/lua"
+command! Mooncompile silent exec g:mooncompile
 let g:exe_prg = "moonc -- | lua -l vim -"
 vnoremap <CR> :<C-U>exec "'<,'>!".g:exe_prg<CR>
 vnoremap <C-CR> ""y<CR>
