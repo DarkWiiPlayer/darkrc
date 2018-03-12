@@ -1,4 +1,4 @@
---vim: set noexpandtab :miv--
+-- vim: set noexpandtab :miv --
 tree = (tab, level=0, skip="") ->
 	if level==0
 		print "┐"
@@ -6,7 +6,7 @@ tree = (tab, level=0, skip="") ->
 	pre = (lvl, skip) ->
 		for i=1,lvl
 			if skip\sub(i,i) == "y"
-				io.write "  "
+				io.write "	"
 			else
 				io.write "│ "
 
@@ -27,15 +27,18 @@ tree = (tab, level=0, skip="") ->
 
 import max from math
 column = (col) ->
+	if type(col)!="table" then col = {col}
 	pad = (str, len) ->
 		str..string.rep(" ", len-#str)
 	width = 0
 	for box in *col
+		if type(box)!="table" then box = {box}
 		for elem in *box
 			width = max(width, #elem)
 
 	print "┌─"..string.rep("─",width).."─┐"
 	for idx,box in ipairs(col)
+		if type(box)!="table" then box={box}
 		last = idx==#col
 		for elem in *box
 			io.write "│ "
@@ -58,4 +61,8 @@ draw = ->
 		print table.concat(line, " ")
 
 
-{:tree, :column, :box, :draw}
+{
+	:tree, :column, :box, :draw
+	-- Aliases
+	col: column
+}
