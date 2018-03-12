@@ -26,6 +26,7 @@ alias tmux='tmux -2'
 alias pi='ssh pi -t ''tmux a -t home \|\| tmux new-session -s home'''
 alias server='ssh server -t ''tmux a -t home \|\| tmux new-session -s home'''
 alias ltc='getclip | luac -l -'
+alias sign='gpg --armor --no-version --detach-sign --local-user darkwiiplayer'
 stty -ixon
 
 # Enable Vi editing mode
