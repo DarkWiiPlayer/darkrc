@@ -714,11 +714,11 @@ au BufNewFile,BufRead *.rb :call <sid>init_ruby_file()
 function! s:init_ruby_file()
 	set makeprg=ruby\ -wc\ %
 	setl number
-	command! -buffer Defines lex MatchingLines("^\\s*def\\>\\s\\+\\zs.*$") | lopen
-		command! -buffer Functions Defines " Alias
-		command! -buffer Methods Defines " Alias
+	command! -buffer Methods lex MatchingLines("^\\s*def\\>\\s\\+\\zs.*$") | lopen
+		command! -buffer Functions Methods " Alias
 	command! -buffer Classes lex MatchingLines("^\\s*class\\>\\s\\+\\zs.*$") | lopen
 	command! -buffer Modules lex MatchingLines("^\\s*module\\>\\s\\+\\zs.*$") | lopen
+	command! -buffer Members lex MatchingLines("@\\<\\i*\\>") | lopen
 	command! -buffer Requires lex MatchingLines("^\\s*require\\(_relative\\)\\?\\>\\s\\+\\zs.*$") | lopen
 
 	nnoremap <buffer> <leader>ic oclass <C-o>m'<enter>end<esc>`'a
