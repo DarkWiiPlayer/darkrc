@@ -259,6 +259,12 @@ function! s:autobd()
 endfun
 
 " === GENERAL COMMANDS ===
+
+" General Purpose
+command! Closeall bufdo bdelete
+command! Context bufdo bdelete | e .
+command! Kontext Context
+
 command! L lopen | set number | set norelativenumber
 command! LAddLine call LocationAddLine(expand("%"), line("."), getline("."))
 command! QAddLine call QuickfixAddLine(expand("%"), line("."), getline("."))
@@ -382,6 +388,9 @@ map <C-k> :exec "normal ".g:jmp_dist."k"<CR>
 " Yes, not 'noremap', do whatever is mapped to J and K assuming
 " it is some sort of custom up-down motion, but g:jmp_dist times
 
+" --- Windows, Tabs and More --
+nnoremap <leader><space> :e %:p:h<CR>
+
 " --- modes ---
 nnoremap <ins> <ins><ins>
 
@@ -470,8 +479,7 @@ nnoremap <C-e> ge
 nnoremap <C-E> gE
 com! SetWD :cd %:p:h
 com! SetLWD :lcd %:p:h
-com! Removetrailingspaces let _s=@/ | %s/\v(\\@<!\s)+$//ge | let @/=_s
-nnoremap <leader>t :Removetrailingspaces<CR>
+com! Trailing let _s=@/ | %s/\v(\\@<!\s)+$//ge | let @/=_s
 nnoremap <C-d> :copy .<CR>
 nnoremap dx 0"_d$
 nnoremap dcx 0d$
@@ -773,7 +781,7 @@ function! s:init_html_file()
 	setl number
 	command! -buffer -nargs=1 Tag normal
 				\ i<<args>><<C-o>m'/<args>><ESC>`'
-	nnoremap <buffer> <leader>t ""ciw<<C-o>""p><C-o>m'</<C-o>""p><C-o>`'<C-o>l
+	nnoremap <buffer> <leader>T ""ciw<<C-o>""p><C-o>m'</<C-o>""p><C-o>`'<C-o>l
 	nnoremap <buffer> <leader>T ""diw<C-o>"_cc<<C-o>""p><C-o>o</<C-o>""p><C-o>O
 
 	function! s:insert_tag(tag, newline)
