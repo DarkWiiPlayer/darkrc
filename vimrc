@@ -338,7 +338,7 @@ endfun
 
 function! s:git_info()
 	if !exists("b:git_revision_hash") || !exists("b:git_original_file")
-		echo "Error 01: Not a file@revision buffer!"
+		echo "Not a file@revision buffer!"
 		return
 	end
 	echo system("git show --no-patch ".b:git_revision_hash)
@@ -409,16 +409,17 @@ function! s:file_at_revision(rev)
 
 	let b:git_original_file = l:fname
 	let b:git_revision_hash = a:rev
-	call s:git_info()
 endfun
 
 function! s:git_diff(...)
 	if a:0
-		diffthis
 		split
 		call s:file_at_revision(a:1)
-		au BufUnload <buffer> diffoff!
 		diffthis
+		au BufUnload <buffer> diffoff!
+		exec "normal \<C-w>\<C-p>"
+		diffthis
+		call s:git_info()
 	else
 		if exists("b:git_revision_hash")
 			call s:git_diff(get(s:git_history(), index(s:git_history(), b:git_revision_hash)+1, "NIL"))
@@ -428,10 +429,10 @@ function! s:git_diff(...)
 	end
 endfun
 
-command! GitNext call <sid>git_next()
-command! GitPrev call <sid>git_prev()
-command! GitFirst call <sid>git_first()
-command! GitLast call <sid>git_last()
+command! GitNext call <sid>git_next() | call s:git_info()
+command! GitPrev call <sid>git_prev() | call s:git_info()
+command! GitFirst call <sid>git_first() | call s:git_info()
+command! GitLast call <sid>git_last() | call s:git_info()
 command! GitInfo call <sid>git_info()
 command! -nargs=1 GitCheckout call <sid>file_at_revision(<f-args>)
 command! -nargs=? GitCompare call <sid>git_diff(<f-args>)
