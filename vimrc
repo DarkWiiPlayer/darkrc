@@ -300,13 +300,22 @@ command! -nargs=* Hex call <sid>hex(<q-args>)
 " === GIT STUFF === "
 
 function! s:git_history()
+	if exists("b:git_history")
+		if b:git_history[0]+10 < localtime()
+			return b:git_history[1]
+		end
+	end
+
 	if exists("b:git_original_file") " Is this already a file@revision buffer?
 		let l:fname = b:git_original_file
 	else
 		let l:fname = expand("%")
 	end
 	let l:commits = system('git log --format="%h" --follow '.l:fname)
-	return split(l:commits, "\n")
+	let l:hist = split(l:commits, "\n")
+	let b:git_history = [localtime(), l:hist]
+
+	return l:hist
 endfun
 
 function! s:git_first()
