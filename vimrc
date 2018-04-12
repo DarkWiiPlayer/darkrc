@@ -311,7 +311,7 @@ function! s:git_history()
 	else
 		let l:fname = expand("%")
 	end
-	let l:commits = system('git log --format="%h" --follow '.l:fname)
+	let l:commits = system('git log --format="%h" '.l:fname)
 	let l:hist = split(l:commits, "\n")
 	let b:git_history = [localtime(), l:hist]
 
@@ -324,7 +324,7 @@ function! s:git_first()
 		return
 	end
 	let l:history = s:git_history()
-	call s:file_at_revision(get(l:history, -1, "HEAD"))
+	call s:file_at_revision(get(l:history, -1))
 endfun
 
 function! s:git_last()
