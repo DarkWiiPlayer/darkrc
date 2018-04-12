@@ -366,16 +366,16 @@ endfun
 
 function! s:git_prev()
 	if !exists("b:git_revision_hash") || !exists("b:git_original_file")
-		echo "Error 01: Not a file@revision buffer!"
-		return
+		let l:new_revision = s:git_history()[0]
+	else
+		let l:history = s:git_history()
+		let l:idx = index(l:history, b:git_revision_hash)
+		if l:idx == -1
+			echo "Error 03: cannot find revision ".b:git_revision_hash
+			return
+		end
+		let l:new_revision = get(l:history, l:idx+1, "FIRST")
 	end
-	let l:history = s:git_history()
-	let l:idx = index(l:history, b:git_revision_hash)
-	if l:idx == -1
-		echo "Error 02"
-		return
-	end
-	let l:new_revision = get(l:history, l:idx+1, "FIRST")
 	if l:new_revision=="FIRST"
 		echo "Already at earliest revision! ".l:new_revision
 		return
@@ -412,12 +412,20 @@ function! s:file_at_revision(rev)
 	call s:git_info()
 endfun
 
-function! s:git_diff(revision)
-	diffthis
-	split
-	call s:file_at_revision(a:revision)
-	au BufUnload <buffer> diffoff!
-	diffthis
+function! s:git_diff(...)
+	if a:0
+		diffthis
+		split
+		call s:file_at_revision(a:1)
+		au BufUnload <buffer> diffoff!
+		diffthis
+	else
+		if exists("b:git_revision_hash")
+			call s:git_diff(get(s:git_history(), index(s:git_history(), b:git_revision_hash)+1, "NIL"))
+		else
+			call s:git_diff("HEAD")
+		end
+	end
 endfun
 
 command! GitNext call <sid>git_next()
@@ -426,10 +434,7 @@ command! GitFirst call <sid>git_first()
 command! GitLast call <sid>git_last()
 command! GitInfo call <sid>git_info()
 command! -nargs=1 GitCheckout call <sid>file_at_revision(<f-args>)
-command! -nargs=1 GitCompare call <sid>uncommitted(<f-args>)
-command! Uncommitted call <sid>git_diff("HEAD")
-" command! -nargs=1 GitAt call <sid>s:file_at_revision(<f-args>)
-" Doesn't work for talos knows what reason
+command! -nargs=? GitCompare call <sid>git_diff(<f-args>)
 
 " === FILE STUFF ===
 
