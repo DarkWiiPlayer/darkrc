@@ -526,8 +526,8 @@ nnoremap <leader>= <C-a>
 nnoremap U ~h
 
 " --- MOVEMENT ---
-noremap j gj
-noremap k gk
+" noremap j gj
+" noremap k gk
 
 noremap gj j
 noremap gk k
