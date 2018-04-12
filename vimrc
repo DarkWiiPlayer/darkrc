@@ -390,9 +390,10 @@ function! s:file_at_revision(rev)
 		let l:fname = b:git_original_file
 		let l:ftail = fnamemodify(b:git_original_file, ":t")
 	else
-		let l:fname = expand("%:t")
+		let l:fname = expand("%")
 		let l:ftail = expand("%:t")
 	end
+	let l:fname = substitute(l:fname, "\\\\", "/", "g")
 	let l:ftype = &filetype
 
 	ene!
