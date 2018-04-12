@@ -415,6 +415,7 @@ function! s:file_at_revision(rev)
 	exec "r!git show ".a:rev.":".l:fname
 	setl nomodifiable
 	setl buftype=nofile
+	setl bufhidden=delete
 	let &filetype = l:ftype
 
 	let b:git_original_file = l:fname
