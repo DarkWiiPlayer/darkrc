@@ -283,23 +283,21 @@ function! s:hex(...)
 	else
 		let l:args = []
 	end
-	if !exists("b:hex")
+	if &filetype != "xxd"
 		silent exec '%!xxd '.join(l:args, "  ")
-		let b:hex = 1
-		let b:prev_filetype = &filetype
-		let &filetype = "xxd"
+		set filetype=xxd
 		nnoremap <buffer> i i<ins>
 		echo "A witch turned your file into a hexadecimal toad!"
 	else
 		nunmap <buffer> i
 		silent exec '%!xxd -r '.join(l:args, "	")
-		unlet b:hex
-		let &filetype = b:prev_filetype
-		unlet b:prev_filetype
+		filetype detect
 		echo "The witch turned your file back into binary data"
 	end
 endfunction
 command! -nargs=* Hex call <sid>hex(<q-args>)
+
+" === GIT STUFF === "
 
 function! s:uncommitted(...)
 	if a:0
