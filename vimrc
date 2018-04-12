@@ -380,6 +380,10 @@ command! -nargs=? Scratch new | set buftype=nofile | set filetype=<args>
 
 let mapleader = "\\"
 
+" --- Moving Between Buffers ---
+nnoremap <leader>n :next<CR>:args<CR>
+nnoremap <leader>p :previous<CR>:args<CR>
+
 let g:jmp_dist = 8
 map <C-j> :exec "normal ".g:jmp_dist."j"<CR>
 map <C-k> :exec "normal ".g:jmp_dist."k"<CR>
