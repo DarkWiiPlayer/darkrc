@@ -400,6 +400,7 @@ function! s:git_prev()
 endfun
 
 function! s:file_at_revision(rev)
+	let l:pos = getpos(".")
 	if exists("b:git_original_file") " Is this already a file@revision buffer?
 		let l:fname = b:git_original_file
 		let l:ftail = fnamemodify(b:git_original_file, ":t")
@@ -418,6 +419,9 @@ function! s:file_at_revision(rev)
 
 	let b:git_original_file = l:fname
 	let b:git_revision_hash = a:rev
+	let l:pos[0] = bufnr('.')
+	call setpos('.', l:pos)
+	redraw
 	call s:git_info()
 endfun
 
