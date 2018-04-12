@@ -301,7 +301,7 @@ command! -nargs=* Hex call <sid>hex(<q-args>)
 
 function! s:git_history()
 	if exists("b:git_history")
-		if b:git_history[0]+10 < localtime()
+		if b:git_history[0]+10 > localtime()
 			return b:git_history[1]
 		end
 	end
@@ -309,7 +309,7 @@ function! s:git_history()
 	if exists("b:git_original_file") " Is this already a file@revision buffer?
 		let l:fname = b:git_original_file
 	else
-		let l:fname = expand("%")
+		let l:fname = substitute(expand("%"), "\\\\", "/", "g")
 	end
 	let l:commits = system('git log --format="%h" '.l:fname)
 	let l:hist = split(l:commits, "\n")
