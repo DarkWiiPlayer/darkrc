@@ -424,7 +424,7 @@ function! s:git_diff(...)
 		if exists("b:git_revision_hash")
 			call s:git_diff(get(s:git_history(), index(s:git_history(), b:git_revision_hash)+1, "NIL"))
 		else
-			call s:git_diff("HEAD")
+			call s:git_diff(get(s:git_history(), 1, "HEAD"))
 		end
 	end
 endfun
