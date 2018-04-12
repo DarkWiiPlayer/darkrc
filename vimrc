@@ -323,6 +323,112 @@ function! s:uncommitted(...)
 endfun
 command! -nargs=? Uncommitted call <sid>uncommitted(<f-args>)
 
+function! s:git_history()
+	if exists("b:git_original_file") " Is this already a file@revision buffer?
+		let l:fname = b:git_original_file
+	else
+		let l:fname = expand("%")
+	end
+	let l:commits = system('git log --format="%h" --follow '.l:fname)
+	return split(l:commits, "\n")
+endfun
+
+function! s:git_first()
+	if &modified
+		echo "Save your changes first!"
+		return
+	end
+	let l:history = s:git_history()
+	call s:file_at_revision(get(l:history, -1, "HEAD"))
+endfun
+
+function! s:git_last()
+	if &modified
+		echo "Save your changes first!"
+		return
+	end
+	let l:history = s:git_history()
+	call s:file_at_revision(get(l:history, 1, "HEAD"))
+endfun
+
+function! s:git_info()
+	if !exists("b:git_revision_hash") || !exists("b:git_original_file")
+		echo "Error 01: Not a file@revision buffer!"
+		return
+	end
+	echo system("git show --no-patch ".b:git_revision_hash)
+endfun
+
+function! s:git_next()
+	if !exists("b:git_revision_hash") || !exists("b:git_original_file")
+		echo "Error 01: Not a file@revision buffer!"
+		return
+	end
+	let l:history = s:git_history()
+	let l:idx = index(l:history, b:git_revision_hash)
+	if l:idx == -1
+		echo "Error 02"
+		return
+	end
+	let l:new_revision = get(l:history, l:idx-1, "LAST")
+	if l:new_revision=="LAST"
+		echo "Already at latest revision! ".l:new_revision
+		return
+	else
+		call s:file_at_revision(l:new_revision)
+	end
+endfun
+
+function! s:git_prev()
+	if !exists("b:git_revision_hash") || !exists("b:git_original_file")
+		echo "Error 01: Not a file@revision buffer!"
+		return
+	end
+	let l:history = s:git_history()
+	let l:idx = index(l:history, b:git_revision_hash)
+	if l:idx == -1
+		echo "Error 02"
+		return
+	end
+	let l:new_revision = get(l:history, l:idx+1, "FIRST")
+	if l:new_revision=="FIRST"
+		echo "Already at earliest revision! ".l:new_revision
+		return
+	else
+		call s:file_at_revision(l:new_revision)
+	end
+endfun
+
+function! s:file_at_revision(rev)
+	if exists("b:git_original_file") " Is this already a file@revision buffer?
+		let l:fname = b:git_original_file
+		let l:ftail = fnamemodify(b:git_original_file, ":t")
+	else
+		let l:fname = expand("%:t")
+		let l:ftail = expand("%:t")
+	end
+	let l:ftype = &filetype
+
+	ene!
+	silent exec "file ".l:ftail."@".a:rev
+	exec "r!git show ".a:rev.":".l:fname
+	setl nomodifiable
+	setl buftype=nofile
+	let &filetype = l:ftype
+
+	let b:git_original_file = l:fname
+	let b:git_revision_hash = a:rev
+	call s:git_info()
+endfun
+
+command! GitNext call <sid>git_next()
+command! GitPrev call <sid>git_prev()
+command! GitFirst call <sid>git_first()
+command! GitLast call <sid>git_last()
+command! GitInfo call <sid>git_info()
+" command! -nargs=1 GitAt call <sid>s:file_at_revision(<f-args>)
+" Doesn't work for talos knows what reason
+
 function! s:unsaved()
 	if &mod
 		let l:filetype = &filetype
