@@ -299,30 +299,6 @@ command! -nargs=* Hex call <sid>hex(<q-args>)
 
 " === GIT STUFF === "
 
-function! s:uncommitted(...)
-	if a:0
-		let l:commit = a:1
-	else
-		let l:commit = "HEAD"
-	end
-	let l:filetype = &filetype
-	below new
-	set modifiable
-	exec "r!git show ".l:commit.":./#"
-	1,1del
-	au BufUnload <buffer> diffoff!
-	let &filetype = l:filetype
-	silent exec "file §".expand("#:t")."@".l:commit
-	set buftype=nofile
-	set bufhidden=delete
-	set nomodifiable
-	diffthis
-	exec "normal \<C-w>k"
-	diffthis
-	set foldlevel=999
-endfun
-command! -nargs=? Uncommitted call <sid>uncommitted(<f-args>)
-
 function! s:git_history()
 	if exists("b:git_original_file") " Is this already a file@revision buffer?
 		let l:fname = b:git_original_file
@@ -411,8 +387,12 @@ function! s:file_at_revision(rev)
 	let l:ftype = &filetype
 
 	ene!
+	set modifiable
 	silent exec "file ".l:ftail."@".a:rev
 	exec "r!git show ".a:rev.":".l:fname
+	1,1del
+	let l:pos[0] = bufnr('.')
+	call setpos('.', l:pos)
 	setl nomodifiable
 	setl buftype=nofile
 	setl bufhidden=delete
@@ -420,10 +400,15 @@ function! s:file_at_revision(rev)
 
 	let b:git_original_file = l:fname
 	let b:git_revision_hash = a:rev
-	let l:pos[0] = bufnr('.')
-	call setpos('.', l:pos)
-	redraw
 	call s:git_info()
+endfun
+
+function! s:git_diff(revision)
+	diffthis
+	split
+	call s:file_at_revision(a:revision)
+	au BufUnload <buffer> diffoff!
+	diffthis
 endfun
 
 command! GitNext call <sid>git_next()
@@ -431,8 +416,13 @@ command! GitPrev call <sid>git_prev()
 command! GitFirst call <sid>git_first()
 command! GitLast call <sid>git_last()
 command! GitInfo call <sid>git_info()
+command! -nargs=1 GitCheckout call <sid>file_at_revision(<f-args>)
+command! -nargs=1 GitCompare call <sid>uncommitted(<f-args>)
+command! Uncommitted call <sid>git_diff("HEAD")
 " command! -nargs=1 GitAt call <sid>s:file_at_revision(<f-args>)
 " Doesn't work for talos knows what reason
+
+" === FILE STUFF ===
 
 function! s:unsaved()
 	if &mod
