@@ -545,7 +545,7 @@ vnoremap <C-CR> ""y<CR>
 				\ :call setreg("\"", substitute(getreg("\""), "\n", "", ""), "v")<CR>
 				\ :<C-r>"<CR>`<
 
-let $LUA_PATH = expand("<sfile>:p:h")."/lua/?.lua"
+let $LUA_PATH = $LUA_PATH.";".expand("<sfile>:p:h")."/lua/?.lua"
 let g:mooncompile = "!moonc ".expand("<sfile>:p:h")."/lua"
 command! Mooncompile silent exec g:mooncompile
 let g:exe_prg = "moonc -- \| lua -l vim -"
