@@ -507,6 +507,10 @@ map <C-k> :exec "normal ".g:jmp_dist."k"<CR>
 " Yes, not 'noremap', do whatever is mapped to J and K assuming
 " it is some sort of custom up-down motion, but g:jmp_dist times
 
+" --- Marks ---
+nnoremap <leader>m :marks abcdefghijklmnopqrstuvwxyz<CR>
+nnoremap <leader>M :marks ABCDEFGHIJKLMNOPQRSTUVWXYZ<CR>
+
 " --- Windows, Tabs and More --
 nnoremap <leader><space> :e %:p:h<CR>
 
