@@ -1,4 +1,4 @@
-" vim: set noexpandtab :miv "
+" vim: set bufhidden=delete list noexpandtab :miv "
 "!!! makes use of marker '
 
 set nocompatible
@@ -550,6 +550,7 @@ endfun
 command! Snapshot call <sid>snapshot()
 
 command! -nargs=? Scratch new | set buftype=nofile | set filetype=<args>
+command! -nargs=? Tempfile exec 'new '.tempname()  | set filetype=<args> | au BufDelete <buffer> call delete(expand('%'))
 
 "        ┌──────────────────────────┐
 "        ├─┬──────────────────────┐ │
