@@ -56,9 +56,10 @@ draw = ->
 	for line in * {
 		{ "─", "│", "┼" }
 		{ "┌", "┐", "└", "┘" }
-		{"├", "┤", "┬", "┴"}
+		{ "├", "┤", "┬", "┴" }
+    { "╼" ,"╽" ,"╾" ,"╾" }
 	}
-		print table.concat(line, " ")
+	print table.concat(line, " ")
 
 
 {
