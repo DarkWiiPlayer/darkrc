@@ -1,29 +1,17 @@
 -- vim: set noexpandtab :miv --
-tree = (tab, level=0, skip="") ->
-	if level==0
-		print "┐"
-
-	pre = (lvl, skip) ->
-		for i=1,lvl
-			if skip\sub(i,i) == "y"
-				io.write "	"
-			else
-				io.write "│ "
+tree = (tab, pref='') ->
+	print tab.title and tab.title or '┐'
 
 	for idx, element in ipairs tab
 		last = idx == #tab
+		first = idx == 1
+		io.write pref
+		io.write last and "└─" or "├─"
 		switch type element
 			when "table"
-				pre level, skip
-				io.write last and "└─" or "├─"
-				print element.title and "┬─ "..element.title or "┐"
-				tree element, level+1, skip .. (last and "y" or "n")
+				tree element, last and '  ' or '│ '
 			else
-				pre level, skip
-				if idx<#tab
-					print "├─ "..element
-				else
-					print "└─ "..element
+				print tostring element
 
 import max from math
 column = (col) ->
@@ -52,17 +40,30 @@ column = (col) ->
 box = (box) ->
 	column { box }
 
+CLASS = [[
+print vim.col {
+	{ 'Class' } -- Title
+	{
+		-- Members
+	}
+	{
+		-- Methods
+	}
+}
+]]
+
 draw = ->
 	for line in * {
 		{ "─", "│", "┼" }
 		{ "┌", "┐", "└", "┘" }
-		{"├", "┤", "┬", "┴"}
+		{ "├", "┤", "┬", "┴" }
+    { "╼", "╽", "╾", "╾" }
 	}
 		print table.concat(line, " ")
 
 
 {
-	:tree, :column, :box, :draw
+	:tree, :column, :box, :draw, :CLASS
 	-- Aliases
 	col: column
 }

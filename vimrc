@@ -492,6 +492,25 @@ function! s:git_diff(...)
 	end
 endfun
 
+function! s:git_blame()
+	let l:name = expand('%')
+	let l:line = getpos('.')[1]
+	let l:char = getpos('.')[2]+59
+	let l:type = &filetype
+	enew
+	set modifiable
+	let &filetype = l:type
+	set buftype=nofile
+	set bufhidden=delete
+	set nowrap
+	silent exec "file Blame: ".l:name
+	keepjumps exec 'r !git blame '.l:name
+	keepjumps 0,0del "
+	set nomodifiable
+	keepjumps call setpos('.', [0, l:line, l:char, 0])
+endfun
+
+command! Blame call <sid>git_blame()
 command! GitNext call <sid>git_next() | call s:git_info()
 command! GitPrev call <sid>git_prev() | call s:git_info()
 command! GitFirst call <sid>git_first() | call s:git_info()
