@@ -9,7 +9,7 @@ tree = (tab, pref='') ->
 		io.write last and "└─" or "├─"
 		switch type element
 			when "table"
-				tree element, last and '  ' or '│ '
+				tree element, pref .. (last and '  ' or '│ ')
 			else
 				print tostring element
 
