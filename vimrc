@@ -736,6 +736,7 @@ digraph ss 223
 command! HLProgress syntax match Comment /\_.*\ze\n.*\%#/
 
 nnoremap <leader>h :call <SID>toggleWUC()<CR>
+
 function! s:updateWUC()
 	if exists("b:hlwuc")
 		if b:hlwuc > 1
@@ -747,10 +748,10 @@ function! s:updateWUC()
 	else
 		let hl = "Underlined"
 	endif
-	let str = "\\<".escape(expand("<cword>"), "\\")."\\>"
-	let b:hlwuc = matchadd(hl, str)
-	"echom str
+	let l:str = "\\<".escape(expand("<cword>"), "\\")."\\>"
+	let b:hlwuc = matchadd(hl, l:str)
 endfunc
+
 function! s:toggleWUC()
 	augroup hlwuc
 	if exists("b:hlwuc")
@@ -760,11 +761,12 @@ function! s:toggleWUC()
 		end
 		unlet b:hlwuc
 	else
-		call <SID>updateWUC()
 		autocmd CursorMoved <buffer> call <SID>updateWUC()
 		autocmd CursorMovedI <buffer> call <SID>updateWUC()
+		call <SID>updateWUC()
 	endif
 	augroup END
+	redraw
 endfunction
 
 " Autosave when vim loses focus :)
