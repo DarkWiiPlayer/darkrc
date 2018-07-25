@@ -1005,3 +1005,37 @@ function! s:init_html_file()
 	inoremap <buffer> <C-space> <C-o>""ciw<<C-o>""p><C-o>m'</<C-o>""p><C-o>`'<C-o>l
 	inoremap <buffer> <C-CR> <C-o>""diw<C-o>"_cc<<C-o>""p><C-o>o</<C-o>""p><C-o>O
 endfunction
+
+" --- Moonscript Stuff ---
+
+augroup MOON
+	au!
+	au FileType moon nnoremap <buffer> <F8> :ToggleAutoMoonLocal<CR>
+	au BufWritePost *.moon call <SID>automoon()
+augroup END
+com! ToggleAutoMoon echo <SID>toggleautomoon()
+com! ToggleAutoMoonLocal echo <SID>toggleautomoonlocal()
+function! s:automoon()
+	if exists('g:automoon') || exists('b:automoon')
+		silent !moonc %
+		redraw
+	end
+endfun
+function! s:toggleautomoon()
+	if exists('g:automoon')
+		unlet g:automoon
+		return 'Automoon: off'
+	else
+		let g:automoon=1
+		return 'Automoon: on'
+	end
+endfun
+function! s:toggleautomoonlocal()
+	if exists('b:automoon')
+		unlet b:automoon
+		return 'Local Automoon: off'
+	else
+		let b:automoon=1
+		return 'Local Automoon: on'
+	end
+endfun
