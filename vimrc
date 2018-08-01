@@ -518,6 +518,7 @@ command! GitLast call <sid>git_last() | call s:git_info()
 command! GitInfo call <sid>git_info()
 command! -nargs=1 GitCheckout call <sid>file_at_revision(<f-args>)
 command! -nargs=? GitCompare call <sid>git_diff(<f-args>)
+command! GitRoot exec 'cd '.system('git rev-parse --show-toplevel')
 
 " === FILE STUFF ===
 
