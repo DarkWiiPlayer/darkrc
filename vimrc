@@ -68,8 +68,8 @@ set swapfile
 
 " Indentation, etc.
 set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+set shiftwidth=0 " Not needed
+set softtabstop=0 " Not needed
 set noexpandtab
 set smarttab
 set autoindent
