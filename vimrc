@@ -68,8 +68,8 @@ set swapfile
 
 " Indentation, etc.
 set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+set shiftwidth=0 " Not needed
+set softtabstop=0 " Not needed
 set noexpandtab
 set smarttab
 set autoindent
@@ -326,6 +326,9 @@ command! -range Count echo(<line2>-<line1>+1)
 command! Closeall bufdo bdelete
 command! Context bufdo bdelete | e .
 command! Kontext Context
+command! -range=% Numbers <line1>,<line2>
+			\s/^/\=printf("%0".printf("%f", floor(log10(<line2>)))."i", line("."))."\t"/
+			\ | noh
 
 command! L lopen | set number | set norelativenumber
 command! LAddLine call LocationAddLine(expand("%"), line("."), getline("."))
@@ -359,7 +362,24 @@ function! s:hex(...)
 endfunction
 command! -nargs=* Hex call <sid>hex(<q-args>)
 
-" === GIT STUFF === "
+command! -range=% LuaCompile <line1>,<line2>w !luac -l -p -
+
+"  ┌─────────────────┐
+"  └─┬─┬───┬─┬───┬─┬─┘
+"    │ │   │ │   │ │
+"    │ │   │ │   │ │
+"  ┌─┴─┴───┴─┴───┴─┴─┐
+" ┌┘    Git Stuff    └┐
+" └───────────────────┘
+
+function! s:gitroot()
+	let s:ret = substitute(system('git rev-parse --show-toplevel'), '\n\_.*', '', '')
+	if v:shell_error
+		throw s:ret
+	else
+		return s:ret
+	end
+endf
 
 function! s:git_history()
 	if exists("b:git_history")
@@ -510,14 +530,31 @@ function! s:git_blame()
 	keepjumps call setpos('.', [0, l:line, l:char, 0])
 endfun
 
-command! Blame call <sid>git_blame()
-command! GitNext call <sid>git_next() | call s:git_info()
+command! Blame try
+			\| call s:gitroot() | call <sid>git_blame()
+			\| catch | echo 'Not a git repo!'
+			\| endtry
+command! GitNext try
+			\| call s:gitroot() | call <sid>git_next() | call s:git_info()
+			\| catch | echo 'Not a git repo!'
+			\| endtry
 command! GitPrev call <sid>git_prev() | call s:git_info()
 command! GitFirst call <sid>git_first() | call s:git_info()
 command! GitLast call <sid>git_last() | call s:git_info()
 command! GitInfo call <sid>git_info()
 command! -nargs=1 GitCheckout call <sid>file_at_revision(<f-args>)
-command! -nargs=? GitCompare call <sid>git_diff(<f-args>)
+command! -nargs=? GitCompare try
+			\| call s:gitroot() | call <sid>git_diff(<f-args>)
+			\| catch | echo 'Not a git repo!' 
+			\| endtry
+command! Uncommited try
+			\| call s:gitroot() | call <sid>git_diff()
+			\| catch | echo 'Not a git repo!' 
+			\| endtry
+command! GitRoot try
+			\| echo <sid>gitroot() 
+			\| catch | echo 'Not a git repository'
+			\| endtry
 
 " === FILE STUFF ===
 
@@ -736,6 +773,7 @@ digraph ss 223
 command! HLProgress syntax match Comment /\_.*\ze\n.*\%#/
 
 nnoremap <leader>h :call <SID>toggleWUC()<CR>
+
 function! s:updateWUC()
 	if exists("b:hlwuc")
 		if b:hlwuc > 1
@@ -747,10 +785,10 @@ function! s:updateWUC()
 	else
 		let hl = "Underlined"
 	endif
-	let str = "\\<".escape(expand("<cword>"), "\\")."\\>"
-	let b:hlwuc = matchadd(hl, str)
-	"echom str
+	let l:str = "\\<".escape(expand("<cword>"), "\\")."\\>"
+	let b:hlwuc = matchadd(hl, l:str)
 endfunc
+
 function! s:toggleWUC()
 	augroup hlwuc
 	if exists("b:hlwuc")
@@ -760,11 +798,12 @@ function! s:toggleWUC()
 		end
 		unlet b:hlwuc
 	else
-		call <SID>updateWUC()
 		autocmd CursorMoved <buffer> call <SID>updateWUC()
 		autocmd CursorMovedI <buffer> call <SID>updateWUC()
+		call <SID>updateWUC()
 	endif
 	augroup END
+	redraw
 endfunction
 
 " Autosave when vim loses focus :)
@@ -1003,3 +1042,37 @@ function! s:init_html_file()
 	inoremap <buffer> <C-space> <C-o>""ciw<<C-o>""p><C-o>m'</<C-o>""p><C-o>`'<C-o>l
 	inoremap <buffer> <C-CR> <C-o>""diw<C-o>"_cc<<C-o>""p><C-o>o</<C-o>""p><C-o>O
 endfunction
+
+" --- Moonscript Stuff ---
+
+augroup MOON
+	au!
+	au FileType moon nnoremap <buffer> <F8> :ToggleAutoMoonLocal<CR>
+	au BufWritePost *.moon call <SID>automoon()
+augroup END
+com! ToggleAutoMoon echo <SID>toggleautomoon()
+com! ToggleAutoMoonLocal echo <SID>toggleautomoonlocal()
+function! s:automoon()
+	if exists('g:automoon') || exists('b:automoon')
+		silent !moonc %
+		redraw
+	end
+endfun
+function! s:toggleautomoon()
+	if exists('g:automoon')
+		unlet g:automoon
+		return 'Automoon: off'
+	else
+		let g:automoon=1
+		return 'Automoon: on'
+	end
+endfun
+function! s:toggleautomoonlocal()
+	if exists('b:automoon')
+		unlet b:automoon
+		return 'Local Automoon: off'
+	else
+		let b:automoon=1
+		return 'Local Automoon: on'
+	end
+endfun
