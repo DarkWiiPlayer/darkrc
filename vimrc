@@ -364,6 +364,15 @@ command! -nargs=* Hex call <sid>hex(<q-args>)
 
 " === GIT STUFF === "
 
+function! s:gitroot()
+	let s:ret = substitute(system('git rev-parse --show-toplevel'), '\n\_.*', '', '')
+	if v:shell_error
+		throw s:ret
+	else
+		return s:ret
+	end
+endf
+
 function! s:git_history()
 	if exists("b:git_history")
 		if b:git_history[0]+10 > localtime()
@@ -513,15 +522,31 @@ function! s:git_blame()
 	keepjumps call setpos('.', [0, l:line, l:char, 0])
 endfun
 
-command! Blame call <sid>git_blame()
-command! GitNext call <sid>git_next() | call s:git_info()
+command! Blame try
+			\| call s:gitroot() | call <sid>git_blame()
+			\| catch | echo 'Not a git repo!'
+			\| endtry
+command! GitNext try
+			\| call s:gitroot() | call <sid>git_next() | call s:git_info()
+			\| catch | echo 'Not a git repo!'
+			\| endtry
 command! GitPrev call <sid>git_prev() | call s:git_info()
 command! GitFirst call <sid>git_first() | call s:git_info()
 command! GitLast call <sid>git_last() | call s:git_info()
 command! GitInfo call <sid>git_info()
 command! -nargs=1 GitCheckout call <sid>file_at_revision(<f-args>)
-command! -nargs=? GitCompare call <sid>git_diff(<f-args>)
-command! GitRoot exec 'cd '.system('git rev-parse --show-toplevel')
+command! -nargs=? GitCompare try
+			\| call s:gitroot() | call <sid>git_diff(<f-args>)
+			\| catch | echo 'Not a git repo!' 
+			\| endtry
+command! Uncommited try
+			\| call s:gitroot() | call <sid>git_diff()
+			\| catch | echo 'Not a git repo!' 
+			\| endtry
+command! GitRoot try
+			\| echo <sid>gitroot() 
+			\| catch | echo 'Not a git repository'
+			\| endtry
 
 " === FILE STUFF ===
 
