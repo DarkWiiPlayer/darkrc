@@ -362,6 +362,8 @@ function! s:hex(...)
 endfunction
 command! -nargs=* Hex call <sid>hex(<q-args>)
 
+command! -range=% LuaCompile <line1>,<line2>w !luac -l -p -
+
 "  ┌─────────────────┐
 "  └─┬─┬───┬─┬───┬─┬─┘
 "    │ │   │ │   │ │
