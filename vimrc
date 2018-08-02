@@ -326,6 +326,9 @@ command! -range Count echo(<line2>-<line1>+1)
 command! Closeall bufdo bdelete
 command! Context bufdo bdelete | e .
 command! Kontext Context
+command! -range=% Numbers <line1>,<line2>
+			\s/^/\=printf("%0".printf("%f", floor(log10(<line2>)))."i", line("."))."\t"/
+			\ | noh
 
 command! L lopen | set number | set norelativenumber
 command! LAddLine call LocationAddLine(expand("%"), line("."), getline("."))
