@@ -362,7 +362,13 @@ function! s:hex(...)
 endfunction
 command! -nargs=* Hex call <sid>hex(<q-args>)
 
-" === GIT STUFF === "
+"  ┌─────────────────┐
+"  └─┬─┬───┬─┬───┬─┬─┘
+"    │ │   │ │   │ │
+"    │ │   │ │   │ │
+"  ┌─┴─┴───┴─┴───┴─┴─┐
+" ┌┘    Git Stuff    └┐
+" └───────────────────┘
 
 function! s:gitroot()
 	let s:ret = substitute(system('git rev-parse --show-toplevel'), '\n\_.*', '', '')
