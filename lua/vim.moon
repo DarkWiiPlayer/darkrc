@@ -37,8 +37,13 @@ column = (col) ->
 			print "├─"..string.rep("─",width).."─┤"
 	print "└─"..string.rep("─",width).."─┘"
 
+match_all = (str, pat, init=0) ->
+	s,e = str\find(pat, init)
+	if s then
+		return str\sub(s,e), match_all(str, pat, e+1)
+
 box = (box) ->
-	column { box }
+	column { match_all box, '[^\n]+' }
 
 CLASS = [[
 print vim.col {
