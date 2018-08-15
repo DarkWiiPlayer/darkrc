@@ -70,7 +70,7 @@ box = (box) -> tab{{box}}
 
 CLASS = [[
 print vim.col {
-	{ 'Class' } -- Title
+	'Class' -- Title
 	{
 		-- Members
 	}
