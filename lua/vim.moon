@@ -10,6 +10,10 @@ match_all = (str, pat, init=0) ->
 		return str\sub(s,e), match_all(str, pat, e+1)
 match_lines = (str) -> match_all(str, '[^\n]+')
 
+-- ┌──────────────────┐
+-- │ Actual Functions │
+-- └──────────────────┘
+
 tree = (tab, pref='') ->
 	print tab.title and tab.title or '┐'
 
@@ -26,10 +30,6 @@ tree = (tab, pref='') ->
 
 pad = (str='', len) ->
 	str..string.rep(" ", len-#str)
-
--- ┌──────────────────┐
--- │ Actual Functions │
--- └──────────────────┘
 
 import max from math
 
