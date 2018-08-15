@@ -80,19 +80,18 @@ print vim.col {
 }
 ]]
 
-draw = ->
-	for line in * {
-		{ "─", "│", "┼" }
-		{ "┌", "┐", "└", "┘" }
-		{ "├", "┤", "┬", "┴" }
-    { "╼", "╽", "╾", "╾" }
-	}
-		print table.concat(line, " ")
+DRAW = [[
+ ─ │ 
+┌ ┬ ┐
+├ ┼ ┤
+└ ┴ ┘
+╼ ╽ ╾ ╾
+]]
 
 
 {
-	:tree, :box, :draw, :tab, :col, :row
-	:CLASS
+	:tree, :box, :tab, :col, :row
+	:CLASS, :DRAW
 	-- Aliases
 	table: tab
 }
