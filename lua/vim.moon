@@ -69,6 +69,10 @@ row = (row) -> tab{row}
 box = (box) -> tab{{box}}
 
 line = (len=80) -> print string.rep('─', len)
+line2 = (len=80) ->
+	error('Length must be at least 2 characters', 2) if len < 2
+	print '┌'..string.rep('─', len-2)..'┐'
+	print '└'..string.rep('─', len-2)..'┘'
 
 CLASS = [[
 print vim.col {
@@ -92,7 +96,7 @@ DRAW = [[
 
 
 {
-	:tree, :box, :tab, :col, :row, :line
+	:tree, :box, :tab, :col, :row, :line, :line2
 	:CLASS, :DRAW
 	-- Aliases
 	table: tab
