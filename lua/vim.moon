@@ -68,6 +68,8 @@ col = (col) -> tab([{elem} for elem in *col])
 row = (row) -> tab{row}
 box = (box) -> tab{{box}}
 
+line = (len=80) -> print string.rep('─', len)
+
 CLASS = [[
 print vim.col {
 	'Class' -- Title
@@ -90,7 +92,7 @@ DRAW = [[
 
 
 {
-	:tree, :box, :tab, :col, :row
+	:tree, :box, :tab, :col, :row, :line
 	:CLASS, :DRAW
 	-- Aliases
 	table: tab
