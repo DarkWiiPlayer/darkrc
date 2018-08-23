@@ -261,6 +261,8 @@ function! MatchingLinesDict(pattern)
 	silent! exec "g/".a:pattern."/ call s:mld_helper(list, a:pattern)"
 	return list
 endfunc
+com! -nargs=1 List call setloclist(0, MatchingLinesDict(<f-args>)) 
+               \ | lopen
 
 function! LocationAddLineCol(filename, lnum, text, col)
 	call setloclist(0, [{'filename': a:filename, 'lnum': a:lnum, 'desc': a:text, 'col': a:col}], 'a')
