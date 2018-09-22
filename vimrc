@@ -617,7 +617,7 @@ command! -nargs=? Tempfile exec 'new '.tempname()  | set filetype=<args> | au Bu
 "        └──────────────────────────┘
 
 " --- F5 ---
-nnoremap <F5> :nnoremap <buffer> <F5>
+nnoremap <F5> :nnoremap <buffer> <F5> :
 
 let mapleader = "\\"
 
