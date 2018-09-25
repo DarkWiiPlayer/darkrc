@@ -75,7 +75,6 @@ set smarttab
 set autoindent
 set smartindent
 set smarttab
-set shiftwidth=2
 set gdefault
 
 set wrap
