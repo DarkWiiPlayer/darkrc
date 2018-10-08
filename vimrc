@@ -915,11 +915,6 @@ if has("autocmd")
 	" Also load indent files, to automatically do language-dependent indenting.
 	filetype plugin indent on
 
-	" Put these in an autocmd group, so that we can delete them easily.
-
-	" For all text files set 'textwidth' to 78 characters.
-	" autocmd FileType text setlocal textwidth=78
-
 	" When editing a file, always jump to the last known cursor position.
 	" Don't do it when the position is invalid or when inside an event handler
 	" (happens when dropping a file on gvim).
@@ -1080,3 +1075,12 @@ function! s:toggleautomoonlocal()
 		return 'Local Automoon: on'
 	end
 endfun
+
+" --- Markdown Stuff ---
+augroup markdown
+	autocmd!
+	autocmd FileType markdown call <SID>init_markdown_file()
+augroup END
+function! s:init_markdown_file()
+	set textwidth=80
+endfunction
