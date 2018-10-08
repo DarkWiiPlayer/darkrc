@@ -78,7 +78,6 @@ set smarttab
 set gdefault
 
 set wrap
-au BufEnter,BufRead * set linebreak
 set breakat=\ .,{
 set display+=lastline
 if v:version>=800
