@@ -322,7 +322,8 @@ endfun
 " === GENERAL COMMANDS ===
 
 " General Purpose
-command! -range Count echo(<line2>-<line1>+1)
+command! Modifiable setl modifiable!
+command! -range=% Count echo(<line2>-<line1>+1)
 command! Closeall bufdo bdelete
 command! Context bufdo bdelete | e .
 command! Kontext Context
