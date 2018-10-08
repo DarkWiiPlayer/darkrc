@@ -79,6 +79,7 @@ set gdefault
 
 set wrap
 set breakat=\ .,{
+au BufEnter,BufRead * set linebreak
 set display+=lastline
 if v:version>=800
 	set breakindent
