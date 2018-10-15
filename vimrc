@@ -607,7 +607,7 @@ function! s:snapshot()
 endfun
 command! Snapshot call <sid>snapshot()
 
-command! -nargs=? Scratch new | set buftype=nofile | set filetype=<args>
+command! -nargs=? Scratch enew | set buftype=nofile | set filetype=<args>
 command! -nargs=? Tempfile exec 'new '.tempname()  | set filetype=<args> | au BufDelete <buffer> call delete(expand('%'))
 
 "        ┌──────────────────────────┐
