@@ -307,12 +307,14 @@ endfunc
 
 function! ShiftMarker(m,n)
 	let [bufn,line,column,offset]=getpos("'".a:m)
-	call setpos("'".a:m,[bufn,line,column+a:n,offset])
+	call setpos("'".a:m,[bufn,line,column+(a:n),offset])
 endfunc
 
 function! ShiftSelection(n)
-	call ShiftMarker("<", a:n)
-	call ShiftMarker(">", a:n)
+	let [bufn_a,line_a,column_a,offset_a]=getpos("'>")
+	let [bufn_b,line_b,column_b,offset_b]=getpos("'<")
+	call setpos("'>",[bufn_a,line_a,column_a+(a:n),offset_a])
+	call setpos("'<",[bufn_b,line_b,column_b+(a:n),offset_b])
 endfunc
 
 " Auto-close quickfix list when leaving it
@@ -680,11 +682,11 @@ inoremap <C-Space> <C-[>0v$:<C-U>exec "'<,'>!".g:exe_prg<CR>
 vnoremap < <gv
 vnoremap > >gv
 
-vnoremap <leader>" <C-[>`>a"<C-o>`<"<C-[>:call ShiftSelection(1)<CR>gv
-vnoremap <leader>' <C-[>`>a'<C-o>`<'<C-[>:call ShiftSelection(1)<CR>gv
-vnoremap <leader>( <C-[>`>a)<C-o>`<(<C-[>:call ShiftSelection(1)<CR>gv
-vnoremap <leader>[ <C-[>`>a]<C-o>`<[<C-[>:call ShiftSelection(1)<CR>gv
-vnoremap <leader>{ <C-[>`>a}<C-o>`<{<C-[>:call ShiftSelection(1)<CR>gv
+vnoremap <leader>" <C-[>`>a"<C-o>`<"<C-[>:call ShiftSelection(1)<CR>`>l
+vnoremap <leader>' <C-[>`>a'<C-o>`<'<C-[>:call ShiftSelection(1)<CR>`>l
+vnoremap <leader>( <C-[>`>a)<C-o>`<(<C-[>:call ShiftSelection(1)<CR>`>l
+vnoremap <leader>[ <C-[>`>a]<C-o>`<[<C-[>:call ShiftSelection(1)<CR>`>l
+vnoremap <leader>{ <C-[>`>a}<C-o>`<{<C-[>:call ShiftSelection(1)<CR>`>l
 
 nnoremap <S-l> :L<cr>
 noremap <space> :
