@@ -673,7 +673,7 @@ vnoremap <C-CR> ""y<CR>
 
 let g:mooncompile = "!moonc ".expand("<sfile>:p:h")."/lua"
 command! Mooncompile silent exec g:mooncompile
-let g:exe_prg = 'moonc -- \| lua -e "package.path=package.path..[[;'.expand('<sfile>:p:h').'\lua\?.lua]];vim=require[[vim]]" -'
+let g:exe_prg = 'moonc -- | lua -e "package.path=package.path..[[;'.expand('<sfile>:p:h').'/lua/?.lua]];vim=require[[vim]]" -'
 vnoremap <CR> :<C-U>exec "'<,'>!".g:exe_prg<CR>
 inoremap <C-Space> <C-[>0v$:<C-U>exec "'<,'>!".g:exe_prg<CR>
 
