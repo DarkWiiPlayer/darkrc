@@ -41,25 +41,18 @@ if !exists('g:colors_name')
   end
 end
 
-function! SetFont()
-	if exists("g:font_temp") && exists("g:font_size")
-		let &guifont=substitute(&guifont, g:font_temp, g:font_size, "g")
-	end
-endfun
-function! SetFontSize(size)
-	let g:font_size=a:size
-	call SetFont()
-endfun
-
-let s:fontsize = 13
-
 if has("unix")
 elseif has("win32")
   let g:font_temp=".*:h\\zs\\d\\+"
-  let g:font_size=s:fontsize
   set linespace=0
-  call SetFont()
 end
+let s:fontsize = match(&guifont, "")
+
+function! SetFontSize(size)
+	if exists("g:font_temp")
+		let &guifont=substitute(&guifont, g:font_temp, a:size, "g")
+	end
+endfun
 
 command! -nargs=1 SetFontSize call SetFontSize(<f-args>)
 command! ResetFontSize call SetFontSize(s:fontsize)
