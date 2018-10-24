@@ -42,6 +42,7 @@ if !exists('g:colors_name')
 end
 
 if has("unix")
+  let g:font_temp="\\\\\\@<! \\zs\\d\\+"
 elseif has("win32")
   let g:font_temp=".*:h\\zs\\d\\+"
   set linespace=0
