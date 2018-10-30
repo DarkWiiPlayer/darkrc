@@ -500,7 +500,7 @@ endfun
 
 function! s:git_diff(...)
 	if a:0
-		split
+		vert bot split
 		call s:file_at_revision(a:1)
 		diffthis
 		au BufUnload <buffer> diffoff!
