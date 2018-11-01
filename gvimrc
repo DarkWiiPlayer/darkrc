@@ -11,17 +11,17 @@ com! Dark silent! let g:colors_name_bak = g:colors_name
       \ | let g:arcadia_Daybreak=0
       \ | let g:arcadia_Midnight=1
       \ | let g:alduin_Shout_Become_Ethereal=1
-      \ | set bg=dark
       \ | silent! exec "colorscheme ".g:colors_name_bak
       \ | silent! delc PaperColor
+      \ | set bg=dark
 com! Light silent! let g:colors_name_bak = g:colors_name
       \ | let ayucolor="light"
       \ | let g:arcadia_Daybreak=1
       \ | let g:arcadia_Midnight=0
       \ | let g:alduin_Shout_Become_Ethereal=0
-      \ | set bg=light
       \ | silent! exec "colorscheme ".g:colors_name_bak
       \ | silent! delc PaperColor
+      \ | set bg=light
 
 com! Ayu colorscheme ayu
 com! Arcadia colorscheme arcadia
