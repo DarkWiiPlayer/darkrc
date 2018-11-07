@@ -6,7 +6,6 @@ export PATH=~/.bin:$PATH
 alias setclip='xclip -selection c'
 alias getclip='xclip -selection clipboard -o'
 alias wgetclip='wget `xclip -selection clipboard -o`'
-alias untar='tar -xf'
 alias lynx='lynx --accept_all_cookies'
 alias push='clipstack -push'
 alias pop='clipstack -pop'
