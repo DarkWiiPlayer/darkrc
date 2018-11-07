@@ -6,7 +6,6 @@ export PATH=~/.bin:$PATH
 alias setclip='xclip -selection c'
 alias getclip='xclip -selection clipboard -o'
 alias wgetclip='wget `xclip -selection clipboard -o`'
-alias now='date -I'
 export HISTIGNORE='ls:clear:history'
 alias cmatrix='cmatrix -b -C `r.choose green red blue white yellow cyan magenta black`'
 alias youtube-mp3='/home/darkwiiplayer/.local/bin/youtube-dl --extract-audio --audio-format mp3'
