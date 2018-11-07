@@ -1,4 +1,3 @@
-
 alias hello='echo "Hello :)"'
 alias rmd='rm --recursive'
 alias temp='watch -t -d -n 1 sensors -A coretemp-isa-0000'
@@ -27,6 +26,8 @@ alias pi='ssh pi -t ''tmux a -t home \|\| tmux new-session -s home'''
 alias server='ssh server -t ''tmux a -t home \|\| tmux new-session -s home'''
 alias ltc='getclip | luac -l -'
 alias sign='gpg --armor --no-version --detach-sign --local-user darkwiiplayer'
+alias workspace='cd ~/workspace'
+
 stty -ixon
 
 # Enable Vi editing mode
