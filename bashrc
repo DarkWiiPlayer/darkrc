@@ -1,5 +1,4 @@
 alias hello='echo "Hello :)"'
-alias rmd='rm --recursive'
 alias temp='watch -t -d -n 1 sensors -A coretemp-isa-0000'
 alias w='watch -t -d -n 1'
 alias freq='watch -t -d -n 1 "cpufreq-info -c 0 -f; cpufreq-info -c 1 -f"'
