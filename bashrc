@@ -32,14 +32,22 @@ stty -ixon
 # Enable Vi editing mode
 set -o vi
 
-git__branch () {
+git__prompt () {
 	git rev-parse --show-toplevel > /dev/null 2>&1
 	if [ $? = 0 ]
 	then
 		branch=`git branch | grep -Po '(?<=\* )[[:alnum:]]*'`
-		count=`git status --short 2>/dev/null | grep -Po '^\s*M' | wc -l`
-		diff=`git branch -vv | sed '/.*\[[^ ]* .*\].*/!d' | sed 's/.*\[[^ ]* \(.*\)\].*/\1/' | sed 's/\([^ ]\)[^ ]* \(.*\)/\2\\1/'`
-		g='\033[01;30m'
+		modif=`git status --short 2>/dev/null | grep -Po '^\s*M' | wc -l`
+		untracked=`git status --short 2>/dev/null | grep -Po '^\?\?' | wc -l`
+		added=`git status --short 2>/dev/null | grep -Po '^\s*A' | wc -l`
+		stat=`git branch -vv | grep -P '^\*' | grep -Po '\[.*\]'`
+		ahead=`echo $stat | grep -Po '(?<=ahead )\d*'`
+		behind=`echo $stat | grep -Po '(?<=behind )\d*'`
+		gray='\033[01;30m'
+		blue='\033[01;34m'
+		yellow='\033[01;33m'
+		red='\033[01;31m'
+		green='\033[01;32m'
 
 		if [ $branch = 'master' ]
 		then
@@ -48,23 +56,35 @@ git__branch () {
 			echo -ne " \033[01;32m$branch"
 		fi
 
-		if [ $count = 0 ]
+		if [ $modif = 0 ]
 		then
-			echo -ne "$g:\033[01;36m$count"
+			echo -ne "$gray:\033[01;36m$modif" # No modified files
 		else
-			echo -ne "$g:\033[01;33m$count"
+			echo -ne "$gray:\033[01;33m$modif" # Modified files
 		fi
-		if [ ${diff: -1} = "a" ]
+		if [ $added -ne 0 ]
 		then
-			echo -ne "$g:\033[01;33m${diff}"
-		elif [ ${diff: -1} = "a" ]
+			echo -ne "${green}S"
+		fi
+		if [ $untracked -ne 0 ]
 		then
-			echo -ne "$g:\033[01;34m${diff}"
+			echo -ne "${red}*"
+		fi
+
+		if [ -z $ahead ] && [ -z $behind ]
+		then
+			echo -ne "" # Nothing to do here
+		elif [ -z $ahead ]
+		then
+			echo -ne "${gray}:${yellow}↓${behind}"
+		elif [ -z $behind ]
+		then
+			echo -ne "${gray}:${blue}↑${ahead}"
 		else
-			echo -ne "$g:\033[01;31m${diff}"
+			echo -ne "${gray}:${red}↓${behind}↑${ahead}"
 		fi
 	fi
 }
 
-PS1='\[\033[00;34m\]┌─╼ \[\033[00;33m\]\$ \[\033[01;35m\]\u\[\033[00;34m\]@\[\033[01;35m\]\h\[\033[01;34m\] `date +%d.%m.%y` \[\033[01;35m\]\w`git__branch`\[\033[00m\]
+PS1='\[\033[00;34m\]┌─╼ \[\033[00;33m\]\$ \[\033[01;35m\]\u\[\033[00;34m\]@\[\033[01;35m\]\h\[\033[01;34m\] `date +%d.%m.%y` \[\033[01;35m\]\w`git__prompt`\[\033[00m\]
 \[\033[00;34m\]└╼ \[\033[00m\]'
