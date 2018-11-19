@@ -1,20 +1,44 @@
-"  ┌─────────────────┐
-"  └─┬─┬───┬─┬───┬─┬─┘
-"    │ │   │ │   │ │
-"    │ │   │ │   │ │
-"  ┌─┴─┴───┴─┴───┴─┴─┐
-" ┌┘    Git Stuff    └┐
-" └───────────────────┘
+"  ┌─────────────────┐  "
+"  └─┬─┬───┬─┬───┬─┬─┘  "
+"    │ │   │ │   │ │    "
+"    │ │   │ │   │ │    "
+"  ┌─┴─┴───┴─┴───┴─┴─┐  "
+" ┌┘    Git Stuff    └┐ "
+" └───────────────────┘ "
 
+" Find the root of a git repository
 function! s:gitroot()
-	let s:ret = substitute(system('git rev-parse --show-toplevel'), '\n\_.*', '', '')
+	let l:ret = substitute(system('git rev-parse --show-toplevel'), '\n\_.*', '', '')
 	if v:shell_error
-		throw s:ret
+		throw l:ret
 	else
-		return s:ret
+		return l:ret
 	end
 endf
 
+function! s:git_root(path)
+	let l:path = fnamemodify(a:path, ':p')
+	let l:wd = getcwd()
+	if isdirectory(l:path)
+		exec 'cd '.a:path
+	elseif filereadable(l:path)
+		exec 'cd '.fnamemodify(l:path, ':h')
+	else
+		return 0
+	endif
+	let l:ret = substitute(system('git rev-parse --show-toplevel'), '\n\_.*', '', '')
+	if v:shell_error
+		echom l:ret
+		exec 'cd '.l:wd
+		return 0
+	else
+		exec 'cd '.l:wd
+		return l:ret
+	end
+	exec 'cd '.l:wd
+endf
+
+" Returns an array containing chronologically sorted commits
 function! s:git_history()
 	if exists("b:git_history")
 		if b:git_history[0]+10 > localtime()
@@ -36,20 +60,16 @@ endfun
 
 function! s:git_first()
 	if &modified
-		echo "Save your changes first!"
-		return
+		throw "File has unsaved modifications!"
 	end
-	let l:history = s:git_history()
-	call s:file_at_revision(get(l:history, -1))
+	call s:file_at_revision(get(s:git_history(), -1))
 endfun
 
 function! s:git_last()
 	if &modified
-		echo "Save your changes first!"
-		return
+		throw "File has unsaved modifications!"
 	end
-	let l:history = s:git_history()
-	call s:file_at_revision(get(l:history, 1, "HEAD"))
+	call s:file_at_revision(get(s:git_history(), 1, "HEAD"))
 endfun
 
 function! s:git_info()
@@ -73,8 +93,7 @@ function! s:git_next()
 	end
 	let l:new_revision = get(l:history, l:idx-1, "LAST")
 	if l:new_revision=="LAST"
-		echo "Already at latest revision! ".l:new_revision
-		return
+		throw "Already at last revision!"
 	else
 		call s:file_at_revision(l:new_revision)
 	end
@@ -93,8 +112,7 @@ function! s:git_prev()
 		let l:new_revision = get(l:history, l:idx+1, "FIRST")
 	end
 	if l:new_revision=="FIRST"
-		echo "Already at earliest revision! ".l:new_revision
-		return
+		throw "Already at earliest revision!"
 	else
 		call s:file_at_revision(l:new_revision)
 	end
