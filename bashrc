@@ -49,6 +49,10 @@ git__prompt () {
 		red='\033[01;31m'
 		green='\033[01;32m'
 
+		if [ -z $branch ]
+		then
+			branch='#'`git rev-parse --short HEAD`
+		fi
 		if [ $branch = 'master' ]
 		then
 			echo -ne " \033[01;34m$branch"
