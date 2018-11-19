@@ -55,9 +55,12 @@ git__prompt () {
 		fi
 		if [ $branch = 'master' ]
 		then
-			echo -ne " \033[01;34m$branch"
+			echo -ne " $blue$branch"
+		elif [ ${branch:0:1} = '#' ]
+		then
+			echo -ne " $red$branch"
 		else
-			echo -ne " \033[01;32m$branch"
+			echo -ne " $yellow$branch"
 		fi
 
 		if [ $modif = 0 ]
