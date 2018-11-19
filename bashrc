@@ -1,4 +1,3 @@
-
 alias hello='echo "Hello :)"'
 alias rmd='rm --recursive'
 alias temp='watch -t -d -n 1 sensors -A coretemp-isa-0000'
@@ -40,6 +39,7 @@ git__prompt () {
 		modif=`git status --short 2>/dev/null | grep -Po '^\s*M' | wc -l`
 		untracked=`git status --short 2>/dev/null | grep -Po '^\?\?' | wc -l`
 		added=`git status --short 2>/dev/null | grep -Po '^\s*A' | wc -l`
+		deleted=`git status --short 2>/dev/null | grep -Po '^\s*D' | wc -l`
 		stat=`git branch -vv | grep -P '^\*' | grep -Po '\[.*\]'`
 		ahead=`echo $stat | grep -Po '(?<=ahead )\d*'`
 		behind=`echo $stat | grep -Po '(?<=behind )\d*'`
@@ -69,6 +69,10 @@ git__prompt () {
 		if [ $added -ne 0 ]
 		then
 			echo -ne "${green}+$added"
+		fi
+		if [ $deleted -ne 0 ]
+		then
+			echo -ne "${red}-$deleted"
 		fi
 		if [ $untracked -ne 0 ]
 		then
