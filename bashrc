@@ -83,9 +83,9 @@ git__prompt () {
 			echo -ne "${gray}:${yellow}↓${behind}"
 		elif [ -z $behind ]
 		then
-			echo -ne "${gray}:${blue}↑${ahead}"
+			echo -ne "${gray}:${green}↑${ahead}"
 		else
-			echo -ne "${gray}:${red}↓${behind}↑${ahead}"
+			echo -ne "${gray}:${red}↓${behind}${yellow}↑${ahead}"
 		fi
 	fi
 }
