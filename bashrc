@@ -32,5 +32,39 @@ stty -ixon
 # Enable Vi editing mode
 set -o vi
 
-PS1='\[\033[00;34m\]┌─╼ \[\033[00;33m\]\$ \[\033[01;35m\]\u\[\033[00;34m\]@\[\033[01;35m\]\h\[\033[01;34m\] `date +%d.%m.%y` \[\033[01;35m\]\w\[\033[00m\]
+git__branch () {
+	git rev-parse --show-toplevel > /dev/null 2>&1
+	if [ $? = 0 ]
+	then
+		branch=`git branch | grep -Po '(?<=\* )[[:alnum:]]*'`
+		count=`git status --short 2>/dev/null | grep -Po '^\s*M' | wc -l`
+		diff=`git branch -vv | sed '/.*\[[^ ]* .*\].*/!d' | sed 's/.*\[[^ ]* \(.*\)\].*/\1/' | sed 's/\([^ ]\)[^ ]* \(.*\)/\2\\1/'`
+		g='\033[01;30m'
+
+		if [ $branch = 'master' ]
+		then
+			echo -ne " \033[01;34m$branch"
+		else
+			echo -ne " \033[01;32m$branch"
+		fi
+
+		if [ $count = 0 ]
+		then
+			echo -ne "$g:\033[01;36m$count"
+		else
+			echo -ne "$g:\033[01;33m$count"
+		fi
+		if [ ${diff: -1} = "a" ]
+		then
+			echo -ne "$g:\033[01;33m${diff}"
+		elif [ ${diff: -1} = "a" ]
+		then
+			echo -ne "$g:\033[01;34m${diff}"
+		else
+			echo -ne "$g:\033[01;31m${diff}"
+		fi
+	fi
+}
+
+PS1='\[\033[00;34m\]┌─╼ \[\033[00;33m\]\$ \[\033[01;35m\]\u\[\033[00;34m\]@\[\033[01;35m\]\h\[\033[01;34m\] `date +%d.%m.%y` \[\033[01;35m\]\w`git__branch`\[\033[00m\]
 \[\033[00;34m\]└╼ \[\033[00m\]'
