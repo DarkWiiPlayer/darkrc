@@ -58,13 +58,13 @@ git__prompt () {
 
 		if [ $modif = 0 ]
 		then
-			echo -ne "$gray:\033[01;36m$modif" # No modified files
+			echo -ne # "$gray:\033[01;36m$modif" # No modified files
 		else
 			echo -ne "$gray:\033[01;33m$modif" # Modified files
 		fi
 		if [ $added -ne 0 ]
 		then
-			echo -ne "${green}S"
+			echo -ne "${green}+$added"
 		fi
 		if [ $untracked -ne 0 ]
 		then
