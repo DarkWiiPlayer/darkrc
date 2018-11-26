@@ -1,5 +1,15 @@
+# vim: set filetype=gitconfig :miv #
 [core]
 	editor = gvim -f
+[diff]
+	tool = gvim
+[difftool]
+	confirm = false
+	prompt = false
+[merge]
+	tool = gvimdiff3
+[push]
+	default = matching
 [alias]
 	adog = log --all --decorate --oneline --graph
   ten = log --all --decorate --oneline --graph -10
@@ -8,5 +18,3 @@
 [user]
 	name = DarkWiiPlayer
 	email = darkwiiplayer@hotmail.com
-[merge]
-	tool = gvimdiff3
