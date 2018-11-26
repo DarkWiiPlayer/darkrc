@@ -23,6 +23,8 @@ stty -ixon
 # Enable Vi editing mode
 set -o vi
 
+export LESSCHARSET=utf-8
+
 git__prompt () {
 	git rev-parse --show-toplevel > /dev/null 2>&1
 	if [ $? = 0 ]
