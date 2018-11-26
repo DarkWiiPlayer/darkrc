@@ -1,3 +1,4 @@
+# vim: set noexpandtab :miv #
 alias hello='echo "Hello :)"'
 alias temp='watch -t -d -n 1 sensors -A coretemp-isa-0000'
 alias w='watch -t -d -n 1'
@@ -29,13 +30,13 @@ git__prompt () {
 	git rev-parse --show-toplevel > /dev/null 2>&1
 	if [ $? = 0 ]
 	then
-    status=`git status --short 2>/dev/null`
+		status=`git status --short 2>/dev/null`
 		branch=`git branch | grep -Po '(?<=\* )[[:alnum:]]*'`
 		modif=`echo "$status" | grep -Po '^\s*M' | wc -l`
 		untracked=`echo "$status" | grep -Po '^\?\?' | wc -l`
 		added=`echo "$status" | grep -Po '^\s*[A]' | wc -l`
 		deleted=`echo "$status" | grep -Po '^\s*[D]' | wc -l`
-    renamed=`echo "$status" | grep -Eo '^\s*R' | wc -l`
+		renamed=`echo "$status" | grep -Eo '^\s*R' | wc -l`
 		stat=`git branch -vv | grep -P '^\*' | grep -Po '\[.*\]'`
 		ahead=`echo $stat | grep -Po '(?<=ahead )\d*'`
 		behind=`echo $stat | grep -Po '(?<=behind )\d*'`
@@ -45,7 +46,7 @@ git__prompt () {
 		red='\033[01;31m'
 		green='\033[01;32m'
 
-    # SYNC
+		# SYNC
 		if [ -z $ahead ] && [ -z $behind ]
 		then
 			echo -ne "" # Nothing to do here
@@ -59,22 +60,28 @@ git__prompt () {
 			echo -ne " ${red}↓${behind}${yellow}↑${ahead}"
 		fi
 
-    # BRANCH
+		# BRANCH
 		if [ -z $branch ]
 		then
-			branch='#'`git rev-parse --short HEAD`
+			head=`git rev-parse --short HEAD 2>&1`
+			if [ "$head" == ".*fatal.*" ]
+			then
+				branch='#'"$head"
+			else
+				branch='{no commits}'
+			fi
 		fi
-		if [ $branch = 'master' ]
+		if [ "$branch" = 'master' ]
 		then
 			echo -ne " $blue$branch"
-		elif [ ${branch:0:1} = '#' ]
+		elif [ "${branch:0:1}" = '#' ]
 		then
 			echo -ne " $red$branch"
 		else
 			echo -ne " $yellow$branch"
 		fi
 
-    # CHANGES
+		# CHANGES
 		if [ $modif = 0 ]
 		then
 			echo -ne # "${gray}:\033[01;36m$modif" # No modified files
