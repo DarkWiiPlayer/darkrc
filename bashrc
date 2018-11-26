@@ -29,11 +29,13 @@ git__prompt () {
 	git rev-parse --show-toplevel > /dev/null 2>&1
 	if [ $? = 0 ]
 	then
+    status=`git status --short 2>/dev/null`
 		branch=`git branch | grep -Po '(?<=\* )[[:alnum:]]*'`
-		modif=`git status --short 2>/dev/null | grep -Po '^\s*M' | wc -l`
-		untracked=`git status --short 2>/dev/null | grep -Po '^\?\?' | wc -l`
-		added=`git status --short 2>/dev/null | grep -Po '^\s*A' | wc -l`
-		deleted=`git status --short 2>/dev/null | grep -Po '^\s*D' | wc -l`
+		modif=`echo "$status" | grep -Po '^\s*M' | wc -l`
+		untracked=`echo "$status" | grep -Po '^\?\?' | wc -l`
+		added=`echo "$status" | grep -Po '^\s*[A]' | wc -l`
+		deleted=`echo "$status" | grep -Po '^\s*[D]' | wc -l`
+    renamed=`echo "$status" | grep -Eo '^\s*R' | wc -l`
 		stat=`git branch -vv | grep -P '^\*' | grep -Po '\[.*\]'`
 		ahead=`echo $stat | grep -Po '(?<=ahead )\d*'`
 		behind=`echo $stat | grep -Po '(?<=behind )\d*'`
@@ -43,6 +45,21 @@ git__prompt () {
 		red='\033[01;31m'
 		green='\033[01;32m'
 
+    # SYNC
+		if [ -z $ahead ] && [ -z $behind ]
+		then
+			echo -ne "" # Nothing to do here
+		elif [ -z $ahead ]
+		then
+			echo -ne " ${yellow}↓${behind}"
+		elif [ -z $behind ]
+		then
+			echo -ne " ${green}↑${ahead}"
+		else
+			echo -ne " ${red}↓${behind}${yellow}↑${ahead}"
+		fi
+
+    # BRANCH
 		if [ -z $branch ]
 		then
 			branch='#'`git rev-parse --short HEAD`
@@ -57,36 +74,28 @@ git__prompt () {
 			echo -ne " $yellow$branch"
 		fi
 
+    # CHANGES
 		if [ $modif = 0 ]
 		then
-			echo -ne # "$gray:\033[01;36m$modif" # No modified files
+			echo -ne # "${gray}:\033[01;36m$modif" # No modified files
 		else
-			echo -ne "$gray:\033[01;33m$modif" # Modified files
+			echo -ne "${gray}:\033[01;33m$modif" # Modified files
 		fi
 		if [ $added -ne 0 ]
 		then
-			echo -ne "${green}+$added"
+			echo -ne " ${green}+$added"
 		fi
 		if [ $deleted -ne 0 ]
 		then
-			echo -ne "${red}-$deleted"
+			echo -ne " ${red}-$deleted"
+		fi
+		if [ $renamed -ne 0 ]
+		then
+			echo -ne " ${yellow}$renamed→$renamed"
 		fi
 		if [ $untracked -ne 0 ]
 		then
-			echo -ne "${red}*"
-		fi
-
-		if [ -z $ahead ] && [ -z $behind ]
-		then
-			echo -ne "" # Nothing to do here
-		elif [ -z $ahead ]
-		then
-			echo -ne "${gray}:${yellow}↓${behind}"
-		elif [ -z $behind ]
-		then
-			echo -ne "${gray}:${green}↑${ahead}"
-		else
-			echo -ne "${gray}:${red}↓${behind}${yellow}↑${ahead}"
+			echo -ne " ${red}+$untracked"
 		fi
 	fi
 }
