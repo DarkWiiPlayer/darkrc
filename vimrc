@@ -545,8 +545,8 @@ vnoremap <C-d> :copy '><CR>
 nnoremap dx 0"_d$
 nnoremap dcx 0d$
 nnoremap <leader>: :let @* = @:<CR>
-nnoremap <expr> <S-r> ":%s/\\<".expand("<cword>")."\\>/"
-vnoremap <expr> <S-r> ":<C-u>%s/".VisualSelection()."/"
+nnoremap <expr> R ":%s/\\<\\(".expand("<cword>")."\\)\\>/"
+vnoremap <expr> R ":<C-u>%s/".VisualSelection()."/"
 " Put in new line with indentation
 nnoremap ]p :let [content, type]=
 		\[getreg(v:register), getregtype(v:register)] \|
