@@ -6,4 +6,4 @@ function finish {
 }
 trap finish EXIT
 trap finish TERM
-bash --init-file <(echo "source ~/.bashrc; pushd $scratch > /dev/null")
+exec bash --init-file <(echo "source ~/.bashrc; pushd $scratch > /dev/null")
