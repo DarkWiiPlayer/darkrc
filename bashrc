@@ -64,11 +64,11 @@ git__prompt () {
 		if [ -z $branch ]
 		then
 			head=`git rev-parse --short HEAD 2>&1`
-			if [ "$head" == ".*fatal.*" ]
+			if [[ "$head" =~ fatal* ]]
 			then
-				branch='#'"$head"
-			else
 				branch='{no commits}'
+			else
+				branch='#'"$head"
 			fi
 		fi
 		if [ "$branch" = 'master' ]
