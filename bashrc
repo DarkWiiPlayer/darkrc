@@ -31,7 +31,7 @@ git__prompt () {
 	if [ $? = 0 ]
 	then
 		status=`git status --short 2>/dev/null`
-		branch=`git branch | grep -Po '(?<=\* )[[:alnum:]]*'`
+		branch=`git branch | grep -Po '(?<=\* )[[:alnum:]_-]*'`
 		modif=`echo "$status" | grep -Po '^\s*M' | wc -l`
 		untracked=`echo "$status" | grep -Po '^\?\?' | wc -l`
 		added=`echo "$status" | grep -Po '^\s*[A]' | wc -l`
