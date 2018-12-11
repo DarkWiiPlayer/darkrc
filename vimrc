@@ -103,7 +103,15 @@ set timeoutlen=1200
 if has('unnamedplus') " Allow copying to and from OS clipboard
 	set clipboard=unnamedplus
 else
+	if has("unix")
+		autocmd VimLeave * call system("xsel -ib", getreg('*'))
+	end
 	set clipboard=unnamed
+end
+if has("unix")
+	autocmd VimLeave * call system(
+		\ 'echo -n '.shellescape(getreg('+')).' | xclip -selection clipboard'
+		\ )
 end
 
 " === GENERAL UTILITIES ===
