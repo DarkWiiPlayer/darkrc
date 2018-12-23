@@ -114,3 +114,15 @@ PS1c='\[\033[00;34m\]┌─╼ \[\033[00;33m\]\$ \[\033[01;35m\]\u`git__prompt` 
 \[\033[00;34m\]└╼ \[\033[00m\]'
 
 PS1=$PS1n
+
+cd() {
+	if [ -f .bashcdout ]
+	then
+		source .bashcdout
+	fi
+	builtin cd "$@" || return
+	if [ -f .bashcd ]
+	then
+		source .bashcd
+	fi
+}
