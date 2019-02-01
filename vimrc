@@ -450,6 +450,8 @@ nnoremap <leader>p :previous<CR>:args<CR>
 let g:jmp_dist = 8
 map <C-j> :exec "normal ".g:jmp_dist."j"<CR>
 map <C-k> :exec "normal ".g:jmp_dist."k"<CR>
+nnoremap <C-h> b
+nnoremap <C-l> e
 " Yes, not 'noremap', do whatever is mapped to J and K assuming
 " it is some sort of custom up-down motion, but g:jmp_dist times
 
