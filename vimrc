@@ -91,7 +91,7 @@ if v:version>=800
 else
 	set showbreak=+->\ 
 end
-set listchars=eol:¶,tab:\│\ ,trail:.,nbsp:…,space:.
+set listchars=eol:¶,tab:\│\ ,trail:.,nbsp:…,space:·
 
 set modeline " Allows setting vim options in other files
 set statusline=(%n)\ %f\ [%M%R]\ [%Y]%=%l,%c%V\ %4.P
