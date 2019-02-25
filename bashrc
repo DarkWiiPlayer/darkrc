@@ -18,6 +18,7 @@ alias server='ssh server -t ''tmux a -t home \|\| tmux new-session -s home'''
 alias ltc='getclip | luac -l -'
 alias sign='gpg --armor --no-version --detach-sign --local-user darkwiiplayer'
 alias workspace='cd ~/workspace'
+alias shit='git'
 
 stty -ixon
 
@@ -126,3 +127,5 @@ cd() {
 		source .bashcd
 	fi
 }
+
+export GPG_TTY="$(tty)" # This is necessary for the gpg-agent, apparently
