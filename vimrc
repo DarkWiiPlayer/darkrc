@@ -510,6 +510,7 @@ vnoremap <leader>( <C-[>`>a)<C-o>`<(<C-[>:call ShiftSelection(1)<CR>`>l
 vnoremap <leader>[ <C-[>`>a]<C-o>`<[<C-[>:call ShiftSelection(1)<CR>`>l
 vnoremap <leader>{ <C-[>`>a}<C-o>`<{<C-[>:call ShiftSelection(1)<CR>`>l
 vnoremap <leader>< <C-[>`>a><C-o>`<<<C-[>:call ShiftSelection(1)<CR>`>l
+vnoremap <leader>` <C-[>`>a`<C-o>`<`<C-[>:call ShiftSelection(1)<CR>`>l
 
 nnoremap <S-l> :L<cr>
 noremap <space> :
