@@ -19,6 +19,7 @@ alias ltc='getclip | luac -l -'
 alias sign='gpg --armor --no-version --detach-sign --local-user darkwiiplayer'
 alias workspace='cd ~/workspace'
 alias shit='git'
+alias ranger='source ranger'
 
 stty -ixon
 
