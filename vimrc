@@ -802,8 +802,6 @@ function! s:init_ruby_file()
 	nnoremap <buffer> <leader>ic oclass <C-o>m'<enter>end<esc>`'a
 	nnoremap <buffer> <leader>id odef <C-o>m'()<enter>end<esc>`'a
 
-	nnoremap <buffer> <F5> :w<CR>:!ruby %<CR>
-	nnoremap <buffer> <F6> :lmake<CR>:lopen<CR>
 	nnoremap <buffer> <leader>~ :call <SID>RubyComment(0)<CR>
 	nnoremap <buffer> <leader># :call <SID>RubyComment(1)<CR>
 	vnoremap <buffer> <leader>~ :call <SID>RubyComment(0)<CR>
