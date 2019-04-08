@@ -99,6 +99,9 @@ set laststatus=2
 set cmdheight=1
 set timeoutlen=1200
 
+" Allow indentation to work in XML files (and possibly others)
+filetype plugin indent on
+
 " Clipboard and Copy/Paste things
 if has('unnamedplus') " Allow copying to and from OS clipboard
 	set clipboard=unnamedplus
