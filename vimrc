@@ -872,7 +872,6 @@ endfunction
 
 augroup MOON
 	au!
-	au FileType moon nnoremap <buffer> <F8> :ToggleAutoMoonLocal<CR>
 	au BufWritePost *.moon call <SID>automoon()
 augroup END
 com! ToggleAutoMoon echo <SID>toggleautomoon()
