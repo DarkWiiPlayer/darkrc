@@ -172,6 +172,7 @@ function! s:git_blame(first, last)
 endfun
 
 command! -range Blame echom join(uniq(sort(<sid>git_blame(<line1>, <line2>))), ', ')
+command! -range DBlame !git blame % -L <line1>,<line2>
 command! GitNext try
       \| call s:gitroot() | call <sid>git_next() | call s:git_info()
       \| catch | echo 'Not a git repo!'
