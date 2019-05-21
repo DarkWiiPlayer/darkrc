@@ -1,10 +1,11 @@
-"  ┌─────────────────┐  "
-"  └─┬─┬───┬─┬───┬─┬─┘  "
-"    │ │   │ │   │ │    "
-"    │ │   │ │   │ │    "
-"  ┌─┴─┴───┴─┴───┴─┴─┐  "
-" ┌┘    Git Stuff    └┐ "
-" └───────────────────┘ "
+" vim: set noexpandtab :miv "
+"    ┌─────────────────┐    "
+"    └─┬─┬───┬─┬───┬─┬─┘    "
+"      │ │   │ │   │ │      "
+"      │ │   │ │   │ │      "
+"    ┌─┴─┴───┴─┴───┴─┴─┐    "
+"   ┌┘    Git Stuff    └┐   "
+"   └───────────────────┘   "
 
 " Find the root of a git repository
 function! s:gitroot()
@@ -164,46 +165,31 @@ function! s:git_diff(...)
 	end
 endfun
 
-function! s:git_blame()
-	let l:name = expand('%')
-	let l:line = getpos('.')[1]
-	let l:char = getpos('.')[2]+59
-	let l:type = &filetype
-	enew
-	set modifiable
-	let &filetype = l:type
-	set buftype=nofile
-	set bufhidden=delete
-	set nowrap
-	silent exec "file Blame: ".l:name
-	keepjumps exec 'r !git blame '.l:name
-	keepjumps 0,0del "
-	set nomodifiable
-	keepjumps call setpos('.', [0, l:line, l:char, 0])
+function! s:git_blame(first, last)
+	let l:input = system('git blame '.expand('%').' --line-porcelain -L '.a:first.','.a:last)
+	let l:data = map(split(l:input, '\ze\x\{40} \d\+ \d\+'), {idx, elem -> split(elem, '\n')})
+	return map(l:data, {idx, ary -> ary[1][match(ary[1], '\s\+\zs'):]})
 endfun
 
-command! Blame try
-			\| call s:gitroot() | call <sid>git_blame()
-			\| catch | echo 'Not a git repo!'
-			\| endtry
+command! -range Blame echom join(uniq(sort(<sid>git_blame(<line1>, <line2>))), ', ')
 command! GitNext try
-			\| call s:gitroot() | call <sid>git_next() | call s:git_info()
-			\| catch | echo 'Not a git repo!'
-			\| endtry
+      \| call s:gitroot() | call <sid>git_next() | call s:git_info()
+      \| catch | echo 'Not a git repo!'
+      \| endtry
 command! GitPrev call <sid>git_prev() | call s:git_info()
 command! GitFirst call <sid>git_first() | call s:git_info()
 command! GitLast call <sid>git_last() | call s:git_info()
 command! GitInfo call <sid>git_info()
 command! -nargs=1 GitCheckout call <sid>file_at_revision(<f-args>)
 command! -nargs=? GitCompare try
-			\| call s:gitroot() | call <sid>git_diff(<f-args>)
-			\| catch | echo 'Not a git repo!' 
-			\| endtry
+      \| call s:gitroot() | call <sid>git_diff(<f-args>)
+      \| catch | echo 'Not a git repo!' 
+      \| endtry
 command! Uncommited try
-			\| call s:gitroot() | call <sid>git_diff()
-			\| catch | echo 'Not a git repo!' 
-			\| endtry
+      \| call s:gitroot() | call <sid>git_diff()
+      \| catch | echo 'Not a git repo!' 
+      \| endtry
 command! GitRoot try
-			\| echo <sid>gitroot() 
-			\| catch | echo 'Not a git repository'
-			\| endtry
+      \| echo <sid>gitroot() 
+      \| catch | echo 'Not a git repository'
+      \| endtry
