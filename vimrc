@@ -795,12 +795,11 @@ au BufNewFile,BufRead *.rb :call <sid>init_ruby_file()
 function! s:init_ruby_file()
 	set makeprg=ruby\ -wc\ %
 	setl number
-	command! -buffer Methods lex MatchingLines("^\\s*def\\>\\s\\+\\zs.*$") | lopen
-		command! -buffer Functions Methods " Alias
-	command! -buffer Classes lex MatchingLines("^\\s*class\\>\\s\\+\\zs.*$") | lopen
-	command! -buffer Modules lex MatchingLines("^\\s*module\\>\\s\\+\\zs.*$") | lopen
-	command! -buffer Members lex MatchingLines("@\\<\\i*\\>") | lopen
-	command! -buffer Requires lex MatchingLines("^\\s*require\\(_relative\\)\\?\\>\\s\\+\\zs.*$") | lopen
+	command! -buffer Methods call setloclist(0, MatchingLinesDict("^\\s*def\\>\\s\\+\\zs.*$"))
+	command! -buffer Classes call setloclist(0, MatchingLinesDict("^\\s*class\\>\\s\\+\\zs.*$"))
+	command! -buffer Modules call setloclist(0, MatchingLinesDict("^\\s*module\\>\\s\\+\\zs.*$"))
+	command! -buffer Members call setloclist(0, MatchingLinesDict("@\\<\\i*\\>"))
+	command! -buffer Requires call setloclist(0, MatchingLinesDict("^\\s*require\\(_relative\\)\\?\\>\\s\\+\\zs.*$"))
 
 	nnoremap <buffer> <leader>ic oclass <C-o>m'<enter>end<esc>`'a
 	nnoremap <buffer> <leader>id odef <C-o>m'()<enter>end<esc>`'a
