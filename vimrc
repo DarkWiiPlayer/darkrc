@@ -353,8 +353,8 @@ command! QAddLine call QuickfixAddLine(expand("%"), line("."), getline("."))
 command! LAddCursor call LocationAddLineCol(expand("%"), line("."), getline("."), col("."))
 command! QAddCursor call QuickfixAddLineCol(expand("%"), line("."), getline("."), col("."))
 
-command! Fixme call setloclist(0, MatchingLinesDict("\\c\\<fixme.*"))
-command! Todo call setloclist(0, MatchingLinesDict("\\c\\<todo.*"))
+command! Fixmes call setloclist(0, MatchingLinesDict("\\c\\<fixme.*"))
+command! Todos call setloclist(0, MatchingLinesDict("\\c\\<todo.*"))
 
 command! -nargs=1 LFind call setloclist(0, MatchingLinesDict(<args>))
 command! -nargs=1 QFind call setqflist(MatchingLinesDict(<args>))
@@ -433,6 +433,10 @@ endfun
 command! Snapshot call <sid>snapshot()
 
 command! -nargs=? Scratch enew | set buftype=nofile | set filetype=<args>
+command! Todo enew | set buftype=nofile | set filetype=markdown |
+			\ call matchadd('Todo', '^\[ \?\].*$') |
+			\ call matchadd('Comment', '^\[x\].*$') |
+			\ call matchadd('Error', '^\[-\].*$')
 command! -nargs=? Tempfile exec 'new '.tempname()  | set filetype=<args> | au BufDelete <buffer> call delete(expand('%'))
 
 "        ┌──────────────────────────┐
