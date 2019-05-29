@@ -32,6 +32,7 @@ git__prompt () {
 	git rev-parse --show-toplevel > /dev/null 2>&1
 	if [ $? = 0 ]
 	then
+		echo -ne ' \033[00;33mδ'
 		status=`git status --short 2>/dev/null`
 		branch=`git branch | grep -Po '(?<=\* )[[:alnum:]_-]*'`
 		modif=`echo "$status" | grep -Po '^\s*M' | wc -l`
@@ -109,7 +110,7 @@ git__prompt () {
 	fi
 }
 
-PS1n='\[\033[00;34m\]┌─╼ \[\033[01;34m\]`date +%d.%m.%y` \[\033[00;33m\]\$ \[\033[01;35m\]\u\[\033[00;34m\]@\[\033[01;35m\]\h`git__prompt` \[\033[01;35m\]\w \[\033[01;34m\]`find -mindepth 1 -maxdepth 1 -type d | wc -l`\[\033[00;34m\]d \[\033[01;32m\]`find -maxdepth 1 -type f | wc -l`\[\033[00;32m\]f\[\033[00m\]
+PS1n='\[\033[00;34m\]┌─╼ \[\033[01;35m\]\u\[\033[00;34m\]@\[\033[01;35m\]\h \[\033[00;33m\]\$ \[\033[01;35m\]\w \[\033[01;34m\]`find -mindepth 1 -maxdepth 1 -type d | wc -l`\[\033[00;34m\]d \[\033[01;32m\]`find -maxdepth 1 -type f | wc -l`\[\033[00;32m\]f\[\033[00m\]`git__prompt`
 \[\033[00;34m\]└╼ \[\033[00m\]'
 
 PS1c='\[\033[00;34m\]┌─╼ \[\033[00;33m\]\$ \[\033[01;35m\]\u`git__prompt` \[\033[01;35m\]`basename \`dirs +0\`` \[\033[01;34m\]`find -mindepth 1 -maxdepth 1 -type d | wc -l`\[\033[00;34m\]d \[\033[01;32m\]`find -maxdepth 1 -type f | wc -l`\[\033[00;32m\]f\[\033[00m\]
