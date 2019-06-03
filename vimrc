@@ -433,10 +433,10 @@ endfun
 command! Snapshot call <sid>snapshot()
 
 command! -nargs=? Scratch enew | set buftype=nofile | set filetype=<args>
-command! Todo enew | set buftype=nofile | set filetype=markdown |
-			\ call matchadd('Todo', '^\s*\[ \?\].*$') |
+command! Todo call matchadd('Todo', '^\s*\[ \?\].*$') |
 			\ call matchadd('Comment', '^\s*\[x\].*$') |
-			\ call matchadd('Error', '^\s*\[-\].*$')
+			\ call matchadd('Comment', '^\s*\[-\].*$') |
+			\ call matchadd('Error', '^\s*\[!\].*$')
 command! -nargs=? Tempfile exec 'new '.tempname()  | set filetype=<args> | au BufDelete <buffer> call delete(expand('%'))
 
 "        ┌──────────────────────────┐
