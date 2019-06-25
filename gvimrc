@@ -7,7 +7,7 @@ set cursorline " Highlight cursor line
 let g:only_generic_hl=1
 
 com! Dark silent! let g:colors_name_bak = g:colors_name
-      \ | let ayucolor="dark"
+      \ | let g:ayucolor="dark"
       \ | let g:arcadia_Daybreak=0
       \ | let g:arcadia_Midnight=1
       \ | let g:alduin_Shout_Become_Ethereal=1
@@ -15,7 +15,7 @@ com! Dark silent! let g:colors_name_bak = g:colors_name
       \ | silent! exec "colorscheme ".g:colors_name_bak
       \ | silent! delc PaperColor
 com! Light silent! let g:colors_name_bak = g:colors_name
-      \ | let ayucolor="light"
+      \ | let g:ayucolor="light"
       \ | let g:arcadia_Daybreak=1
       \ | let g:arcadia_Midnight=0
       \ | let g:alduin_Shout_Become_Ethereal=0
