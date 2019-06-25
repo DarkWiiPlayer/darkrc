@@ -49,6 +49,7 @@ git__prompt () {
 		yellow='\033[01;33m'
 		red='\033[01;31m'
 		green='\033[01;32m'
+		purple='\033[01;35m'
 
 		# SYNC
 		if [ -z $ahead ] && [ -z $behind ]
@@ -61,7 +62,7 @@ git__prompt () {
 		then
 			echo -ne " ${green}↑${ahead}"
 		else
-			echo -ne " ${red}↓${behind}${yellow}↑${ahead}"
+			echo -ne " ${red}↓${behind}${red}↑${ahead}"
 		fi
 
 		# BRANCH
@@ -106,7 +107,7 @@ git__prompt () {
 		fi
 		if [ $untracked -ne 0 ]
 		then
-			echo -ne " ${red}+$untracked"
+			echo -ne " ${purple}+$untracked"
 		fi
 	fi
 }
