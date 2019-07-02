@@ -3,7 +3,6 @@ alias hello='echo "Hello :)"'
 alias temp='watch -t -d -n 1 sensors -A coretemp-isa-0000'
 alias w='watch -t -d -n 1'
 alias freq='watch -t -d -n 1 "cpufreq-info -c 0 -f; cpufreq-info -c 1 -f"'
-export PATH=~/.bin:$PATH
 alias setclip='xclip -selection c'
 alias getclip='xclip -selection clipboard -o'
 alias wgetclip='wget `xclip -selection clipboard -o`'
@@ -26,8 +25,6 @@ stty -ixon
 
 # Enable Vi editing mode
 set -o vi
-
-export LESSCHARSET=utf-8
 
 git__prompt () {
 	git rev-parse --show-toplevel > /dev/null 2>&1
