@@ -79,7 +79,7 @@ set smartindent
 set smarttab
 set gdefault
 
-set wrap
+" set wrap
 set breakat=\ .,{
 au BufEnter,BufRead * set linebreak
 set display+=lastline
