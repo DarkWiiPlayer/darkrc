@@ -1,0 +1,21 @@
+#!/usr/bin/env luajit
+
+local json = require 'cjson'
+local yaml = require 'lyaml'
+
+local document = yaml.load(io.read('*a'))
+
+local function replace(document)
+  for key, value in pairs(document) do
+    if value == yaml.null then
+      document[key] = json.null
+    elseif type(value) == 'table' then
+      replace(value)
+    elseif type(value) == 'userdata' then
+      document[key] = '<USERDATA>'
+    end
+  end
+  return document
+end
+
+print(json.encode(replace(document)))
