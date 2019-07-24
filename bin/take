@@ -1,0 +1,20 @@
+#!/usr/bin/env lua
+
+local num, command = ..., table.concat({select(2, ...)}, ' ')
+
+local input do
+  if command == '' then
+    input = io.stdin
+  else
+    input = io.popen(command)
+  end
+end
+
+for i=1,num do
+  local input = input:read '*l'
+  if input then
+    print(input)
+  else
+    break
+  end
+end
