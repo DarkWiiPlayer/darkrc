@@ -1,0 +1,6 @@
+#!/usr/bin/env lua
+
+math.randomseed(os.time())
+for i=1,load('return '..(table.concat({...}, ' ')))() do
+  print(i)
+end
