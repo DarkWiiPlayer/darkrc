@@ -69,7 +69,7 @@ set nowb
 set swapfile
 
 " Indentation, etc.
-set tabstop=2
+set tabstop=3
 set shiftwidth=0 " Not needed
 set softtabstop=0 " Not needed
 set noexpandtab
