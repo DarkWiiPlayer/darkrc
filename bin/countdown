@@ -1,0 +1,31 @@
+#!/usr/bin/env lua
+-- vim: set noexpandtab :miv --
+
+local function parse_time(str)
+	local target = os.date("*t")
+
+	if type(str)=="string" then
+		local hour, min, sec = (str):match '(%d*):?(%d*):?(%d*)'
+		if hour and min and sec then
+			target.hour = tonumber(hour) or 0
+			target.min = tonumber(min) or 0
+			target.sec = tonumber(sec) or 0
+		end
+	end
+
+	return os.time(target)
+end
+
+local final, start = ...
+
+local final = parse_time(final)
+local start = parse_time(start)
+
+io.stderr:write('Counting down to: '..os.date("%T", final)..'\n')
+io.stderr:write('            from: '..os.date("%T", start)..'\n')
+
+while true do
+	print(os.difftime(os.time(), start)/os.difftime(final, start) * 100)
+
+	if not os.execute 'sleep 1' then break end
+end
