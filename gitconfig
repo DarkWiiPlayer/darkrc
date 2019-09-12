@@ -1,13 +1,13 @@
 # vim: set filetype=gitconfig :miv #
 [core]
-	editor = gvim -f
+	editor = vim -f
 [diff]
-	tool = gvim
+	tool = vim
 [difftool]
 	confirm = false
 	prompt = false
 [merge]
-	tool = gvimdiff3
+	tool = vimdiff3
 [push]
 	default = matching
 [alias]
