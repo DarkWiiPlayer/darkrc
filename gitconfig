@@ -2,7 +2,7 @@
 [core]
 	editor = vim -f
 [diff]
-	tool = vim
+	tool = vimdiff
 [difftool]
 	confirm = false
 	prompt = false
