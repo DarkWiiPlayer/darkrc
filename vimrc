@@ -32,7 +32,7 @@ set history=50 " keep 50 lines of command line history
 set nonumber
 " set relativenumber
 set langmenu=en_UK
-let $LANG = 'en_UK'
+let $LANG = 'en_GB.UTF-8'
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
 set guioptions-=r
@@ -177,6 +177,43 @@ endfun
 
 command! -nargs=1 FTSnippet call s:insert_ft_snippet(&filetype, <f-args>)
 command! -range -nargs=1 FTMkSnippet call s:make_ft_snippet_range(&filetype, <f-args>, <line1>, <line2>)
+
+function! RangeChooser()
+	let temp = tempname()
+
+	if has("gui_running")
+		exec 'silent !xterm -e ranger --choosefiles=' . shellescape(temp).' '.expand("%:p:h")
+	else
+		exec 'silent !ranger --choosefiles=' . shellescape(temp).' '.expand("%:p:h")
+	endif
+
+	if !filereadable(temp)
+		redraw!
+		return
+	endif
+
+	let names = readfile(temp)
+
+	if empty(names)
+		redraw!
+		return
+	endif
+
+	1,$argd
+	for name in names
+		exec 'argadd ' . fnameescape(name)
+	endfor
+	rewind
+	redraw!
+endfunction
+
+command! -bar RangerChooser call RangeChooser()
+
+if has("unix")
+	nnoremap <leader><space> :<C-U>RangerChooser<CR>
+elseif has("win32")
+	nnoremap <leader><space> :e %:p:h<CR>
+end
 
 " --- AUTO CLOSE ---
 
@@ -465,9 +502,6 @@ nnoremap <C-l> e
 " --- Marks ---
 nnoremap <leader>m :marks abcdefghijklmnopqrstuvwxyz<CR>
 nnoremap <leader>M :marks ABCDEFGHIJKLMNOPQRSTUVWXYZ<CR>
-
-" --- Windows, Tabs and More --
-nnoremap <leader><space> :e %:p:h<CR>
 
 " --- modes ---
 nnoremap <ins> <ins><ins>
