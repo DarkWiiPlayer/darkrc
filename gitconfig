@@ -3,6 +3,7 @@
 	editor = vim -f
 [diff]
 	tool = vimdiff
+  guitool = gvimdiff
 [difftool]
 	confirm = false
 	prompt = true
