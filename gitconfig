@@ -5,7 +5,7 @@
 	tool = vimdiff
 [difftool]
 	confirm = false
-	prompt = false
+	prompt = true
 [merge]
 	tool = vimdiff3
 [push]
