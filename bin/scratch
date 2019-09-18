@@ -1,9 +1,11 @@
 #!/bin/bash
 export scratch=$(mktemp -p /dev/shm -d -t tmp.XXXXXXXXXX)
+
 function finish {
-  echo "Deleting $scratch..."
   rm -rf "$scratch"
 }
+
 trap finish EXIT
-trap finish TERM
-exec bash --init-file <(echo "source ~/.bashrc; pushd $scratch > /dev/null")
+trap finish SIGTERM
+
+bash --init-file <(echo "source ~/.bashrc; pushd $scratch > /dev/null")
