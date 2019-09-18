@@ -8,4 +8,10 @@ function finish {
 trap finish EXIT
 trap finish SIGTERM
 
-bash --init-file <(echo "source ~/.bashrc; pushd $scratch > /dev/null")
+if [ -z $1 ]
+then
+  bash --init-file <(echo "source ~/.bashrc; pushd $scratch > /dev/null")
+else
+  cd $scratch
+  "$@"
+fi
