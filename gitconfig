@@ -8,7 +8,7 @@
 	confirm = false
 	prompt = true
 [merge]
-	tool = vimdiff3
+	tool = vimdiff
 [push]
 	default = matching
 [alias]
