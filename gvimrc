@@ -55,5 +55,8 @@ function! SetFontSize(size)
 	end
 endfun
 
+" Override using ranger for picking files
+nnoremap <leader><space> :e %:p:h<CR>
+
 command! -nargs=1 SetFontSize call SetFontSize(<f-args>)
 command! ResetFontSize call SetFontSize(s:fontsize)
