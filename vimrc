@@ -469,7 +469,7 @@ function! s:snapshot()
 endfun
 command! Snapshot call <sid>snapshot()
 
-command! -nargs=? Scratch enew | set buftype=nofile | set filetype=<args>
+command! -nargs=? Scratch enew | call <sid>init_generic_file() | set filetype=<args> | set buftype=nofile
 command! Todo call matchadd('Todo', '^\s*\[ \?\].*$') |
 			\ call matchadd('Comment', '^\s*\[x\].*$') |
 			\ call matchadd('Comment', '^\s*\[-\].*$') |
@@ -860,26 +860,18 @@ function! s:RubyComment(a)
 	end
 endfunction
 
-"	augroup rbindent
-"		autocmd!
-"		au BufNewFile,BufRead *.rb :set noexpandtab | :retab! |
-"	
-"		au BufWritePre *.rb :let ts = &tabstop | set expandtab | set tabstop=2 | retab | let &tabstop=ts | :set noexpandtab
-"	
-"		au BufWritepost *.rb :silent! :undo | :exe "normal \<C-O>"
-"	augroup END
-
 " --- Lua Stuff ---
 
 " Matches all types of Lua string!
 " \v(["'])\zs.{-}\ze\\@1<!\2|\[(\=*)\[\zs.{-}\ze\]\3\]
 
-au BufNewFile,BufRead *.lua :call <sid>init_lua_file()
+au FileType lua :call <sid>init_lua_file()
 
 function! s:init_lua_file()
 	setl number
 	command! -buffer Requires call setloclist(0, MatchingLinesDict("\\vrequire\\s*\\(?(([\"'])\\zs.{-}\\ze\\\\@1<!\\2|\\[(\\=*)\\[\\zs.{-}\\ze\\]\\3\\])\\)?"))
 	command! -buffer Functions call setloclist(0, MatchingLinesDict("^\\v(\\s*\\zs(local\\s*)?function\\s*[a-zA-Z0-9.:_]*\\(.*\\)(\\s*--.*|\\ze.*)|.*function\\(.*\\)(\\s*--.*|\\ze.*))$")) 
+	iabbrev <buffer> let do local
 endfunction!
 
 " --- HTML Stuff ---
