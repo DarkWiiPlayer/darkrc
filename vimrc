@@ -94,7 +94,7 @@ end
 set listchars=eol:¶,tab:\│\ ,trail:·,nbsp:…,space:·
 
 set modeline " Allows setting vim options in other files
-set statusline=(%n)\ %f\ [%M%R]\ [%Y]%=%l,%c%V\ %4.P
+set statusline=\ (%n)\ %f\ %a\ [%M%R]\ [%Y]%=0x%B\ [%l/%L,\ %c%V]\ %4.P
 set laststatus=2
 set cmdheight=1
 set timeoutlen=1200
