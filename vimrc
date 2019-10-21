@@ -117,6 +117,10 @@ if has("unix")
 		\ )
 end
 
+" === GENERIC ABBREVIATIONS ===
+
+abbrev eshrug ¯\_(ツ)_/¯
+
 " === GENERAL UTILITIES ===
 
 " --- TEXT SNIPPETS ---
