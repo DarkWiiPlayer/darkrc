@@ -17,7 +17,7 @@ function! s:gitroot()
 	end
 endf
 
-function! s:git_root(path)
+function! s:cd_git_root(path)
 	let l:path = fnamemodify(a:path, ':p')
 	let l:wd = getcwd()
 	if isdirectory(l:path)
@@ -29,14 +29,12 @@ function! s:git_root(path)
 	endif
 	let l:ret = substitute(system('git rev-parse --show-toplevel'), '\n\_.*', '', '')
 	if v:shell_error
-		echom l:ret
 		exec 'cd '.l:wd
 		return 0
 	else
-		exec 'cd '.l:wd
+		exec 'cd '.l:ret
 		return l:ret
 	end
-	exec 'cd '.l:wd
 endf
 
 " Returns an array containing chronologically sorted commits
@@ -149,13 +147,16 @@ endfun
 
 function! s:git_diff(...)
 	if a:0
-		vert bot split
+		let l:wd = getcwd()
+		call s:cd_git_root(expand('%'))
+		split
 		call s:file_at_revision(a:1)
 		diffthis
 		au BufUnload <buffer> diffoff!
 		exec "normal \<C-w>\<C-p>"
 		diffthis
-		call s:git_info()
+		exec "normal \<C-w>\<C-p>"
+		cd l:wd
 	else
 		if exists("b:git_revision_hash")
 			call s:git_diff(get(s:git_history(), index(s:git_history(), b:git_revision_hash)+1, "NIL"))
@@ -174,10 +175,12 @@ endfun
 command! -range Blame echom join(uniq(sort(<sid>git_blame(<line1>, <line2>))), ', ')
 command! -range DBlame !git blame % -L <line1>,<line2>
 command! GitNext try
-      \| call s:gitroot() | call <sid>git_next() | call s:git_info()
+      \| call s:gitroot() | call <sid>git_next()
+      \| GitInfo
       \| catch | echo 'Not a git repo!'
       \| endtry
-command! GitPrev call <sid>git_prev() | call s:git_info()
+command! GitPrev call <sid>git_prev()
+      \| GitInfo
 command! GitFirst call <sid>git_first() | call s:git_info()
 command! GitLast call <sid>git_last() | call s:git_info()
 command! GitInfo call <sid>git_info()
@@ -187,10 +190,11 @@ command! -nargs=? GitCompare try
       \| catch | echo 'Not a git repo!' 
       \| endtry
 command! Uncommited try
-      \| call s:gitroot() | call <sid>git_diff()
+      \| call <sid>git_diff()
       \| catch | echo 'Not a git repo!' 
       \| endtry
-command! GitRoot try
+command! GitRoot call <SID>cd_git_root('.')
+command! ShowGitRoot try
       \| echo <sid>gitroot() 
       \| catch | echo 'Not a git repository'
       \| endtry
