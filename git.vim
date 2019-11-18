@@ -18,19 +18,19 @@ function! s:gitroot()
 endf
 
 function! s:cd_git_root(path)
-	let l:path = fnamemodify(a:path, ':p')
+	let l:path = fnamemodify(expand(a:path), ':p')
 	let l:wd = getcwd()
 	if isdirectory(l:path)
 		exec 'cd '.a:path
 	elseif filereadable(l:path)
 		exec 'cd '.fnamemodify(l:path, ':h')
 	else
-		return 0
+		throw 'Invalid Path'
 	endif
 	let l:ret = substitute(system('git rev-parse --show-toplevel'), '\n\_.*', '', '')
 	if v:shell_error
 		exec 'cd '.l:wd
-		return 0
+		throw 'Not a git repo!'
 	else
 		exec 'cd '.l:ret
 		return l:ret
@@ -148,7 +148,7 @@ endfun
 function! s:git_diff(...)
 	if a:0
 		let l:wd = getcwd()
-		call s:cd_git_root(expand('%'))
+		call s:cd_git_root('%')
 		split
 		call s:file_at_revision(a:1)
 		diffthis
@@ -197,7 +197,7 @@ command! Uncommited try
       \| catch
       \| echo 'Not a git repo!' 
       \| endtry
-command! GitRoot call <SID>cd_git_root('.')
+command! GitRoot call <SID>cd_git_root('%')
 command! GitOrig exec 'e '.b:git_original_file
 command! ShowGitRoot try
       \| echo <sid>gitroot() 
