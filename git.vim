@@ -73,16 +73,16 @@ endfun
 
 function! s:git_info()
 	if !exists("b:git_revision_hash") || !exists("b:git_original_file")
-		echo "Not a file@revision buffer!"
-		return
+		echom "Working copy or not in any repo"
+		return 0
 	end
 	echo system("git show --no-patch ".b:git_revision_hash)
 endfun
 
 function! s:git_next()
 	if !exists("b:git_revision_hash") || !exists("b:git_original_file")
-		echo "Error 01: Not a file@revision buffer!"
-		return
+		echom "Error 01: Not a file@revision buffer!"
+		return 0
 	end
 	let l:history = s:git_history()
 	let l:idx = index(l:history, b:git_revision_hash)
@@ -134,8 +134,6 @@ function! s:file_at_revision(rev)
 	silent exec "file ".l:ftail."@".a:rev
 	exec "r!git show ".a:rev.":".l:fname
 	1,1del
-	let l:pos[0] = bufnr('.')
-	call setpos('.', l:pos)
 	setl nomodifiable
 	setl buftype=nofile
 	setl bufhidden=delete
@@ -143,6 +141,8 @@ function! s:file_at_revision(rev)
 
 	let b:git_original_file = l:fname
 	let b:git_revision_hash = a:rev
+
+	call setpos('.', l:pos)
 endfun
 
 function! s:git_diff(...)
@@ -156,7 +156,7 @@ function! s:git_diff(...)
 		exec "normal \<C-w>\<C-p>"
 		diffthis
 		exec "normal \<C-w>\<C-p>"
-		cd l:wd
+		exec "cd ".l:wd
 	else
 		if exists("b:git_revision_hash")
 			call s:git_diff(get(s:git_history(), index(s:git_history(), b:git_revision_hash)+1, "NIL"))
@@ -175,10 +175,12 @@ endfun
 command! -range Blame echom join(uniq(sort(<sid>git_blame(<line1>, <line2>))), ', ')
 command! -range DBlame !git blame % -L <line1>,<line2>
 command! GitNext try
-      \| call s:gitroot() | call <sid>git_next()
-      \| GitInfo
-      \| catch | echo 'Not a git repo!'
+      \| call <sid>gitroot()
+      \| call <sid>git_next()
+      \| catch
+      \| echo 'Not a git repo!'
       \| endtry
+      \| GitInfo
 command! GitPrev call <sid>git_prev()
       \| GitInfo
 command! GitFirst call <sid>git_first() | call s:git_info()
@@ -187,11 +189,13 @@ command! GitInfo call <sid>git_info()
 command! -nargs=1 GitCheckout call <sid>file_at_revision(<f-args>)
 command! -nargs=? GitCompare try
       \| call s:gitroot() | call <sid>git_diff(<f-args>)
-      \| catch | echo 'Not a git repo!' 
+      \| catch
+      \| echo 'Not a git repo!' 
       \| endtry
 command! Uncommited try
       \| call <sid>git_diff()
-      \| catch | echo 'Not a git repo!' 
+      \| catch
+      \| echo 'Not a git repo!' 
       \| endtry
 command! GitRoot call <SID>cd_git_root('.')
 command! ShowGitRoot try
