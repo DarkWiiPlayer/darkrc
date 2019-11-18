@@ -198,6 +198,7 @@ command! Uncommited try
       \| echo 'Not a git repo!' 
       \| endtry
 command! GitRoot call <SID>cd_git_root('.')
+command! GitOrig exec 'e '.b:git_original_file
 command! ShowGitRoot try
       \| echo <sid>gitroot() 
       \| catch | echo 'Not a git repository'
