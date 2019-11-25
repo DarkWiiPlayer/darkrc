@@ -21,8 +21,6 @@ end
 
 pattern = lpeg.Cs((pattern + lpeg.P(1)) ^ 1)
 
-print(pattern:match('hello world testing stuff!'))
-
 for line in io.stdin:lines() do
 	print(pattern:match(line) or '')
 end
