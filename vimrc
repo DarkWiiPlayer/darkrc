@@ -953,4 +953,4 @@ endfunction
 
 " --- LaTeX Stuff ---
 
-command Latex2PDF call Async([ 'latex '.expand('%'), 'bibtex '.expand('%:r'), 'latex '.expand('%'), 'latex '.expand('%'), 'dvipdfm '.expand('%:r').'.dvi', ['/bin/bash', '-c', 'rm *.{aux,bbl,dvi,log,blg}'] ])
+command Latex2PDF call Async([ 'pdflatex -draftmode '.expand('%'), 'bibtex '.expand('%:r'), 'pdflatex -draftmode '.expand('%'), 'pdflatex '.expand('%'), ['/bin/bash', '-c', 'rm *.{aux,bbl,dvi,log,blg}'] ])
