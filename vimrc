@@ -131,6 +131,13 @@ if !exists('s:snippets')
 	let s:snippets = {}
 end
 
+" Runs a sequence of commands asynchronously
+function Async(array, ...)
+	if len(a:array) > 0
+		call job_start(a:array[0], {"out_io": "null", "in_io": "null", "err_io": "null", "exit_cb": function("Async", [a:array[1:-1]])})
+	end
+endfun
+
 function! s:make_snippet(name, lines)
 	let s:snippets[a:name] = a:lines
 endfun
@@ -943,3 +950,7 @@ augroup END
 function! s:init_markdown_file()
 	set textwidth=80
 endfunction
+
+" --- LaTeX Stuff ---
+
+command Latex2PDF call Async([ 'latex '.expand('%'), 'bibtex '.expand('%:r'), 'latex '.expand('%'), 'latex '.expand('%'), 'dvipdfm '.expand('%:r').'.dvi', ['/bin/bash', '-c', 'rm *.{aux,bbl,dvi,log,blg}'] ])
