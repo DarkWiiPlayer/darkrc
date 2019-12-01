@@ -132,7 +132,7 @@ if !exists('s:snippets')
 end
 
 " Runs a sequence of commands asynchronously
-function Async(array, ...)
+function! Async(array, ...)
 	if len(a:array) > 0
 		call job_start(a:array[0], {"out_io": "null", "in_io": "null", "err_io": "null", "exit_cb": function("Async", [a:array[1:-1]])})
 	end
