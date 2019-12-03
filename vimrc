@@ -94,7 +94,7 @@ end
 set listchars=eol:¶,tab:\│\ ,trail:·,nbsp:…,space:·
 
 set modeline " Allows setting vim options in other files
-set statusline=\ (%n)\ %f\ %a\ [%M%R]\ [%Y]%=0x%B\ [%l/%L,\ %c%V]\ %4.P
+set statusline=\ (%n)\ %f\ %a\ [%M%R]\ [%Y]\ %{strlen(@\")}%=0x%B\ [%l/%L,\ %c%V]\ %4.P
 set laststatus=2
 set cmdheight=1
 set timeoutlen=1200
@@ -953,4 +953,4 @@ endfunction
 
 " --- LaTeX Stuff ---
 
-command Latex2PDF call Async([ 'pdflatex -draftmode '.expand('%'), 'biber '.expand('%:r'), 'pdflatex '.expand('%'), ['/bin/bash', '-c', 'rm *.{aux,bbl,dvi,log,blg,bcf,xml}'] ])
+command! Latex2PDF call Async([ 'pdflatex -draftmode '.expand('%'), 'biber '.expand('%:r'), 'pdflatex '.expand('%'), ['/bin/bash', '-c', 'rm *.{aux,bbl,dvi,log,blg,bcf,xml}'] ])
