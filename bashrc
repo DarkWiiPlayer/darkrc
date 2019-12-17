@@ -23,6 +23,7 @@ alias workspace='cd ~/workspace'
 alias shit='git'
 alias ranger='source ranger'
 alias ta='tmux a -t'
+alias co='checkout'
 
 stty -ixon
 
