@@ -1,0 +1,1 @@
+apropos . | awk '{print $1}' | dmenu -b | xargs -r man -Tps | ps2pdf - | zathura -
