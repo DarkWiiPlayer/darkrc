@@ -27,14 +27,19 @@ stty -ixon
 set -o vi
 
 git__fetch() {
+	if [ -n "$BASH_AUTOFETCH_TIMEOUT" ]; then
+		timeout=$BASH_AUTOFETCH_TIMEOUT
+	else
+		timeout=60
+	fi
 	if [ -f $1/.git/FETCH_HEAD ]; then
 		diff=$(($(date +%s) - $(stat -c %Y $1/.git/FETCH_HEAD)))
 	else
 		diff=9999
 	fi
-	if [ $diff -gt 60 ]; then
+	if [ $diff -gt $timeout ]; then
 		touch $1/.git/FETCH_HEAD
-		nohup git fetch > /dev/null 2>&1
+		nohup git fetch > /dev/null 2>&1 &
 	fi
 }
 
