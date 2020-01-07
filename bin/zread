@@ -1,0 +1,5 @@
+#!/bin/bash
+export dir=$(mktemp -p /dev/shm -d -t tmp.XXXXXXXXXX)
+ln -s /dev/stdout $dir/stdout.pdf
+pandoc -o $dir/stdout.pdf $1 | zathura ${@:2} -
+rm $dir -rf
