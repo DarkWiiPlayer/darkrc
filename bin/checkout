@@ -1,1 +1,1 @@
-git checkout $(git for-each-ref --format='%(refname:short)' refs/heads/* | dmenu -b)
+git checkout $( (git for-each-ref --format='%(refname:short)' refs/heads/* && git tag) | dmenu -l 20 -b)
