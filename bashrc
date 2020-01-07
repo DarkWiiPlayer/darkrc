@@ -26,10 +26,25 @@ stty -ixon
 # Enable Vi editing mode
 set -o vi
 
+git__fetch() {
+	if [ -f $1/.git/FETCH_HEAD ]; then
+		diff=$(($(date +%s) - $(stat -c %Y $1/.git/FETCH_HEAD)))
+	else
+		diff=9999
+	fi
+	if [ $diff -gt 60 ]; then
+		touch $1/.git/FETCH_HEAD
+		nohup git fetch > /dev/null 2>&1
+	fi
+}
+
 git__prompt () {
-	git rev-parse --show-toplevel > /dev/null 2>&1
-	if [ $? = 0 ]
+	top=$(git rev-parse --show-toplevel 2>/dev/null)
+	if [ -n "$top" ]
 	then
+		if [ $BASH_AUTOFETCH ]; then
+			git__fetch $top
+		fi
 		echo -ne ' \033[00;33mδ'
 		status=`git status --short 2>/dev/null`
 		branch=`git branch | grep -Po '(?<=\* )[[:alnum:]_-]*'`
