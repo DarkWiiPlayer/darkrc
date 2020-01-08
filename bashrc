@@ -37,20 +37,28 @@ git__fetch() {
 	else
 		diff=9999
 	fi
-	if [ $diff -gt $timeout ]; then
+	if [ $diff -gt $timeout ]
+	then run=1
+	else run=0
+	fi
+	if [ $run -gt 0 ]; then
 		touch $1/.git/FETCH_HEAD
 		nohup git fetch > /dev/null 2>&1 &
 	fi
+	echo $run
 }
 
 git__prompt () {
 	top=$(git rev-parse --show-toplevel 2>/dev/null)
 	if [ -n "$top" ]
 	then
-		if [ $BASH_AUTOFETCH ]; then
-			git__fetch $top
+		if [ $BASH_AUTOFETCH -gt 0 ]; then
+			autofetch=$(git__fetch $top)
+			f=$((2-$autofetch))
+		else
+			f=3
 		fi
-		echo -ne ' \033[00;33mδ'
+		echo -ne " \033[00;3${f}mδ\033[00;33m"
 		status=`git status --short 2>/dev/null`
 		branch=`git branch | grep -Po '(?<=\* )[[:alnum:]_.-]*'`
 		modif=`echo "$status" | grep -Po '^\s*M' | wc -l`
