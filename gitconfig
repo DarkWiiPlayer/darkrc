@@ -13,9 +13,5 @@
 	default = matching
 [alias]
 	adog = log --all --decorate --oneline --graph
-  ten = log --all --decorate --oneline --graph -10
 [commit]
 	gpgSign = true
-[user]
-	name = DarkWiiPlayer
-	email = darkwiiplayer@hotmail.com
