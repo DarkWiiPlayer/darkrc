@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 git__fetch() {
 	if [ -n "$BASH_AUTOFETCH_TIMEOUT" ]; then
@@ -6,16 +6,16 @@ git__fetch() {
 	else
 		timeout=60
 	fi
-	if [ -f $1/.git/FETCH_HEAD ]; then
+	if [ -f "$1/.git/FETCH_HEAD" ]; then
 		diff=$(($(date +%s) - $(stat -c %Y $1/.git/FETCH_HEAD)))
 	else
 		diff=9999
 	fi
-	if [ $diff -gt $timeout ]
+	if [ "$diff" -gt "$timeout" ]
 	then run=1
 	else run=0
 	fi
-	if [ $run -gt 0 ]; then
+	if [ "$run" -gt 0 ]; then
 		touch $1/.git/FETCH_HEAD
 		nohup git fetch > /dev/null 2>&1 &
 	fi
@@ -26,23 +26,23 @@ git__prompt () {
 	top=$(git rev-parse --show-toplevel 2>/dev/null)
 	if [ -n "$top" ]
 	then
-		if [ $BASH_AUTOFETCH -gt 0 ]; then
+		if [ "$BASH_AUTOFETCH" -gt 0 ]; then
 			autofetch=$(git__fetch $top)
 			f=$((2-$autofetch))
 		else
 			f=3
 		fi
-		echo -ne "\033[00;3${f}mδ\033[00;33m"
-		status=`git status --short 2>/dev/null`
-		branch=`git branch | grep -Po '(?<=\* )[[:alnum:]_.-]*'`
-		modif=`echo "$status" | grep -Po '^\s*M' | wc -l`
-		untracked=`echo "$status" | grep -Po '^\?\?' | wc -l`
-		added=`echo "$status" | grep -Po '^\s*[A]' | wc -l`
-		deleted=`echo "$status" | grep -Po '^\s*[D]' | wc -l`
-		renamed=`echo "$status" | grep -Eo '^\s*R' | wc -l`
-		stat=`git branch -vv | grep -P '^\*' | grep -Po '\[.*\]'`
-		ahead=`echo $stat | grep -Po '(?<=ahead )\d*'`
-		behind=`echo $stat | grep -Po '(?<=behind )\d*'`
+		/bin/echo -ne "\033[00;3${f}mδ\033[00;33m"
+		status=$(git status --short 2>/dev/null)
+		branch=$(git branch | grep -Po '(?<=\* )[[:alnum:]_.-]*')
+		modif=$(echo "$status" | grep -Po '^\s*M' | wc -l)
+		untracked=$(echo "$status" | grep -Po '^\?\?' | wc -l)
+		added=$(echo "$status" | grep -Po '^\s*[A]' | wc -l)
+		deleted=$(echo "$status" | grep -Po '^\s*[D]' | wc -l)
+		renamed=$(echo "$status" | grep -Eo '^\s*R' | wc -l)
+		stat=$(git branch -vv | grep -P '^\*' | grep -Po '\[.*\]')
+		ahead=$(echo $stat | grep -Po '(?<=ahead )\d*')
+		behind=$(echo $stat | grep -Po '(?<=behind )\d*')
 		gray='\033[01;30m'
 		blue='\033[01;34m'
 		yellow='\033[01;33m'
@@ -51,23 +51,23 @@ git__prompt () {
 		purple='\033[01;35m'
 
 		# SYNC
-		if [ -z $ahead ] && [ -z $behind ]
+		if [ -z "$ahead" ] && [ -z "$behind" ]
 		then
-			echo -ne "" # Nothing to do here
-		elif [ -z $ahead ]
+			/bin/echo -ne "" # Nothing to do here
+		elif [ -z "$ahead" ]
 		then
-			echo -ne " ${yellow}↓${behind}"
-		elif [ -z $behind ]
+			/bin/echo -ne " ${yellow}↓${behind}"
+		elif [ -z "$behind" ]
 		then
-			echo -ne " ${green}↑${ahead}"
+			/bin/echo -ne " ${green}↑${ahead}"
 		else
-			echo -ne " ${red}↓${behind}${red}↑${ahead}"
+			/bin/echo -ne " ${red}↓${behind}${red}↑${ahead}"
 		fi
 
 		# BRANCH
-		if [ -z $branch ]
+		if [ -z "$branch" ]
 		then
-			head=`git rev-parse --short HEAD 2>&1`
+			head=$(git rev-parse --short HEAD 2>&1)
 			if [[ "$head" =~ fatal* ]]
 			then
 				branch='{no commits}'
@@ -77,36 +77,36 @@ git__prompt () {
 		fi
 		if [ "$branch" = 'master' ]
 		then
-			echo -ne " $blue$branch"
-		elif [ "${branch:0:1}" = '#' ]
+			/bin/echo -ne " $blue$branch"
+    elif [ $(echo "${branch:0:1}" | grep '^#' ) ]
 		then
-			echo -ne " $red$branch"
+			/bin/echo -ne " $red$branch"
 		else
-			echo -ne " $yellow$branch"
+			/bin/echo -ne " $yellow$branch"
 		fi
 
 		# CHANGES
-		if [ $modif = 0 ]
+		if [ "$modif" = 0 ]
 		then
-			echo -ne # "${gray}:\033[01;36m$modif" # No modified files
+			/bin/echo -ne # "${gray}:\033[01;36m$modif" # No modified files
 		else
-			echo -ne "${gray}:\033[01;33m$modif" # Modified files
+			/bin/echo -ne "${gray}:\033[01;33m$modif" # Modified files
 		fi
-		if [ $added -ne 0 ]
+		if [ "$added" -ne 0 ]
 		then
-			echo -ne " ${green}+$added"
+			/bin/echo -ne " ${green}+$added"
 		fi
-		if [ $deleted -ne 0 ]
+		if [ "$deleted" -ne 0 ]
 		then
-			echo -ne " ${red}-$deleted"
+			/bin/echo -ne " ${red}-$deleted"
 		fi
-		if [ $renamed -ne 0 ]
+		if [ "$renamed" -ne 0 ]
 		then
-			echo -ne " ${yellow}$renamed→$renamed"
+			/bin/echo -ne " ${yellow}$renamed→$renamed"
 		fi
-		if [ $untracked -ne 0 ]
+		if [ "$untracked" -ne 0 ]
 		then
-			echo -ne " ${purple}+$untracked"
+			/bin/echo -ne " ${purple}+$untracked"
 		fi
 	fi
 }
