@@ -1,0 +1,1 @@
+$(history | grep $@ | sed -e 's/^[ 0-9]*//' -e "/^dhist/d" | tac | dmenu -b -l 10)
