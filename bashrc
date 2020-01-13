@@ -27,7 +27,7 @@ stty -ixon
 # Enable Vi editing mode
 set -o vi
 
-PS1n='\[\033[00;34m\]┌─╼ \[\033[01;35m\]\u\[\033[00;34m\]@\[\033[01;35m\]\h \[\033[00;33m\]\$ \[\033[01;35m\]\w \[\033[01;34m\]`find -mindepth 1 -maxdepth 1 -type d | wc -l`\[\033[00;34m\]d \[\033[01;32m\]`find -maxdepth 1 -type f | wc -l`\[\033[00;32m\]f\[\033[00m\] $(gitprompt)
+PS1n='\[\033[00;34m\]┌─╼ $([ -n "$RANGER_LEVEL" ] && /bin/echo -ne "\[\033[00;31m\]●") \[\033[01;35m\]\u\[\033[00;34m\]@\[\033[01;35m\]\h \[\033[00;33m\]\$ \[\033[01;35m\]\w \[\033[01;34m\]`find -mindepth 1 -maxdepth 1 -type d | wc -l`\[\033[00;34m\]d \[\033[01;32m\]`find -maxdepth 1 -type f | wc -l`\[\033[00;32m\]f\[\033[00m\] $(gitprompt)
 \[\033[00;34m\]└╼ \[\033[00m\]'
 
 PS1c='\[\033[00;34m\]┌─╼ \[\033[00;33m\]\$ \[\033[01;35m\]\u`gitprompt` \[\033[01;35m\]`basename \`dirs +0\`` \[\033[01;34m\]`find -mindepth 1 -maxdepth 1 -type d | wc -l`\[\033[00;34m\]d \[\033[01;32m\]`find -maxdepth 1 -type f | wc -l`\[\033[00;32m\]f\[\033[00m\]
