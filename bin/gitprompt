@@ -78,7 +78,7 @@ git__prompt () {
 		if [ "$branch" = 'master' ]
 		then
 			/bin/echo -ne " $blue$branch"
-    elif [ $(echo "${branch:0:1}" | grep '^#' ) ]
+    elif [ $(echo "$branch" | grep '^#' ) ]
 		then
 			/bin/echo -ne " $red$branch"
 		else
