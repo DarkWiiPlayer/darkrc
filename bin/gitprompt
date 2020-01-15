@@ -68,7 +68,7 @@ git__prompt () {
 		if [ -z "$branch" ]
 		then
 			head=$(git rev-parse --short HEAD 2>&1)
-			if [ $(echo "$head" | grep '^fatal') ]
+			if [ "$(echo "$head" | grep '^fatal')" ]
 			then
 				branch='{no commits}'
 			else
