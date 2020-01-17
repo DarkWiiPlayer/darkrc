@@ -1,2 +1,2 @@
-#!/usr/bin/env lua
-for _, argument in ipairs{...} do print(argument) end
+#!/bin/sh
+echo "$@" | sed -e 's/ \+/\n/g'
