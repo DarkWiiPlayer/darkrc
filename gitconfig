@@ -13,5 +13,6 @@
 	default = matching
 [alias]
 	adog = log --all --decorate --oneline --graph
+	dog = log --decorate --oneline --graph
 [commit]
 	gpgSign = true
