@@ -1,0 +1,35 @@
+.TH scratch 1 "" ""  "Gives you a directory from scratch"
+
+.SH NAME
+.\" #####
+
+\fBscratch\fR - Creates a temporary directory to work in and deletes it when done
+
+.SH SYNOPSIS
+
+\fBscratch\fR
+.br
+\fBscratch\fR command
+
+.SH DESCRIPTION
+
+\fBscratch\fR creates a temporary directory and starts bash with a hook
+to delete the directory after it exits.
+When a command is given, the command is started instead of bash.
+
+.SH OPTIONS
+
+\fBcommand\fR - runs this command in the temporary directory and returns instantly when it finishes.
+
+.SH VARIABLES
+
+scratch sets the \fB$scratch\fR environment variable to the new directory before executing the command.
+
+.SH AUTHOR
+
+\fBDarkWiiPlayer\fR <darkwiiplayer@hotmail.com>
+
+.SH SEE ALSO
+
+\fBmktemp(1)\fR,
+\fBbash(1)\fR
