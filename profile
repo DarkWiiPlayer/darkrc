@@ -4,4 +4,4 @@ export EDITOR=vim
 
 export LESSCHARSET=utf-8
 
-export MANPATH="$HOME/.local/man:$(manpath)"
+export MANPATH="$HOME/.local/share/man:$(manpath)"
