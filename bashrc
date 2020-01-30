@@ -21,6 +21,7 @@ alias ranger='source ranger'
 alias ta='tmux a -t'
 alias co='checkout'
 alias qed='[ $RANDOM -ge $((32767 / 100 * 10)) ] && echo Quod Erat Demonstrandum || echo Quo Errat Demonstrator'
+alias u='unicode'
 
 stty -ixon
 

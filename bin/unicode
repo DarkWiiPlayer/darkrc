@@ -1,0 +1,15 @@
+#!/bin/sh
+namelist=$HOME/.local/unicode/NamesList.txt
+if [ ! -f "$namelist" ]
+then
+  echo $namelist not found, downloading...
+  mkdir -p $(dirname "$namelist")
+  touch "$namelist"
+  wget 'https://www.unicode.org/Public/UCD/latest/ucd/NamesList.txt' \
+  -O "$namelist" || exit
+fi
+codepoint=$(grep -i '^[0-9A-F]\+' "$namelist" | sed -e '/<.*>/d' -e 's/\t/ /g' | dmenu -i -l 20 -b | awk '{print $1}' | grep '^[0-9A-F]\+')
+if [ -z "$codepoint" ];
+then echo No codepoint selected >&2; exit
+fi
+printf '\\\\U%8s\n' $codepoint | sed 's/ /0/g' | xargs printf
