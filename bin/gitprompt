@@ -108,6 +108,8 @@ git__prompt () {
 		then
 			/bin/echo -ne " ${purple}+$untracked"
 		fi
+  else
+    exit 1
 	fi
 }
 
