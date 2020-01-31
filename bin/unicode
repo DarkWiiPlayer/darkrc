@@ -5,10 +5,11 @@ then
   echo $namelist not found, downloading...
   mkdir -p $(dirname "$namelist")
   touch "$namelist"
-  wget 'https://www.unicode.org/Public/UCD/latest/ucd/NamesList.txt' \
-  -O "$namelist" || exit
+  curl 'https://www.unicode.org/Public/UCD/latest/ucd/NamesList.txt' \
+  | sed -n -e '/<.*>/d' -e '/^[0-9A-F]\+/p' \
+  | cp2utf8 > "$namelist" || exit
 fi
-codepoint=$(grep -i '^[0-9A-F]\+' "$namelist" | sed -e '/<.*>/d' -e 's/\t/ /g' | dmenu -i -l 20 -b | awk '{print $1}' | grep '^[0-9A-F]\+')
+codepoint=$(cat "$namelist" | sed -e 's/\t/   /g' | dmenu -i -l 20 -b | awk '{print $1}' | grep '^[0-9A-F]\+')
 if [ -z "$codepoint" ];
 then echo No codepoint selected >&2; exit
 fi
