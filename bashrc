@@ -32,23 +32,23 @@ rlevel() {
 	if [ -n "$RANGER_LEVEL" ]
 	then if [ "$RANGER_LEVEL" = 1 ]
 		then
-			/bin/echo -ne "\033[00;31m$1 "
+			/bin/echo -ne "$1 "
 		else
-			/bin/echo -ne "\033[00;31m$RANGER_LEVEL×$1 "
+			/bin/echo -ne "$RANGER_LEVEL×$1 "
 		fi
 	fi
 }
 
-export PS1normal='\[\033[00;34m\]┌─╼ $(rlevel ●)\[\033[01;35m\]\u\[\033[00;34m\]@\[\033[01;35m\]\h \[\033[00;33m\]\$ \[\033[01;35m\]\w \[\033[01;34m\]`find -mindepth 1 -maxdepth 1 -type d | wc -l`\[\033[00;34m\]d \[\033[01;32m\]`find -maxdepth 1 -type f | wc -l`\[\033[00;32m\]f\[\033[00m\] $(gitprompt)
+export PS1normal='\[\033[00;34m\]┌─╼ \033[00;31m$(rlevel 🥆)\[\033[01;35m\]\u\[\033[00;34m\]@\[\033[01;35m\]\h \[\033[00;33m\]\$ \[\033[01;35m\]\w \[\033[01;34m\]`find -mindepth 1 -maxdepth 1 -type d | wc -l`\[\033[00;34m\]d \[\033[01;32m\]`find -maxdepth 1 -type f | wc -l`\[\033[00;32m\]f\[\033[00m\] $(gitprompt)
 \[\033[00;34m\]└╼ \[\033[00m\]'
 
-export PS1tiny='$(rlevel 🥆)\[\033[00;37m\]$(dirs +0) \[\033[00;34m\]‣ \[\033[00m\]'
+export PS1tiny='\[\033[00;37m\]$(dirs +0) \033[00;36m$(rlevel 🥆)\[\033[00;34m\]‣ \[\033[00m\]'
 
-export PS1nogit='\[\033[00;34m\]┌─╼ $(rlevel)\[\033[01;35m\]\u\[\033[00;34m\]@\[\033[01;35m\]\h \[\033[00;33m\]\$ \[\033[01;35m\]\w \[\033[01;34m\]`find -mindepth 1 -maxdepth 1 -type d | wc -l`\[\033[00;34m\]d \[\033[01;32m\]`find -maxdepth 1 -type f | wc -l`\[\033[00;32m\]f\[\033[00m\]
+export PS1nogit='\[\033[00;34m\]┌─╼ \033[00;31m$(rlevel)\[\033[01;35m\]\u\[\033[00;34m\]@\[\033[01;35m\]\h \[\033[00;33m\]\$ \[\033[01;35m\]\w \[\033[01;34m\]`find -mindepth 1 -maxdepth 1 -type d | wc -l`\[\033[00;34m\]d \[\033[01;32m\]`find -maxdepth 1 -type f | wc -l`\[\033[00;32m\]f\[\033[00m\]
 \[\033[00;34m\]└╼ \[\033[00m\]'
 
 export PS1tinygit='\[\033[00;37m\]$(gitprompt || dirs +0)
-\[\033[00;34m\]↳ $(rlevel 🥆)\[\033[00m\]'
+\[\033[00;34m\]↳ \033[00;36m$(rlevel 🥆)\[\033[00m\]'
 
 prompt() {
 	name=PS1$1
