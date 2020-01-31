@@ -1,0 +1,34 @@
+#!/usr/bin/env luajit
+
+local bit = require 'bit'
+
+local function code_to_utf8(code)
+  if code <= 0x7f then
+    return string.char(code)
+  elseif code <= 0x7ff then
+    return string.char(
+      bit.bor(0xC0, bit.rshift(code, 6)),
+      bit.bor(0x80, bit.band(code, 0x3f))
+    )
+  elseif code <= 0xffff then
+    return string.char(
+      bit.bor(0xE0, bit.rshift(code, 12)),
+      bit.bor(0x80, bit.band(bit.rshift(code, 6), 0x3f)),
+      bit.bor(0x80, bit.band(code, 0x3f))
+    )
+  elseif code <= 0x10FFFF then
+    return string.char(
+      bit.bor(0xE0, bit.rshift(code, 18)),
+      bit.bor(0x80, bit.band(bit.rshift(code, 12), 0x3f)),
+      bit.bor(0x80, bit.band(bit.rshift(code, 06), 0x3f)),
+      bit.bor(0x80, bit.band(code, 0x3f))
+    )
+  else
+    error 'Invalid character!'
+  end
+end
+
+for line in io.stdin:lines() do
+  local code = tonumber(line:match('%x+'), 16)
+  print(line, code_to_utf8(code))
+end
