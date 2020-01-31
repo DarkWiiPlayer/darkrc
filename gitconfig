@@ -12,7 +12,7 @@
 [push]
 	default = matching
 [alias]
-  head = log -1
+  head = log -1 --show-signature --format=fuller
 	adog = log --all --decorate --oneline --graph
 	dog = log --decorate --oneline --graph
 [commit]
