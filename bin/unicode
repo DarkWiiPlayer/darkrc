@@ -9,7 +9,7 @@ then
   | sed -n -e '/<.*>/d' -e '/^[0-9A-F]\+/p' \
   | cp2utf8 > "$namelist" || exit
 fi
-codepoint=$(cat "$namelist" | sed -e 's/\t/   /g' | dmenu -i -l 20 -b | awk '{print $1}' | grep '^[0-9A-F]\+')
+codepoint=$(cat "$namelist" | sed -e 's/\t/   /g' | dmenu -p "Unicode: " -i -l 20 | awk '{print $1}' | grep '^[0-9A-F]\+')
 if [ -z "$codepoint" ];
 then echo No codepoint selected >&2; exit
 fi
