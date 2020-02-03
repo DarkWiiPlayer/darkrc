@@ -1,1 +1,6 @@
-apropos . | awk '{print $1}' | dmenu -l 10 -b | xargs -r man -Tps | ps2pdf - | zathura -
+#!/bin/sh
+manpage=$(apropos . | awk '{print $1}' | dmenu -p 'Mansplain what?' -l 10 -b)
+if [ -z "$manpage" ];
+then echo "Manpage not found or no manpage selected"; exit
+else man -Tps $manpage | ps2pdf - | zathura -
+fi
