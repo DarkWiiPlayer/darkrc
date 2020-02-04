@@ -1,0 +1,9 @@
+#!/bin/sh
+
+top=$(git rev-parse --show-toplevel 2>/dev/null | sed -e 's/\//\\\//g')
+if [ -n "$top" ]
+then
+  echo $(pwd | sed -e "s/^$top//")
+else
+  exit 1
+fi
