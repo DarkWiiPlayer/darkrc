@@ -34,7 +34,7 @@ rlevel() {
 		then
 			/bin/echo -ne "$1 "
 		else
-			/bin/echo -ne "$RANGER_LEVEL×$1 "
+			/bin/echo -ne "$1×$RANGER_LEVEL "
 		fi
 	fi
 }
