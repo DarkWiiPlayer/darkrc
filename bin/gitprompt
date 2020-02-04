@@ -32,8 +32,6 @@ git__prompt () {
 		else
 			f=3
 		fi
-		/bin/echo -ne "\033[00;3${f}mδ\033[00;33m"
-    /bin/echo -ne " \033[00;36m$(basename $top)"
 		status=$(git status --short 2>/dev/null)
 		branch=$(git branch | grep -Po '(?<=\* )[[:alnum:]_.-]*')
 		modif=$(echo "$status" | grep -Po '^\s*M' | wc -l)
@@ -44,12 +42,37 @@ git__prompt () {
 		stat=$(git branch -vv | grep -P '^\*' | grep -Po '\[.*\]')
 		ahead=$(echo $stat | grep -Po '(?<=ahead )\d*')
 		behind=$(echo $stat | grep -Po '(?<=behind )\d*')
-		gray='\033[01;30m'
+		gray='\033[00;37m'
 		blue='\033[01;34m'
 		yellow='\033[01;33m'
 		red='\033[01;31m'
 		green='\033[01;32m'
 		purple='\033[01;35m'
+
+		/bin/echo -ne "\033[00;3${f}mδ\033[00;33m "
+		/bin/echo -ne "${purple}$(basename $top) "
+
+		# BRANCH
+		if [ -z "$branch" ]
+		then
+			head=$(git rev-parse --short HEAD 2>&1)
+			if [ "$(echo "$head" | grep '^fatal')" ]
+			then
+				branch='{no commits}'
+			else
+				branch='#'"$head"
+			fi
+		fi
+		if [ "$branch" = 'master' ]
+		then
+			/bin/echo -ne "$blue"
+		elif [ $(echo "$branch" | grep '^#' ) ]
+		then
+			/bin/echo -ne "$red"
+		else
+			/bin/echo -ne "$yellow"
+		fi
+    /bin/echo -ne "$branch\033[00;36m"
 
 		# SYNC
 		if [ -z "$ahead" ] && [ -z "$behind" ]
@@ -65,37 +88,16 @@ git__prompt () {
 			/bin/echo -ne " ${red}↓${behind}${red}↑${ahead}"
 		fi
 
-		# BRANCH
-		if [ -z "$branch" ]
-		then
-			head=$(git rev-parse --short HEAD 2>&1)
-			if [ "$(echo "$head" | grep '^fatal')" ]
-			then
-				branch='{no commits}'
-			else
-				branch='#'"$head"
-			fi
-		fi
-		if [ "$branch" = 'master' ]
-		then
-			/bin/echo -ne " $blue$branch"
-		elif [ $(echo "$branch" | grep '^#' ) ]
-		then
-			/bin/echo -ne " $red$branch"
-		else
-			/bin/echo -ne " $yellow$branch"
-		fi
-
 		# CHANGES
 		if [ "$modif" = 0 ]
 		then
 			/bin/echo -ne # "${gray}:\033[01;36m$modif" # No modified files
 		else
-			/bin/echo -ne "${gray}:\033[01;33m$modif" # Modified files
+			/bin/echo -ne " ${green}≠$modif" # Modified files
 		fi
 		if [ "$added" -ne 0 ]
 		then
-			/bin/echo -ne " ${green}+$added"
+			/bin/echo -ne " ${purple}+$added"
 		fi
 		if [ "$deleted" -ne 0 ]
 		then
@@ -103,11 +105,11 @@ git__prompt () {
 		fi
 		if [ "$renamed" -ne 0 ]
 		then
-			/bin/echo -ne " ${yellow}$renamed→$renamed"
+			/bin/echo -ne " ${purple}~$renamed"
 		fi
 		if [ "$untracked" -ne 0 ]
 		then
-			/bin/echo -ne " ${purple}+$untracked"
+			/bin/echo -ne " ${gray}+$untracked"
 		fi
   else
     exit 1
