@@ -4,7 +4,8 @@ if [ -z "$1" ]; then echo "No directory selected"; exit; fi
 image=$(find $1 -name '*.iso' -or -name '.img' | dmenu -p 'Select Image' -i -b -l 20)
 if ! [ -f "$image" ]; then echo "No file selected"; exit; fi
 
-device=$(find /dev -name 'sd*' | sort | dmenu -p 'Select Device' -b -l 20)
+word='\s*\([a-zA-Z0-9.:\/]\+\s*\)'
+device=$(lsblk -l | sed -e 1d -e 's/^'"$word$word"'\([0-9]\+\)\(\s\+[a-zA-Z0-9.]\+\)'"$word$word$word"'\?/\1\4   \7/' | dmenu -p 'Select Device' -b -l 20 | awk '{print "/dev/" $1}')
 if ! [ -b "$device" ]; then echo "No device selected"; exit; fi
 
 sudo dd if=$image of=$device bs=4M status=progress
