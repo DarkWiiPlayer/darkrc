@@ -1,0 +1,10 @@
+#!/bin/sh
+if [ -z "$1" ]; then echo "No directory selected"; exit; fi
+
+image=$(find $1 -name '*.iso' -or -name '.img' | dmenu -p 'Select Image' -i -b -l 20)
+if ! [ -f "$image" ]; then echo "No file selected"; exit; fi
+
+device=$(find /dev -name 'sd*' | sort | dmenu -p 'Select Device' -b -l 20)
+if ! [ -b "$device" ]; then echo "No device selected"; exit; fi
+
+sudo dd if=$image of=$device bs=4M status=progress
