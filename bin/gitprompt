@@ -33,6 +33,7 @@ git__prompt () {
 			f=3
 		fi
 		/bin/echo -ne "\033[00;3${f}mδ\033[00;33m"
+    /bin/echo -ne " \033[00;36m$(basename $top)"
 		status=$(git status --short 2>/dev/null)
 		branch=$(git branch | grep -Po '(?<=\* )[[:alnum:]_.-]*')
 		modif=$(echo "$status" | grep -Po '^\s*M' | wc -l)
