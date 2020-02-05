@@ -93,7 +93,7 @@ git__prompt () {
 		then
 			/bin/echo -ne # "${gray}:\033[01;36m$modif" # No modified files
 		else
-			/bin/echo -ne " ${green}≠$modif" # Modified files
+			/bin/echo -ne " \033[01;36m≠$modif" # Modified files
 		fi
 		if [ "$added" -ne 0 ]
 		then
@@ -109,7 +109,7 @@ git__prompt () {
 		fi
 		if [ "$untracked" -ne 0 ]
 		then
-			/bin/echo -ne " ${gray}+$untracked"
+			/bin/echo -ne " ${yellow}+$untracked"
 		fi
   else
     exit 1
