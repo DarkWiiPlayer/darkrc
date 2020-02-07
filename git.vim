@@ -37,27 +37,9 @@ function! s:cd_git_root(path)
 	end
 endf
 
-" Returns an array containing chronologically sorted commits
-function! s:git_history()
-	if exists("b:git_history")
-		if b:git_history[0]+10 > localtime()
-			return b:git_history[1]
-		end
-	end
-
-	if exists("b:git_original_file") " Is this already a file@revision buffer?
-		let l:fname = b:git_original_file
-	else
-		let l:fname = substitute(expand("%"), "\\\\", "/", "g")
-	end
-	let l:commits = system('git log --format="%h" '.l:fname)
-	let l:hist = split(l:commits, "\n")
-	let b:git_history = [localtime(), l:hist]
-
-	return l:hist
-endfun
-
 function! s:previous_commit()
+	" TODO: Refactor this block into s:git_init_buffer() and set buffer
+	" variables instead.
 	if exists("b:git_original_file") " Is this already a file@revision buffer?
 		let l:fname = b:git_original_file
 		let l:revision = b:git_revision_hash
@@ -71,6 +53,7 @@ function! s:previous_commit()
 endfun
 
 function! s:next_commit()
+	" TODO: See previous_commit()
 	if exists("b:git_original_file") " Is this already a file@revision buffer?
 		let l:fname = b:git_original_file
 		let l:revision = b:git_revision_hash
@@ -84,6 +67,8 @@ function! s:next_commit()
 endfun
 
 function! s:git_first()
+	" FIXME: Broken after removing git_history;
+	" see TODO in previous_commit()
 	if &modified
 		throw "File has unsaved modifications!"
 	end
@@ -91,6 +76,8 @@ function! s:git_first()
 endfun
 
 function! s:git_last()
+	" FIXME: Broken after removing git_history;
+	" see TODO in previous_commit()
 	if &modified
 		throw "File has unsaved modifications!"
 	end
@@ -108,7 +95,8 @@ endfun
 function! s:git_next()
 	let l:next = s:next_commit()
 	if l:next == ""
-		echom "No newer versions available! 😱"
+		exec 'e! '.b:git_original_file
+		echom "No newer versions available! (Loading working copy) 😱"
 	else
 		call s:file_at_revision(l:next)
 	end
@@ -151,27 +139,6 @@ function! s:file_at_revision(rev)
 	call setpos('.', l:pos)
 endfun
 
-function! s:git_diff(...)
-	if a:0
-		let l:wd = getcwd()
-		call s:cd_git_root('%')
-		split
-		call s:file_at_revision(a:1)
-		diffthis
-		au BufUnload <buffer> diffoff!
-		exec "normal \<C-w>\<C-p>"
-		diffthis
-		exec "normal \<C-w>\<C-p>"
-		exec "cd ".l:wd
-	else
-		if exists("b:git_revision_hash")
-			call s:git_diff(get(s:git_history(), index(s:git_history(), b:git_revision_hash)+1, "NIL"))
-		else
-			call s:git_diff(get(s:git_history(), 0, "HEAD"))
-		end
-	end
-endfun
-
 function! s:git_blame(first, last)
 	let l:input = system('git blame '.expand('%').' --line-porcelain -L '.a:first.','.a:last)
 	let l:data = map(split(l:input, '\ze\x\{40} \d\+ \d\+'), {idx, elem -> split(elem, '\n')})
@@ -195,11 +162,6 @@ command! GitInfo call <sid>git_info()
 command! -nargs=1 GitCheckout call <sid>file_at_revision(<f-args>)
 command! -nargs=? GitCompare try
       \| call s:gitroot() | call <sid>git_diff(<f-args>)
-      \| catch
-      \| echo 'Not a git repo!' 
-      \| endtry
-command! Uncommited try
-      \| call <sid>git_diff()
       \| catch
       \| echo 'Not a git repo!' 
       \| endtry
