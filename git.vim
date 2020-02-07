@@ -57,6 +57,32 @@ function! s:git_history()
 	return l:hist
 endfun
 
+function! s:previous_commit()
+	if exists("b:git_original_file") " Is this already a file@revision buffer?
+		let l:fname = b:git_original_file
+		let l:revision = b:git_revision_hash
+	else
+		let l:fname = substitute(expand("%"), "\\\\", "/", "g")
+		let l:revision = 'HEAD'
+	end
+	let l:commit = system('git log --format="%h" -1 '.l:revision.'~1 '.l:fname)
+
+	return substitute(l:commit, "\n", "", "")
+endfun
+
+function! s:next_commit()
+	if exists("b:git_original_file") " Is this already a file@revision buffer?
+		let l:fname = b:git_original_file
+		let l:revision = b:git_revision_hash
+	else
+		let l:fname = substitute(expand("%"), "\\\\", "/", "g")
+		let l:revision = 'HEAD'
+	end
+	let l:commit = system('git log --format="%h" '.l:revision.'..HEAD '.l:fname.' | tail -2 | head -1')
+
+	return substitute(l:commit, "\n", "", "")
+endfun
+
 function! s:git_first()
 	if &modified
 		throw "File has unsaved modifications!"
@@ -80,40 +106,20 @@ function! s:git_info()
 endfun
 
 function! s:git_next()
-	if !exists("b:git_revision_hash") || !exists("b:git_original_file")
-		echom "Error 01: Not a file@revision buffer!"
-		return 0
-	end
-	let l:history = s:git_history()
-	let l:idx = index(l:history, b:git_revision_hash)
-	if l:idx == -1
-		echo "Error 02"
-		return
-	end
-	let l:new_revision = get(l:history, l:idx-1, "LAST")
-	if l:new_revision=="LAST"
-		throw "Already at last revision!"
+	let l:next = s:next_commit()
+	if l:next == ""
+		echom "No newer versions available! 😱"
 	else
-		call s:file_at_revision(l:new_revision)
+		call s:file_at_revision(l:next)
 	end
 endfun
 
 function! s:git_prev()
-	if !exists("b:git_revision_hash") || !exists("b:git_original_file")
-		let l:new_revision = s:git_history()[0]
+	let l:next = s:previous_commit()
+	if l:next == ""
+		echom "No older versions available! 😱"
 	else
-		let l:history = s:git_history()
-		let l:idx = index(l:history, b:git_revision_hash)
-		if l:idx == -1
-			echo "Error 03: cannot find revision ".b:git_revision_hash
-			return
-		end
-		let l:new_revision = get(l:history, l:idx+1, "FIRST")
-	end
-	if l:new_revision=="FIRST"
-		throw "Already at earliest revision!"
-	else
-		call s:file_at_revision(l:new_revision)
+		call s:file_at_revision(l:next)
 	end
 endfun
 
