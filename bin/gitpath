@@ -3,7 +3,7 @@
 top=$(git rev-parse --show-toplevel 2>/dev/null | sed -e 's/\//\\\//g')
 if [ -n "$top" ]
 then
-	path=$(pwd | sed -e "s/^$top//")
+	path=$(pwd -P | sed -e "s/^$top//")
 	if [ ! -z "$path" ]
 	then echo -n "$path "
 	fi
