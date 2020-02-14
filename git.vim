@@ -126,7 +126,7 @@ function! s:file_at_revision(rev)
 	ene!
 	set modifiable
 	silent exec "file ".l:ftail."@".a:rev
-	exec "r!git show ".a:rev.":".l:fname
+	exec "r!git show ".a:rev.":".system("git ls-files --full-name ".l:fname)
 	1,1del
 	setl nomodifiable
 	setl buftype=nofile
