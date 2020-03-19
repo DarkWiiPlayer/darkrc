@@ -1,5 +1,42 @@
 #!/usr/bin/env luajit
 
+banner = [[
+Calculator (by DarkWiiPlayer)
+License: the Unlicense (type 'license')
+]]
+
+license = [[
+This is free and unencumbered software released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
+
+In jurisdictions that recognize copyright laws, the author or authors
+of this software dedicate any and all copyright interest in the
+software to the public domain. We make this dedication for the benefit
+of the public at large and to the detriment of our heirs and
+successors. We intend this dedication to be an overt act of
+relinquishment in perpetuity of all present and future rights to this
+software under copyright law.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+]]
+
+help = [[
+This is a simple terminal calculator written in Lua.
+Call without arguments for an interactive shell.
+Call with `-` argument for a multiline calculation.
+Call with any other argument for inline calculation.
+]]
+
 local moonscript = pcall(function()
 	require 'moonscript.base'
 end)
@@ -7,23 +44,32 @@ end)
 if moonscript then
 	parse = require('moonscript.base').to_lua
 else
+	print("Could not load Moonscript, falling back to Lua...")
 	parse = function(...) return ... end
 end
 
-local function run(line, name, addreturn, prefix)
-	if addreturn~=false then
+local function run(line, name, addreturn)
+	if addreturn~=false and not moonscript then
 		line = "return ("..line..")"
 	end
-	if prefix then io.write(prefix, ' ') end
-	print(assert(load(parse(line), name, 't', math))())
+	local expression = assert(load(parse(line), name, 't', setmetatable({}, {__index = function(self, key)
+		return math[key] or _G[key] or nil
+	end})))
+	success, math.ans = xpcall(expression, print)
+	print(math.ans)
 end
 
 local line = table.concat({...}, ' ')
 
 if line == '' then
+	print(banner)
+	io.write '> '
 	for line in io.stdin:lines() do
+		io.write("= ")
 		run(line, "User Input", true, "=")
+		io.write '> '
 	end
+	print('os.exit(0, true) -- See you again soon ♥')
 elseif line == '-' then
 	run(io.stdin:read("*a"), "User Input", false, "=")
 else
