@@ -1,0 +1,31 @@
+#!/usr/bin/env luajit
+
+local moonscript = pcall(function()
+	require 'moonscript.base'
+end)
+
+if moonscript then
+	parse = require('moonscript.base').to_lua
+else
+	parse = function(...) return ... end
+end
+
+local function run(line, name, addreturn, prefix)
+	if addreturn~=false then
+		line = "return ("..line..")"
+	end
+	if prefix then io.write(prefix, ' ') end
+	print(assert(load(parse(line), name, 't', math))())
+end
+
+local line = table.concat({...}, ' ')
+
+if line == '' then
+	for line in io.stdin:lines() do
+		run(line, "User Input", true, "=")
+	end
+elseif line == '-' then
+	run(io.stdin:read("*a"), "User Input", false, "=")
+else
+	run(line, "Commandline")
+end
