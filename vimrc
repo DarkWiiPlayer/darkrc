@@ -953,4 +953,4 @@ endfunction
 
 " --- LaTeX Stuff ---
 
-command! Latex2PDF call Async([ 'lualatex -draftmode '.expand('%'), 'biber '.expand('%:r'), 'lualatex '.expand('%'), ['/bin/bash', '-c', 'rm *.{aux,bbl,dvi,log,blg,bcf,xml,toc}'] ])
+command! Latex2PDF call Async([ 'lualatex -draftmode '.expand('%'), 'biber '.expand('%:r'), 'lualatex '.expand('%') ])
