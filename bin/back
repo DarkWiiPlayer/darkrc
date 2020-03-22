@@ -2,3 +2,6 @@ win_id=$(xwininfo | awk 'match($0, /Window id: (0x[0-9a-f]+)/, cap){print cap[1]
 
 xprop -id $win_id -f _MOTIF_WM_HINTS 32c -set _MOTIF_WM_HINTS "0x2, 0x0, 0x0, 0x0, 0x0"
 wmctrl -i -r $win_id -b add,below
+wmctrl -i -r $win_id -b add,skip_taskbar
+wmctrl -i -r $win_id -b add,skip_pager
+wmctrl -i -r $win_id -b add,sticky
