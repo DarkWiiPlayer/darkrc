@@ -622,15 +622,8 @@ nnoremap [p :let [content, type]=
 		\:call setreg(v:register, content, type)<CR>
 
 " Empty Lines
-nnoremap <ENTER> :call <SID>Enter(0)<CR>
-nnoremap <S-ENTER> :call <SID>Enter(1)<CR>
-function! s:Enter(shift)
-	if !a:shift
-		silent exe "normal o\<esc>0\"_d$"
-	else
-		silent exe "normal O\<esc>0\"_d$j"
-	endif
-endfunction
+nnoremap <leader><CR> o0
+nnoremap <leader><leader><CR> O0
 
 " Markdown Stuff
 vnoremap * <C-c>`>a*<C-c>`<i*<C-c>
