@@ -1,9 +1,12 @@
 # vim: set filetype=gitconfig :miv #
 [core]
 	editor = vim -f
+[commit]
+	# Sign commits by default
+	gpgSign = true
 [diff]
 	tool = vimdiff
-  guitool = gvimdiff
+	guitool = gvimdiff
 [difftool]
 	confirm = false
 	prompt = true
@@ -12,8 +15,13 @@
 [push]
 	default = matching
 [alias]
-  head = log -1 --show-signature --format=fuller
+	head = log -1 --show-signature --format=fuller
 	adog = log --all --decorate --oneline --graph
 	dog = log --decorate --oneline --graph
-[commit]
-	gpgSign = true
+	identity = "! git config user.name \"$(git config user.$1.name)\"; git config user.email \"$(git config user.$1.email)\"; :"
+[user]
+	useConfigOnly = true
+[user "darkwiiplayer"]
+	# Public identity for Github & co. 
+	name = DarkWiiPlayer
+	email = darkwiiplayer@hotmail.com
