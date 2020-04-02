@@ -49,7 +49,7 @@ filetype plugin on
 filetype indent on
 set ruler
 "set backspace=eol,start,indent
-set backspace=start
+set backspace=start,indent,eol
 set path+=** " Enable fuzzy search " STAAAAAARS
 set wildmenu "Menu for tab completion
 set enc=utf8
