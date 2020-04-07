@@ -1,6 +1,7 @@
 # vim: set filetype=gitconfig :miv #
 [core]
 	editor = vim -f
+  excludesfile = .gitignore.local
 [commit]
 	# Sign commits by default
 	gpgSign = true
