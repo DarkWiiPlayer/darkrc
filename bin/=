@@ -1,11 +1,22 @@
 #!/usr/bin/env luajit
 
-banner = [[
+local env = setmetatable({}, {__index = function(self, key)
+	return math[key] or _G[key] or nil
+end})
+
+env.banner = [[
 Calculator (by DarkWiiPlayer)
 License: the Unlicense (type 'license')
 ]]
 
-license = [[
+env.help = [[
+This is a simple terminal calculator written in Lua.
+Call without arguments for an interactive shell.
+Call with `-` argument for a multiline calculation.
+Call with any other argument for inline calculation.
+]]
+
+env.license = [[
 This is free and unencumbered software released into the public domain.
 
 Anyone is free to copy, modify, publish, use, compile, sell, or
@@ -30,13 +41,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 ]]
 
-help = [[
-This is a simple terminal calculator written in Lua.
-Call without arguments for an interactive shell.
-Call with `-` argument for a multiline calculation.
-Call with any other argument for inline calculation.
-]]
-
 local moonscript = pcall(function()
 	require 'moonscript.base'
 end)
@@ -52,9 +56,7 @@ local function run(line, name, addreturn)
 	if addreturn~=false and not moonscript then
 		line = "return ("..line..")"
 	end
-	local expression = assert(load(parse(line), name, 't', setmetatable({}, {__index = function(self, key)
-		return math[key] or _G[key] or nil
-	end})))
+	local expression = assert(load(parse(line), name, 't', env))
 	success, math.ans = xpcall(expression, print)
 	print(math.ans)
 end
