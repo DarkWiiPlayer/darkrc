@@ -1,4 +1,9 @@
-win_id=$(xwininfo | awk 'match($0, /Window id: (0x[0-9a-f]+)/, cap){print cap[1]}')
+#!/bin/sh
+
+if [ -z "$1" ]
+then win_id=$(xwininfo | awk 'match($0, /Window id: (0x[0-9a-f]+)/, cap){print cap[1]}')
+else win_id=$1
+fi
 
 xprop -id $win_id -f _MOTIF_WM_HINTS 32c -set _MOTIF_WM_HINTS "0x2, 0x0, 0x0, 0x0, 0x0"
 wmctrl -i -r $win_id -b add,below
