@@ -503,7 +503,7 @@ command! -nargs=? Tempfile exec 'new '.tempname()  | set filetype=<args> | au Bu
 "        └──────────────────────────┘
 "
 onoremap al :<C-U>normal! 0v$h<CR>
-onoremap il :<C-U>normal! &v$h<CR>
+onoremap il :<C-U>normal! ^v$h<CR>
 
 nnoremap val 0v$
 nnoremap vil ^v$h
