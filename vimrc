@@ -533,12 +533,12 @@ command! -nargs=? Tempfile exec 'new '.tempname()  | set filetype=<args> | au Bu
 "        ├─┤ GENERAL KEY MAPPINGS ├─┤
 "        │ └──────────────────────┴─┤
 "        └──────────────────────────┘
-"
-onoremap al :<C-U>normal! 0v$h<CR>
-onoremap il :<C-U>normal! ^v$h<CR>
 
-nnoremap val 0v$
-nnoremap vil ^v$h
+onoremap al :<C-U>normal! 0vg_<CR>
+onoremap il :<C-U>normal! ^vg_<CR>
+
+nnoremap val 0vg_
+nnoremap vil ^vg_
 
 " --- F5 ---
 nnoremap <F5> :nnoremap <buffer> <F5> :
