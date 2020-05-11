@@ -24,10 +24,12 @@ if &t_Co > 2 || has("gui_running")
 	set hlsearch "Highlight search results
 endif
 
-if v:version >= 800
-	set cm=blowfish2
-elseif v:version >= 703
-	set cm=blowfish
+if has("cryptv")
+	if v:version >= 800
+		set cm=blowfish2
+	elseif v:version >= 703
+		set cm=blowfish
+	end
 end
 
 set colorcolumn=+1
