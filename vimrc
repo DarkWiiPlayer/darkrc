@@ -652,6 +652,13 @@ function! s:backtick_op(type)
 endf
 nnoremap <leader>` :<C-U>set operatorfunc=<SID>backtick_op<CR>g@
 vnoremap <leader>` :<C-U>call <SID>vsurround("`", "`")<CR>
+
+function! s:asterisk_op(type)
+  normal `[m<`]m>
+  call <SID>surround(a:type, "*", "*")
+endf
+nnoremap <leader>* :<C-U>set operatorfunc=<SID>asterisk_op<CR>g@
+vnoremap <leader>* :<C-U>call <SID>vsurround("*", "*")<CR>
 " --- END OF SURROUND MAPPINGS ---
 
 nnoremap <S-l> :L<cr>
@@ -714,10 +721,6 @@ nnoremap [p :let [content, type]=
 " Empty Lines
 nnoremap <leader><CR> o0
 nnoremap <leader><leader><CR> O0
-
-" Markdown Stuff
-vnoremap * <C-c>`>a*<C-c>`<i*<C-c>
-vnoremap _ <C-c>`>a__<C-c>`<i__<C-c>
 
 " === GENERAL ABBREVIATIONS ===
 cabbr rcpath fnamemodify($MYVIMRC, ":p:h")
