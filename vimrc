@@ -33,7 +33,7 @@ if has("cryptv")
 end
 
 set colorcolumn=+1
-hi ColorColumn ctermbg=magenta
+hi ColorColumn ctermbg=magenta ctermfg=white guibg=magenta guifg=white
 
 " set linespace=0
 set scrolloff=6
