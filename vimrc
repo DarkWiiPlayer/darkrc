@@ -6,6 +6,10 @@ let s:root = expand('<sfile>:p:h')
 set nocompatible
 """"""""""""""""
 
+" ┌────────────────────────┐
+" │ General Configurations │
+" └────────────────────────┘
+
 " Sessions
 set sessionoptions=blank,buffers,curdir,folds,help,options,tabpages
 set foldmethod=marker
@@ -25,6 +29,9 @@ if v:version >= 800
 elseif v:version >= 703
 	set cm=blowfish
 end
+
+set colorcolumn=+1
+hi ColorColumn ctermbg=magenta
 
 " set linespace=0
 set scrolloff=6
