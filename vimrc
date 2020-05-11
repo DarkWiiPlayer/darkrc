@@ -39,7 +39,7 @@ hi ColorColumn ctermbg=magenta
 set scrolloff=6
 set history=50 " keep 50 lines of command line history
 set nonumber
-" set relativenumber
+set relativenumber
 set langmenu=en_UK
 let $LANG = 'en_GB.UTF-8'
 source $VIMRUNTIME/delmenu.vim
