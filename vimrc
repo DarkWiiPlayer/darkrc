@@ -703,7 +703,6 @@ com! SetLWD :lcd %:p:h
 com! Trailing let _s=@/ | %s/\v(\\@<!\s)+$//ge | let @/=_s
 nnoremap <C-d> :copy .<CR>
 vnoremap <C-d> :copy '><CR>
-nnoremap dx 0"_d$
 nnoremap dcx 0d$
 nnoremap <leader>: :let @* = @:<CR>
 nnoremap <expr> R ":%s/\\<\\(".expand("<cword>")."\\)\\>/"
