@@ -1,6 +1,7 @@
 # vim: set noexpandtab :miv #
 alias gcd="source git-cd"
 alias g="source cd-improved"
+alias gg="cd $HOME; g ."
 alias hello='echo "Hello :)"'
 alias w='watch -t -d -n 1'
 alias setclip='xclip -selection c'
