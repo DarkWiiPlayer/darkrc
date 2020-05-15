@@ -1,0 +1,21 @@
+#!/bin/sh
+
+root="$(git rev-parse --show-toplevel 2>/dev/null)"
+
+if [ -z "$root" ]
+then
+  cd $@
+else
+  if [ -z "$1" ]
+  then
+    cd "$root"
+  else
+    if [ $(echo "$1" | grep '^/') ]
+    then cd "$root"$@
+    else cd $@
+    fi
+  fi
+fi
+
+git rev-parse --show-toplevel >/dev/null 2>&1 \
+  && prompt gitlong || prompt normal
