@@ -1,7 +1,7 @@
 # vim: set filetype=gitconfig :miv #
 [core]
 	editor = vim -f
-  excludesfile = .gitignore.local
+	excludesfile = .gitignore.local
 [commit]
 	# Sign commits by default
 	gpgSign = true
@@ -20,7 +20,7 @@
 	adog = log --all --decorate --oneline --graph
 	dog = log --decorate --oneline --graph
 	identity = "! git config user.name \"$(git config user.$1.name)\"; git config user.email \"$(git config user.$1.email)\"; :"
-  root = rev-parse --show-toplevel
+	root = rev-parse --show-toplevel
 [user]
 	useConfigOnly = true
 [user "darkwiiplayer"]
