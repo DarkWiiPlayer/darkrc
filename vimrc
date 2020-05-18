@@ -5,4 +5,5 @@ let &rtp=expand('<sfile>:p:h').'/vim,'.&rtp
 
 run git.vim
 run surround.vim
+run scratch.vim
 run shame.vim

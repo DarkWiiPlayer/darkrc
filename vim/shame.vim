@@ -492,7 +492,6 @@ function! s:snapshot()
 endfun
 command! Snapshot call <sid>snapshot()
 
-command! -nargs=? Scratch enew | call <sid>init_generic_file() | set filetype=<args> | set buftype=nofile
 command! Todo call matchadd('Todo', '^\s*\[ \?\].*$') |
 			\ call matchadd('Comment', '^\s*\[x\].*$') |
 			\ call matchadd('Comment', '^\s*\[-\].*$') |
