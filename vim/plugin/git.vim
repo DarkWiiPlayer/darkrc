@@ -145,6 +145,15 @@ function! s:git_blame(first, last)
 	return map(l:data, {idx, ary -> ary[1][match(ary[1], '\s\+\zs'):]})
 endfun
 
+function! s:git_root_to_path()
+	let l:root = substitute(system('git rev-parse --show-toplevel'), '\n\_.*', '', '')
+	if !v:shell_error
+		let &path.=','.l:root.'/**'
+	end
+endfun
+
+call s:git_root_to_path()
+
 command! -range Blame echom join(uniq(sort(<sid>git_blame(<line1>, <line2>))), ', ')
 command! -range DBlame !git blame % -L <line1>,<line2>
 command! GitNext try
