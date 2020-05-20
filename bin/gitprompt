@@ -1,13 +1,17 @@
 #!/bin/sh
 
 git__fetch() {
+  if [ -f "$1/.git" ]
+    then dir="$(cat $top/.git | sed -e 's/^gitdir: //')"
+    else dir="$1/.git"
+  fi
 	if [ -n "$BASH_AUTOFETCH_TIMEOUT" ]; then
 		timeout=$BASH_AUTOFETCH_TIMEOUT
 	else
 		timeout=60
 	fi
-	if [ -f "$1/.git/FETCH_HEAD" ]; then
-		diff=$(($(date +%s) - $(stat -c %Y $1/.git/FETCH_HEAD)))
+	if [ -f "$dir/FETCH_HEAD" ]; then
+		diff=$(($(date +%s) - $(stat -c %Y $dir/FETCH_HEAD)))
 	else
 		diff=9999
 	fi
@@ -16,7 +20,7 @@ git__fetch() {
 	else run=0
 	fi
 	if [ "$run" -gt 0 ]; then
-		touch $1/.git/FETCH_HEAD
+		touch $dir/FETCH_HEAD
 		nohup git fetch > /dev/null 2>&1 &
 	fi
 	echo $run
