@@ -1,0 +1,22 @@
+#!/bin/sh
+
+say() {
+	echo "🍅 Pomodoro: $1"
+}
+
+while true
+do
+	for i in 1 2 3 4
+	do
+		say "Start working... 🔨"
+	   sleep $((60 * 25))
+		if [ 4 -eq "$i" ]
+		then
+			say "Take a break... 💤"
+			sleep $((60 * 5))
+		else
+			say "Take a break... 💤"
+			sleep $((60 * 15))
+		fi
+	done
+done
