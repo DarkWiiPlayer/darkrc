@@ -6,8 +6,8 @@ else win_id=$1
 fi
 
 xprop -id $win_id -f _MOTIF_WM_HINTS 32c -set _MOTIF_WM_HINTS "0x2, 0x0, 0x0, 0x0, 0x0"
-wmctrl -i -r $win_id -b remove,above
-wmctrl -i -r $win_id -b add,below
+wmctrl -i -r $win_id -b remove,below
+wmctrl -i -r $win_id -b add,above
 wmctrl -i -r $win_id -b add,skip_taskbar
 wmctrl -i -r $win_id -b add,skip_pager
 wmctrl -i -r $win_id -b add,sticky
