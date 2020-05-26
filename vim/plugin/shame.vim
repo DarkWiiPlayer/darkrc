@@ -510,6 +510,9 @@ onoremap il :<C-U>normal! ^vg_<CR>
 nnoremap val 0vg_
 nnoremap vil ^vg_
 
+" --- ! as in ranger ---
+nnoremap ! :!
+
 " --- F5 ---
 nnoremap <F5> :nnoremap <buffer> <F5> :
 
