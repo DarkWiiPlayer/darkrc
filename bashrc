@@ -63,7 +63,7 @@ export PS1nogit='\[\033[00;34m\]┌─╼ \033[00;31m$(rlevel)\[\033[01;35m\]\u\
 export PS1git='\[\033[00;37m\]$(numjobs ⚒)\[\033[00;37m\]$(gitprompt || dirs +0) \[\033[00;36m\]$(gitpath) \[\033[00;36m\]$(rlevel 🥆 ·)
 \[\033[00;34m\]↳ \[\033[00m\]'
 
-export PS1gitlong='\[\033[00;37m\]$(numjobs ⚒ ·)\[\033[00;37m\]$(gitprompt || dirs +0) \[\033[00;37m\]$(git log --oneline --no-decorate -1 2>/dev/null) 
+export PS1gitlong='\[\033[00;37m\]$(numjobs ⚒ ·)\[\033[00;37m\]$(gitprompt || dirs +0) \[\033[00;30m\]$(git log --oneline --no-decorate -1 2>/dev/null) 
 \[\033[00;36m\]$(rlevel 🥆 ·)\[\033[00;36m\]$(gitpath)\[\033[00;31m\]» \[\033[00m\]'
 
 prompt() {
