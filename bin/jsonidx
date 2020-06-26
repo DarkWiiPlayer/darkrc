@@ -1,0 +1,14 @@
+#!/usr/bin/env luajit
+
+local json = require 'cjson'
+
+local input = assert(json.decode(io.stdin:read("a*")))
+
+for i, chain in ipairs{...} do
+	local current = input
+	for index in chain:gmatch("[^.]+") do
+		index = tonumber(index) or index
+		current = type(current)=="table" and current[index] or nil
+	end
+	print(json.encode(current))
+end
