@@ -688,36 +688,6 @@ function! s:toggleWUC()
 	redraw
 endfunction
 
-" Autosave when vim loses focus :)
-function! TryAutosave(warn, mode)
-	if a:mode == 0
-		if &autowriteall || &autowrite
-			silent wall
-			if a:warn
-				echo "Autosaving all buffers..."
-			end
-		end
-	elseif a:mode == 1
-		if &autowriteall
-			if &mod
-				silent write
-				if a:warn
-					echo "Autosaving current buffer..."
-				end
-			end
-		end
-	end
-
-	redraw
-endfunction
-
-augroup autosave
-autocmd!
-autocmd FocusLost * call TryAutosave(0, 0)
-autocmd BufLeave * call TryAutosave(0, 1)
-autocmd CursorHold * call TryAutosave(0, 1)
-augroup END
-
 vnoremap <leader>g :<C-u>call <SID>GrepOperator(visualmode())<CR>
 nnoremap <leader>g :set operatorfunc=<SID>GrepOperator<CR>g@
 function! s:GrepOperator(type)
