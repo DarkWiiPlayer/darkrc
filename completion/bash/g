@@ -1,16 +1,19 @@
+#!/bin/bash
+# Just source this file in your bashrc :)
+
 _g_completion() {
-  root=$(git rev-parse --show-toplevel 2>/dev/null)
-  if [ "$root" ]
-  then
-    if echo "$2" | grep '^\/' > /dev/null
-    then
-      dirname=$(dirname "$2foo")
-      regex=$(echo $root | sed 's/\//\\\//g')
-      for dir in $(find $root$dirname -maxdepth 1 -mindepth 1 -type d | sed s'/^'"$regex"'//g' | grep '^'"$2")
-      do COMPREPLY+=("$dir/")
-      done
-    fi
-  fi
+	root=$(git rev-parse --show-toplevel 2>/dev/null)
+	if [ "$root" ]
+	then
+		if echo "$2" | grep '^\/' > /dev/null
+		then
+			dirname=$(dirname "$2foo")
+			regex=$(echo $root | sed 's/\//\\\//g')
+			for dir in $(find $root$dirname -maxdepth 1 -mindepth 1 -type d | sed s'/^'"$regex"'//g' | grep '^'"$2")
+			do COMPREPLY+=("$dir/")
+			done
+		fi
+	fi
 }
 
 complete -F _g_completion -o bashdefault -o dirnames g
