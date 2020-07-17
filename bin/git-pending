@@ -1,0 +1,18 @@
+#!/bin/sh
+
+for line in $@
+do
+	dir=$(pwd)
+	cd "$line"
+	if git log -0 2>/dev/null
+	then
+		stat=$(git branch -vv | grep -P '^\*' | grep -Po '\[.*\]')
+		if echo $stat | grep -P 'behind' > /dev/null
+			then echo behind $line
+		fi
+		if echo $stat | grep -P 'ahead' > /dev/null
+			then echo ahead $line
+		fi
+	fi
+	cd $dir
+done
