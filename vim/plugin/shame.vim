@@ -74,23 +74,6 @@ set nowb
 " set noswapfile
 set swapfile
 
-" Indentation, etc.
-if exists("$EXPANDTAB")
-	set expandtab
-else
-	set noexpandtab
-end
-if exists("$TABSTOP")
-	let &tabstop=str2nr($TABSTOP)
-else
-	set tabstop=3
-end
-set shiftwidth=0 " Not needed
-set softtabstop=0 " Not needed
-set smarttab
-set autoindent
-set smartindent
-set smarttab
 set gdefault
 
 " set wrap
