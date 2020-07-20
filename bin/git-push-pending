@@ -1,0 +1,9 @@
+#!/bin/sh
+
+(echo $HOME/darkrc; echo $HOME/me; find $HOME/workspace/ -name '*.git' -type d | sed 's/\/.git$//') \
+	| xargs git-pending \
+	| grep '^ahead' \
+	| lua -e 'for line in io.lines() do print(line:match("[^/]+$")); print((line:gsub("^[^ ]* ", ""))) end' \
+	| zenity --list --column Repository --column Path --text "Repositories that need pushing:" --multiple --title "Git" --separator ';' --width 800 --height 300 --print-column=2 \
+	| tr ';' '\n' \
+	| xargs -L 1 -I€ sh -c 'cd € && git push'
