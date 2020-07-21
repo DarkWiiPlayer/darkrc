@@ -1,6 +1,6 @@
 #!/bin/sh
 
-(for name in $@; do find $name -name '*.git' -type d | sed 's/\/.git$//'; done) \
+(for name in $@; do find -L $name -name '*.git' -type d | sed 's/\/.git$//'; done) \
 	| xargs git-pending \
 	| grep '^ahead' \
 	| lua -e 'for line in io.lines() do print(line:match("[^/]+$")); print((line:gsub("^[^ ]* ", ""))) end' \
