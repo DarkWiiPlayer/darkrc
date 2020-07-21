@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ -f "$HOME/.dark" ]
+then exec dmenu -nb \#2F2F2F -nf \#ffffff -sb \#df74b1 -sf \#000000 "$@"
+else exec dmenu -nb \#D9D9D9 -nf \#000000 -sb \#fb006b -sf \#ffffff "$@"
+fi
