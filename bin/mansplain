@@ -1,4 +1,5 @@
 #!/bin/sh
+alias dmenu="$HOME/darkrc/bin/dmenu-themed "
 manpage=$(apropos . | awk '{print $1}' | dmenu -p 'Mansplain what?' -l 10 -b)
 if [ -z "$manpage" ];
 then echo "Manpage not found or no manpage selected"; exit

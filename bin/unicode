@@ -1,4 +1,5 @@
 #!/bin/sh
+alias dmenu="$HOME/darkrc/bin/dmenu-themed"
 namelist=$HOME/.local/unicode/NamesList.txt
 if [ ! -f "$namelist" ]
 then
