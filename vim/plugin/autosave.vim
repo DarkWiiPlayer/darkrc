@@ -9,6 +9,10 @@ function! TryAutosave()
   end
 endfunction
 
+if exists("$AUTOSAVE") 
+  set autowriteall
+end
+
 augroup autosave
 autocmd!
 	autocmd BufLeave * call TryAutosave()
