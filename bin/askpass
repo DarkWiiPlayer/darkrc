@@ -1,0 +1,2 @@
+#!/bin/sh
+zenity --password --title "AskPass" 2>/dev/null
