@@ -10,7 +10,7 @@
 	guitool = gvimdiff
 [difftool]
 	confirm = false
-	prompt = true
+	prompt = false
 [merge]
 	tool = vimdiff
 [push]
