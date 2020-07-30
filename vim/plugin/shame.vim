@@ -76,7 +76,7 @@ set swapfile
 
 set gdefault
 
-" set wrap
+set nowrap
 set breakat=\ .,{
 au BufEnter,BufRead * set linebreak
 set display+=lastline
@@ -545,16 +545,10 @@ noremap gk k
 " --- CLIPBOARD ---
 nnoremap Y y$
 
-" --- VISUAL EXECUTE ---
-vnoremap <C-CR> ""y<CR>
-				\ :call setreg("\"", substitute(getreg("\""), "\n", "", ""), "v")<CR>
-				\ :<C-r>"<CR>`<
+" --- MOONSCRIPT ---
 
 let g:mooncompile = "!moonc ".expand("<sfile>:p:h")."/lua"
 command! Mooncompile silent exec g:mooncompile
-let g:exe_prg = 'moonc -- | lua -e "package.path=package.path..[[;'.expand('<sfile>:p:h:h').'/lua/?.lua]];vim=require[[vim]]" -'
-vnoremap <CR> :<C-U>exec "'<,'>!".g:exe_prg<CR>
-inoremap <C-Space> <C-[>0v$:<C-U>exec "'<,'>!".g:exe_prg<CR>
 
 " --- OTHER ---
 " Don't exit visual mode when "shifting"
