@@ -2,4 +2,4 @@
 if [ -d "$1" ]; then cd $1; fi
 find . -type d -name '.git' \
 | sed 's/\/\.git$//' \
-| xargs -P $(nproc) -I % sh -c "echo 'Fetching %...'; cd %; git fetch"
+| xargs -P $(nproc) -I % bash -c "echo -e 'Fetching \\033[00;31m%\\033[00m...'; cd %; git fetch"
