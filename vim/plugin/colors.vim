@@ -27,3 +27,7 @@ com! Molokai colorscheme molokai
 com! Iceberg colorscheme iceberg
 com! Papercolor colorscheme PaperColor | delc PaperColor
 com! Firewatch colorscheme two-firewatch
+
+if $TERM=="xterm-kitty"
+  Arcadia
+end
