@@ -39,6 +39,13 @@ function! s:cd_git_root(path)
 	end
 endf
 
+function! s:init_file()
+	if !exists("b:git_original_file")
+		let l:git_original_file = substitute(expand("%"), "\\\\", "/", "g")
+		let l:git_revision_hash = system("git")
+	end
+endfun
+
 function! s:previous_commit()
 	" TODO: Refactor this block into s:git_init_buffer() and set buffer
 	" variables instead.
@@ -113,6 +120,19 @@ function! s:git_prev()
 	end
 endfun
 
+function! s:go_blame()
+	if exists("b:blame")
+		let l:next = b:blame[min([getcurpos()[1], len(b:blame)])-1]["commit"]
+		if exists("b:git_revision_hash") && l:next == b:git_revision_hash
+			echom "No older versions available! 😱"
+		else
+			call s:file_at_revision(l:next)
+		end
+	else
+		throw "Not a git buffer!"
+	end
+endfun
+
 function! s:file_at_revision(rev)
 	let l:pos = getpos(".")
 	if exists("b:git_original_file") " Is this already a file@revision buffer?
@@ -138,6 +158,12 @@ function! s:file_at_revision(rev)
 	let b:git_original_file = l:fname
 	let b:git_revision_hash = a:rev
 
+	try
+		let b:blame=s:git_blame("","")
+	catch
+		unlet! b:blame
+	endtry
+
 	call setpos('.', l:pos)
 endfun
 
@@ -156,7 +182,18 @@ endfun
 let s:split_blame_entry_ref = funcref("s:split_blame_entry")
 
 function! s:git_blame(first, last)
-	let l:input = system('git blame '.expand('%').' --line-porcelain -L '.a:first.','.a:last)
+	if exists("b:git_revision_hash")
+		let l:revision = b:git_revision_hash
+		let l:name = b:git_original_file
+	else
+		let l:revision = "HEAD"
+		let l:name = expand("%")
+	end
+	if a:first.a:last == ""
+		let l:input = system('git blame '.l:revision.' --line-porcelain -- '.l:name)
+	else
+		let l:input = system('git blame '.l:revision.' --line-porcelain -L '.a:first.','.a:last.' -- '.l:name)
+	end
 	if v:shell_error
 		throw v:shell_error
 	else
@@ -194,14 +231,11 @@ au BufWritePost * try | let b:blame=<SID>git_blame("","") | catch | unlet! b:bla
 
 command! -range -nargs=? Blame call <SID>blame_command(<q-args>, <line1>, <line2>)
 command! -range DBlame !git blame % -L <line1>,<line2>
-command! GitNext try
-      \| call <sid>gitroot()
-      \| call <sid>git_next()
-      \| catch
-      \| echo 'Not a git repo!'
-      \| endtry
+command! GitNext call <sid>git_next()
       \| GitInfo
 command! GitPrev call <sid>git_prev()
+      \| GitInfo
+command! GitGoBlame call <sid>go_blame()
       \| GitInfo
 command! GitFirst call <sid>git_first() | call s:git_info()
 command! GitLast call <sid>git_last() | call s:git_info()
