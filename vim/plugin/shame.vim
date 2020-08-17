@@ -586,10 +586,6 @@ nnoremap <C-a> Ea <esc>a
 " This one does nothing, but I'm adding it to remember not to remap the tab key
 nnoremap <tab> <C-S-I>
 nnoremap <S-tab> <C-S-O>
-noremap <F1> :setl number!<CR>
-noremap <F2> :setl relativenumber!<CR>
-noremap <F3> :setl autowriteall!<CR>:setl autowriteall?<CR>
-noremap <F4> :setl list!<CR>
 nnoremap <C-e> ge
 nnoremap <C-E> gE
 com! SetWD :cd %:p:h
