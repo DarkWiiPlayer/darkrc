@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ "$TERM" = "xterm-kitty" ]
+then
+	kitty @ set-spacing padding=$1
+fi
