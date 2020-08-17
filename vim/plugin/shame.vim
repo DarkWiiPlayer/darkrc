@@ -91,7 +91,7 @@ end
 set listchars=eol:¶,tab:\│\ ,trail:·,nbsp:…,space:·
 
 set modeline " Allows setting vim options in other files
-set statusline=\ (%n)\ %f\ %a\ [%M%R]\ [%Y]\ %{strlen(@\")}\ %{&autowriteall?'💾\ ':''}%#TabLine#%{exists(\"b:blame\")?b:blame[min([getcurpos()[1],len(b:blame)])-1][\"short\"]:\"\"}%#StatusLine#\%=0x%B\ [%l/%L,\ %c%V]\ %4.P
+set statusline=\ (%n)\ %f\ %a\ [%M%R]\ [%Y]\ %{strlen(@\")}\ %{&autowriteall?'💾\ ':''}%<%#TabLine#%{exists(\"b:blame\")?b:blame[min([getcurpos()[1],len(b:blame)])-1][\"short\"]:\"\"}%#StatusLine#\%=0x%B\ [%l/%L,\ %c%V]\ %4.P
 set laststatus=2
 set cmdheight=1
 set timeoutlen=1200
