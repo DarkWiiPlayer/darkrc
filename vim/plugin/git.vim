@@ -7,6 +7,8 @@
 "   ┌┘    Git Stuff    └┐   "
 "   └───────────────────┘   "
 
+augroup git
+
 " Find the root of a git repository
 function! s:gitroot()
 	let l:ret = substitute(system('git rev-parse --show-toplevel'), '\n\_.*', '', '')
@@ -139,10 +141,28 @@ function! s:file_at_revision(rev)
 	call setpos('.', l:pos)
 endfun
 
+function s:split_blame_entry(idx, entry)
+	let l:map = {}
+	for l:pair in split(a:entry, "\n")[1:]
+		let l:split = match(l:pair, " ")
+		let l:map[l:pair[:l:split-1]] = l:pair[l:split+1:]
+	endfor
+	let l:map["commit"]=a:entry[:match(a:entry, " ")-1]
+	let l:map["time"]=strftime("%Y-%d-%m %H:%M:%S", l:map["committer-time"])
+	let l:map["date"]=strftime("%Y-%d-%m", l:map["committer-time"])
+	let l:map["short"]=l:map["commit"][1:8]." ".l:map["time"]." ".l:map["author"]
+	return l:map
+endfun
+let s:split_blame_entry_ref = funcref("s:split_blame_entry")
+
 function! s:git_blame(first, last)
 	let l:input = system('git blame '.expand('%').' --line-porcelain -L '.a:first.','.a:last)
-	let l:data = map(split(l:input, '\ze\x\{40} \d\+ \d\+'), {idx, elem -> split(elem, '\n')})
-	return map(l:data, {idx, ary -> ary[1][match(ary[1], '\s\+\zs'):]})
+	if v:shell_error
+		throw v:shell_error
+	else
+		let l:array = map(split(l:input, '\ze\x\{40} \d\+ \d\+'), s:split_blame_entry_ref)
+		return l:array
+	end
 endfun
 
 function! s:git_root_to_path()
@@ -154,7 +174,25 @@ endfun
 
 call s:git_root_to_path()
 
-command! -range Blame echom join(uniq(sort(<sid>git_blame(<line1>, <line2>))), ', ')
+function! s:blame_command(what, line1, line2)
+	let l:what=tolower(a:what)
+	if l:what=="date"
+		echom join(uniq(sort(map(<sid>git_blame(a:line1, a:line2), { i,a -> a["date"] }))), ', ')
+	elseif l:what=="adate"
+		echom join(uniq(sort(map(<sid>git_blame(a:line1, a:line2), { i,a -> a["author"]." @ ".a["date"] }))), ', ')
+	elseif l:what=="mail"
+		echom join(uniq(sort(map(<sid>git_blame(a:line1, a:line2), { i,a -> a["committer-mail"] }))), ', ')
+	elseif l:what=="author" || l:what==""
+		echom join(uniq(sort(map(<sid>git_blame(a:line1, a:line2), { i,a -> a["author"] }))), ', ')
+	else
+		throw "Don't know what '".a:what."' is!"
+	end
+endfun
+
+au BufReadPost  * try | let b:blame=<SID>git_blame("","") | catch | unlet! b:blame | endtry
+au BufWritePost * try | let b:blame=<SID>git_blame("","") | catch | unlet! b:blame | endtry
+
+command! -range -nargs=? Blame call <SID>blame_command(<q-args>, <line1>, <line2>)
 command! -range DBlame !git blame % -L <line1>,<line2>
 command! GitNext try
       \| call <sid>gitroot()
@@ -180,3 +218,5 @@ command! ShowGitRoot try
       \| echo <sid>gitroot() 
       \| catch | echo 'Not a git repository'
       \| endtry
+
+augroup END
