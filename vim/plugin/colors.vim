@@ -5,12 +5,15 @@ function! s:kitty_bg_color()
 	if $TERM=="xterm-kitty"
 		let l:num_color=synIDattr(hlID("normal"), "bg")
 		if l:num_color!=""
-			let l:color=system("kitty @ get-colors | grep color".l:num_color)
+			let l:color=system("kitty @ get-colors | grep 'color".l:num_color." '")
 			let l:color=l:color[match(l:color, "#"):]
 			echom system("kitty @ set-colors background=".l:color)
 		end
 	end
 endfun
+augroup kitty
+	au ColorScheme * call <SID>kitty_bg_color()
+augroup END
 
 if $TERM=="xterm-kitty"
   augroup kitty
@@ -28,7 +31,6 @@ com! Dark silent! let g:colors_name_bak = g:colors_name
 	\ | set bg=dark
 	\ | silent! exec "colorscheme ".g:colors_name_bak
 	\ | silent! delc PaperColor
-	\ | silent! call <SID>kitty_bg_color()
 com! Light silent! let g:colors_name_bak = g:colors_name
 	\ | let g:ayucolor="light"
 	\ | let g:arcadia_Daybreak=1
@@ -37,17 +39,16 @@ com! Light silent! let g:colors_name_bak = g:colors_name
 	\ | set bg=light
 	\ | silent! exec "colorscheme ".g:colors_name_bak
 	\ | silent! delc PaperColor
-	\ | silent! call <SID>kitty_bg_color()
 
 " Commands for some colorschemes I often use
 com! Ayu colorscheme ayu
-com! Arcadia colorscheme arcadia | call <SID>kitty_bg_color()
-com! Alduin colorscheme alduin | call <SID>kitty_bg_color()
-com! Moria colorscheme moria | call <SID>kitty_bg_color()
-com! Molokai colorscheme molokai | call <SID>kitty_bg_color()
-com! Iceberg colorscheme iceberg | call <SID>kitty_bg_color()
-com! Papercolor colorscheme PaperColor | delc PaperColor | call <SID>kitty_bg_color()
-com! Firewatch colorscheme two-firewatch | call <SID>kitty_bg_color()
+com! Arcadia colorscheme arcadia
+com! Alduin colorscheme alduin
+com! Moria colorscheme moria
+com! Molokai colorscheme molokai
+com! Iceberg colorscheme iceberg
+com! Papercolor colorscheme PaperColor | delc PaperColor
+com! Firewatch colorscheme two-firewatch
 
 if $TERM=="xterm-kitty"
   Arcadia
