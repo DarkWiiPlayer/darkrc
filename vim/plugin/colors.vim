@@ -50,6 +50,12 @@ com! Iceberg colorscheme iceberg
 com! Papercolor colorscheme PaperColor | delc PaperColor
 com! Firewatch colorscheme two-firewatch
 
+if filereadable($HOME."/.dark")
+	Dark
+else
+	Light
+end
+
 if $TERM=="xterm-kitty"
   Arcadia
 end
