@@ -1,16 +1,16 @@
 " Extend autosavefeature :)
 
 function! TryAutosave()
-  if &autowriteall
-    if &mod
-      silent write
-    end
-    redraw
-  end
+	if &autowriteall
+		if &mod
+			silent write
+		end
+		redraw
+	end
 endfunction
 
 if exists("$AUTOSAVE") 
-  set autowriteall
+	set autowriteall
 end
 
 augroup autosave
