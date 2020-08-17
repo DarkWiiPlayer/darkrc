@@ -176,7 +176,7 @@ function s:split_blame_entry(idx, entry)
 	let l:map["commit"]=a:entry[:match(a:entry, " ")-1]
 	let l:map["time"]=strftime("%Y-%d-%m %H:%M:%S", l:map["committer-time"])
 	let l:map["date"]=strftime("%Y-%d-%m", l:map["committer-time"])
-	let l:map["short"]=l:map["commit"][1:8]." ".l:map["time"]." ".l:map["author"]
+	let l:map["short"]=l:map["commit"][:6]." ".l:map["time"]." ".l:map["author"]
 	return l:map
 endfun
 let s:split_blame_entry_ref = funcref("s:split_blame_entry")
