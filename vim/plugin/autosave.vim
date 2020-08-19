@@ -1,11 +1,9 @@
 " Extend autosavefeature :)
 
 function! TryAutosave()
-	if &autowriteall
-		if &mod
-			silent write
+	if &autowriteall && &mod && &buftype==""
+		silent write
 		redraw
-		end
 	end
 endfunction
 
