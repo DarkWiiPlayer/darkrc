@@ -9,7 +9,7 @@ let g:netrw_browse_split=4
 "	4 - open in previous window
 
 "	Netrw window size in %
-let g:netrw_winsize = 25
+let g:netrw_winsize = 20
 
 "	Reuse directory listings
 let g:netrw_fastbrowse = 1
@@ -20,6 +20,7 @@ augroup NETRW
 	au FileType netrw nmap <buffer> h -:exec("tcd ".b:netrw_curdir)<CR>
 	au FileType netrw nmap <buffer> <space> <CR>
 	au FileType netrw nmap <nowait> <buffer> q :q<CR>
+	au FileType netrw set winfixwidth
 augroup END
 
 function s:vex()
