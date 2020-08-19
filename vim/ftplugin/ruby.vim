@@ -6,7 +6,7 @@ augroup RUBY
 	end
 	let b:undo_ftplugin .= "augroup RUBY | au! | augroup END"
 
-	comm! -buffer AsyncLint call AsyncLint(bufnr("%"), b:linter->subsitute("%", expand("%"), "g"))
+	comm! -buffer AsyncLint call AsyncLint(bufnr("%"), b:linter->substitute("%", expand("%"), "g"))
 	let b:undo_ftplugin .= " | delcommand AsyncLint"
 	comm! -buffer Lint silent exec "%!".b:linter->substitute("$0", "\\\\$0", "g")->substitute("%", expand("%"), "g")
 	let b:undo_ftplugin .= " | delcommand Lint"
