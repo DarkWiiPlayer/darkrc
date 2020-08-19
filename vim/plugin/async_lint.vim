@@ -20,7 +20,7 @@ function s:async_lint_abort(bufnr)
 	call setbufvar(a:bufnr, "lint_job", "")
 endfun
 
-function s:async_lint(bufnr, command)
+function AsyncLint(bufnr, command)
 	if getbufvar(a:bufnr, "lint_job")==""
 		let l:buffer = []
 		let l:job = job_start(a:command, {
