@@ -16,6 +16,7 @@ let g:netrw_fastbrowse = 1
 
 augroup NETRW
 	au!
-	au FileType netrw nmap <buffer> l <CR>
+	au FileType netrw nmap <buffer> l gn
 	au FileType netrw nmap <buffer> h -
+	au FileType netrw nmap <buffer> <space> <CR>
 augroup END
