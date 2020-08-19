@@ -16,11 +16,16 @@ augroup kitty
 augroup END
 
 if $TERM=="xterm-kitty"
-  augroup kitty
-    let s:kitty_bg=system("kitty @ get-colors | grep ^background")
-    let g:kitty_bg=s:kitty_bg[match(s:kitty_bg, "#"):]
-    au VimLeavePre * echom system("kitty @ set-colors background=".g:kitty_bg)
-  augroup END
+	augroup kitty
+		call system("which updatecolors")
+		if v:shell_error
+			let s:kitty_bg=system("kitty @ get-colors | grep ^background")
+			let g:kitty_bg=s:kitty_bg[match(s:kitty_bg, "#"):]
+			au VimLeavePre * echom system("kitty @ set-colors background=".g:kitty_bg)
+		else
+			au VimLeavePre * call system("updatecolors")
+		end
+	augroup END
 end
 
 com! Dark silent! let g:colors_name_bak = g:colors_name
