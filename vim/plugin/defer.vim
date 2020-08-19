@@ -7,4 +7,4 @@ function Defer(command, callback)
   \ })
 endfun
 
-comm -nargs=* Defer call Defer(<q-args>, { buffer -> 0 })
+comm -complete=shellcmd -nargs=* Defer call Defer(<q-args>, { buffer -> 0 })
