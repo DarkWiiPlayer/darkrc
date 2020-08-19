@@ -13,3 +13,9 @@ let g:netrw_winsize = 25
 
 "	Reuse directory listings
 let g:netrw_fastbrowse = 1
+
+augroup NETRW
+	au!
+	au FileType netrw nmap <buffer> l <CR>
+	au FileType netrw nmap <buffer> h -
+augroup END
