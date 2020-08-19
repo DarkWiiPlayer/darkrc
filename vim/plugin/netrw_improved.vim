@@ -24,14 +24,14 @@ augroup NETRW
 augroup END
 
 function s:vex()
-  let netrw_windows = getwininfo()
-        \->filter({ k,v -> v["variables"]->has_key("netrw_treedict") })
-        \->filter({ k,v -> v["tabnr"]==tabpagenr() })
-  if netrw_windows->len() > 0
-    call win_gotoid(netrw_windows[0]["winid"])
-  else
-    Vex .
-  end
+	let netrw_windows = getwininfo()
+		\->filter({ k,v -> v["variables"]->has_key("netrw_treedict") })
+		\->filter({ k,v -> v["tabnr"]==tabpagenr() })
+	if netrw_windows->len() > 0
+		call win_gotoid(netrw_windows[0]["winid"])
+	else
+		Vex .
+	end
 endfun
 
 nnoremap <leader><space> :call <SID>vex()<CR>

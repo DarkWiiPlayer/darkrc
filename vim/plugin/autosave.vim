@@ -4,7 +4,7 @@ function! TryAutosave()
 	if &autowriteall
 		if &mod
 			silent write
-      redraw
+		redraw
 		end
 	end
 endfunction
