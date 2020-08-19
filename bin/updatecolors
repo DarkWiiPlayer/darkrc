@@ -1,0 +1,34 @@
+#!/bin/sh
+
+if [ -f "$HOME/.dark" ]
+then
+	sed -i -e 's/kitty_light.conf/kitty_dark.conf/' $HOME/.config/kitty/kitty.conf
+	theme='Mint-Y-Dark-Pink'
+	gsettings set org.cinnamon.desktop.background picture-uri 'file:///home/darkwiiplayer/wallpaper/dark.png'
+	gsettings set org.cinnamon.desktop.interface cursor-theme 'DMX-White'
+	gsettings set org.cinnamon.desktop.wm.preferences theme 'Mint-Y-Dark'
+	gsettings set org.cinnamon.theme name "$theme"
+	gsettings set org.cinnamon.desktop.interface icon-theme "$theme"
+	gsettings set org.cinnamon.desktop.interface gtk-theme "$theme"
+	theme=dark
+else
+	sed -i -e 's/kitty_dark.conf/kitty_light.conf/' $HOME/.config/kitty/kitty.conf
+	theme="Mint-Y-Pink"
+	gsettings set org.cinnamon.desktop.background picture-uri 'file:///home/darkwiiplayer/wallpaper/light.png'
+	gsettings set org.cinnamon.desktop.interface cursor-theme 'DMX-Black'
+	gsettings set org.cinnamon.desktop.wm.preferences theme 'Mint-Y'
+	gsettings set org.cinnamon.theme name "$theme"
+	gsettings set org.cinnamon.desktop.interface icon-theme "$theme"
+	gsettings set org.cinnamon.desktop.interface gtk-theme "$theme"
+	theme=light
+fi
+
+if which kitty; then
+	cat $HOME/darkrc/kitty_$theme.conf |\
+		grep '^[[:alpha:]]' |\
+		sed -s 's/ \+/=/' |\
+		sort |\
+		xargs -l kitty @ set-colors --all
+fi
+
+pkill -HUP conky
