@@ -217,12 +217,6 @@ endfunction
 
 command! -bar RangerChooser call RangeChooser()
 
-if has("unix")
-	nnoremap <leader><space> :<C-U>RangerChooser<CR>
-elseif has("win32")
-	nnoremap <leader><space> :e %:p:h<CR>
-end
-
 " --- AUTO CLOSE ---
 
 function! s:autoClose_HelperOpen(open, close)
