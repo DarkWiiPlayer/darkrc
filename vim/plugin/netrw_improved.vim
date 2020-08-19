@@ -30,7 +30,7 @@ function s:vex()
   if netrw_windows->len() > 0
     call win_gotoid(netrw_windows[0]["winid"])
   else
-    Vex
+    Vex .
   end
 endfun
 
