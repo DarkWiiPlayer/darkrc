@@ -15,16 +15,20 @@ augroup kitty
 	au ColorScheme * call <SID>kitty_bg_color()
 augroup END
 
+function! s:kitty_bg_color_reset()
+	if filereadable($HOME."/.dark")
+		let l:file = $HOME."/darkrc/kitty_dark.conf"
+	else
+		let l:file = $HOME."/darkrc/kitty_light.conf"
+	end
+	echom system("cat ".l:file." | grep background | sed -e 's/ /=/' | xargs kitty @ set-colors")
+endfun
+
+command Test call <SID>kitty_bg_color_reset()
+
 if $TERM=="xterm-kitty"
 	augroup kitty
-		call system("which updatecolors")
-		if v:shell_error
-			let s:kitty_bg=system("kitty @ get-colors | grep ^background")
-			let g:kitty_bg=s:kitty_bg[match(s:kitty_bg, "#"):]
-			au VimLeavePre * echom system("kitty @ set-colors background=".g:kitty_bg)
-		else
-			au VimLeavePre * call system("updatecolors")
-		end
+		au VimLeavePre * call <SID>kitty_bg_color_reset()
 	augroup END
 end
 
