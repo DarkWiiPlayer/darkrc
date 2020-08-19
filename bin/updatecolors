@@ -27,8 +27,9 @@ if which kitty; then
 	cat $HOME/darkrc/kitty_$theme.conf |\
 		grep '^[[:alpha:]]' |\
 		sed -s 's/ \+/=/' |\
+		sed -s 's/^.*$/set-colors --all \0/' |\
 		sort |\
-		xargs -l kitty @ set-colors --all
+		kitty @ >/dev/null
 fi
 
 pkill -HUP conky
