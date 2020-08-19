@@ -90,9 +90,25 @@ else
 end
 set listchars=eol:¶,tab:\│\ ,trail:·,nbsp:…,space:·
 
-set modeline " Allows setting vim options in other files
-set statusline=%y%t%M%R\ %{&autowriteall?'💾\ ':''}%<%#TabLine#%{exists(\"b:blame\")?b:blame[min([getcurpos()[1],len(b:blame)])-1][\"short\"]:\"\"}%#StatusLine#\%=%{strlen(@\")}\ 0x%B\ [%l/%L,\ %c%V]\ %4.P
-set laststatus=0
+" Allows setting vim options in other files
+set modeline
+
+set laststatus=2
+set statusline=%#StatusBar#
+set statusline+=%#DiffAdd#
+set statusline+=%y%t%M%R\ 
+set statusline+=%{&autowriteall?'💾\ ':''}%<
+set statusline+=%#DiffChange#
+set statusline+=%{exists(\"b:blame\")?b:blame[min([getcurpos()[1],len(b:blame)])-1][\"short\"]:\"\"}
+set statusline+=%#DiffChange#
+set statusline+=%=
+set statusline+=%#DiffAdd#
+set statusline+=%{strlen(@\")}\ 
+set statusline+=0x%B\ 
+set statusline+=[%l/%L,\ %c%V]\ 
+set statusline+=%#DiffDelete#
+set statusline+=%4.P
+
 set cmdheight=1
 set timeoutlen=1200
 
