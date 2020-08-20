@@ -14,6 +14,6 @@ augroup RUBY
 	let b:linter = "sh -c \"rubocop --auto-correct -o /dev/null --stdin % 2>/dev/null | awk 'BEGIN { header=0 } // && header==1 { print $0 } /^====================$/ { header=1 }'\""
 	let b:undo_ftplugin .= " | unlet b:linter"
 
-	au InsertLeave <buffer> AsyncLint
-"	au CursorHoldI <buffer> AsyncLint
+"	au InsertLeave <buffer> AsyncLint
+"	au BufWritePre <buffer> Lint
 augroup END
