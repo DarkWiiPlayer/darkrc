@@ -4,7 +4,7 @@ if [ -f "$HOME/.dark" ]
 then
 	sed -i -e 's/kitty_light.conf/kitty_dark.conf/' $HOME/.config/kitty/kitty.conf
 	theme='Mint-Y-Dark-Pink'
-	gsettings set org.cinnamon.desktop.background picture-uri 'file:///home/darkwiiplayer/wallpaper/dark.png'
+	gsettings set org.cinnamon.desktop.background picture-uri "file://$HOME/wallpaper/dark.png"
 	gsettings set org.cinnamon.desktop.interface cursor-theme 'DMX-White'
 	gsettings set org.cinnamon.desktop.wm.preferences theme 'Mint-Y-Dark'
 	gsettings set org.cinnamon.theme name "$theme"
@@ -14,7 +14,7 @@ then
 else
 	sed -i -e 's/kitty_dark.conf/kitty_light.conf/' $HOME/.config/kitty/kitty.conf
 	theme="Mint-Y-Pink"
-	gsettings set org.cinnamon.desktop.background picture-uri 'file:///home/darkwiiplayer/wallpaper/light.png'
+	gsettings set org.cinnamon.desktop.background picture-uri "file://$HOME/wallpaper/light.png"
 	gsettings set org.cinnamon.desktop.interface cursor-theme 'DMX-Black'
 	gsettings set org.cinnamon.desktop.wm.preferences theme 'Mint-Y'
 	gsettings set org.cinnamon.theme name "$theme"
