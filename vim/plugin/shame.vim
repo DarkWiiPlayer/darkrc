@@ -509,6 +509,9 @@ nnoremap vil ^vg_
 " --- ! as in ranger ---
 nnoremap ! :!
 
+" --- Find Files ---
+nnoremap <leader>f :find **<left>
+
 " --- F5 ---
 nnoremap <F5> :nnoremap <buffer> <F5> :<lt>CR><left><left><left><left>
 nnoremap <leader><F5> :nnoremap <F5> :<lt>CR><left><left><left><left>
