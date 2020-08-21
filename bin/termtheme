@@ -1,0 +1,12 @@
+#!/bin/sh
+
+theme=$1
+
+if which kitty; then
+	cat $HOME/darkrc/kitty_$theme.conf |\
+		grep '^[[:alpha:]]' |\
+		sed -s 's/ \+/=/' |\
+		sed -s 's/^.*$/set-colors --all \0/' |\
+		sort |\
+		kitty @ >/dev/null
+fi
