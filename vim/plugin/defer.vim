@@ -7,4 +7,14 @@ function Defer(command, callback)
 	\ })
 endfun
 
+function s:echo(message)
+  echom a:message
+endfun
+
+function s:notify(message)
+  call Defer('notify-send "Vim" "'.a:message.'"', { b -> 0 })
+endfun
+
 comm -complete=shellcmd -nargs=* Defer call Defer(<q-args>, { buffer -> 0 })
+comm -complete=shellcmd -nargs=* DeferEcho call Defer(<q-args>, { buffer -> <SID>echo("Deferred job completed: ".<q-args>) })
+comm -complete=shellcmd -nargs=* DeferNotify call Defer(<q-args>, { buffer -> <SID>notify("Deferred job completed:\n$ ".<q-args>) })
