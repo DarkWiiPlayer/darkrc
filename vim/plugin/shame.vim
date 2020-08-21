@@ -510,7 +510,7 @@ nnoremap vil ^vg_
 nnoremap ! :!
 
 " --- Find Files ---
-nnoremap <leader>f :find **<left>
+nnoremap <leader>f :find *
 
 " --- F5 ---
 nnoremap <F5> :nnoremap <buffer> <F5> :<lt>CR><left><left><left><left>
