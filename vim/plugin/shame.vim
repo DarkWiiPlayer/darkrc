@@ -511,6 +511,7 @@ nnoremap ! :!
 
 " --- F5 ---
 nnoremap <F5> :nnoremap <buffer> <F5> :
+nnoremap <leader><F5> :nnoremap <F5> :
 
 let mapleader = "\\"
 
