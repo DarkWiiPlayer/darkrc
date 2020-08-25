@@ -231,6 +231,25 @@ endfun
 au BufReadPost  * try | let b:blame=<SID>git_blame("","") | catch | unlet! b:blame | endtry
 au BufWritePost * try | let b:blame=<SID>git_blame("","") | catch | unlet! b:blame | endtry
 
+command! -nargs=? SplitBlame exec
+	\| exec 'normal m"gg'
+	\| set cursorbind scrollbind
+	\| vert bel split
+	\| exec 'Scratch blame'
+	\| set cursorbind scrollbind
+	\| exec 'r !git blame #'
+	\| 1delete 1
+	\| silent %s/ *+.*$//
+	\| silent %s/(//
+	\| silent %s/^\(\x\{8}\) \(.*\)$/\2 \1/
+	\| silent %s/^.*0\{8}$//
+	\| call matchadd('Comment', '\x\+$')
+	\| call matchadd('Comment', '\d\{4}-\d\{2}-\d\{2} \d\{2}:\d\{2}:\d\{2}')
+	\| call matchadd('Todo', <q-args>)
+	\| vertical resize 50
+	\| exec "normal h"
+	\| exec 'normal `"'
+
 command! -range -nargs=? Blame call <SID>blame_command(<q-args>, <line1>, <line2>)
 command! -range DBlame !git blame % -L <line1>,<line2>
 command! GitNext call <sid>git_next()
