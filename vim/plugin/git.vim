@@ -186,18 +186,20 @@ function! s:git_blame(first, last)
 		let l:revision = b:git_revision_hash
 		let l:name = b:git_original_file
 	else
-		let l:revision = "HEAD"
+		let l:revision = ""
 		let l:name = expand("%")
 	end
 	if a:first.a:last == ""
-		let l:input = system('git blame '.l:revision.' --line-porcelain -- '.l:name)
+		let l:command = 'git blame '.l:revision.' --line-porcelain -- '.l:name
 	else
-		let l:input = system('git blame '.l:revision.' --line-porcelain -L '.a:first.','.a:last.' -- '.l:name)
+		let l:command = 'git blame '.l:revision.' --line-porcelain -L '.a:first.','.a:last.' -- '.l:name
 	end
+	let l:input = system(l:command)
 	if v:shell_error
 		throw v:shell_error
 	else
-		let l:array = map(split(l:input, '\ze\x\{40} \d\+ \d\+'), s:split_blame_entry_ref)
+		let l:split = split(l:input, '\n\t[^\n]*\n')
+		let l:array = map(l:split, s:split_blame_entry_ref)
 		return l:array
 	end
 endfun
