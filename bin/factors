@@ -1,0 +1,35 @@
+#!/usr/bin/env luajit
+
+local primes = require 'primes'
+
+local arrr = require 'arrr'
+
+local parser = arrr {
+	{ "Enable batch factorization", "--batch", "-b" };
+	{ "Initialize prime table up to the Nth prime", "--initialize", "-n", "n", tonumber };
+}
+
+local options = parser {...}
+
+if options.initialize then
+	for i=1, options.initialize do
+		local _ = primes[i]
+	end
+end
+
+if not options.batch then
+	local number = options[1] and tonumber(options[1])
+	if not number then
+		io.write("Please input a number: ")
+		number = assert(tonumber(io.read())) -- Try 351681238432 ;)
+	end
+
+	for i, factor in ipairs{primes:factorize(number)} do
+		print(factor)
+	end
+else
+	for number in io.lines() do
+		number = assert(tonumber(number))
+		print(number.." = "..table.concat({primes:factorize(number)}, " + "))
+	end
+end
