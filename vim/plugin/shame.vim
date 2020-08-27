@@ -730,7 +730,6 @@ au BufNewFile,BufRead *.vim,*vimrc :call <sid>init_vim_file()
 function! s:init_vim_file()
 	setl number
 	nnoremap <buffer> <F5> :w<CR>:so %<CR>
-	nnoremap <buffer> <leader>c A<space>"<space>
 	nnoremap <buffer> <leader>if ofunction! <C-o>m'()<enter>endfunction<C-o>`'<C-o>l
 
 	command! -buffer Functions lex MatchingLines("^\\s*fun\\(ction\\)\\?\\>!.*$")
