@@ -7,9 +7,18 @@ local arrr = require 'arrr'
 local parser = arrr {
 	{ "Enable batch factorization", "--batch", "-b" };
 	{ "Initialize prime table up to the Nth prime", "--initialize", "-n", "n", tonumber };
+  { "Cache file", "--cache", "-c", 1, io.open };
 }
 
 local options = parser {...}
+
+if options.cache then
+  local i = 1
+  for line in options.cache:lines() do
+    primes[i] = tonumber(line)
+    i = i + 1
+  end
+end
 
 if options.initialize then
 	for i=1, options.initialize do
