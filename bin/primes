@@ -1,0 +1,28 @@
+#!/usr/bin/env luajit
+
+local primes = require 'primes'
+local arrr = require 'arrr'
+
+local parse = arrr {
+	{ "Starting number", "--min", "-m", 1, tonumber };
+	{ "Last Number", "--max", "-M", 1, tonumber };
+  { "Cache file", "--cache", "-c", 1, io.open };
+}
+
+local options = parse{...}
+
+local min, max =
+  options.min or 1,
+  options.max or math.huge
+
+if options.cache then
+  local i = 1
+  for line in options.cache:lines() do
+    primes[i] = tonumber(line)
+    i = i + 1
+  end
+end
+
+for i = min, max do
+  print(primes[i])
+end
