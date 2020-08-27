@@ -51,7 +51,7 @@ com! Light silent! let g:colors_name_bak = g:colors_name
 
 " Commands for some colorschemes I often use
 com! Ayu colorscheme ayu
-com! Arcadia colorscheme arcadia
+com! Arcadia let bg=&bg | colorscheme arcadia | let &bg=bg
 com! Alduin colorscheme alduin
 com! Moria colorscheme moria
 com! Molokai colorscheme molokai
