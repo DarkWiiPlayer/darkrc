@@ -14,7 +14,7 @@ augroup RUBY
 	let b:linter = "sh -c \"rubocop --auto-correct -o /dev/null --stdin % 2>/dev/null | awk 'BEGIN { header=0 } // && header==1 { print $0 } /^====================$/ { header=1 }'\""
 	let b:undo_ftplugin .= " | unlet b:linter"
 
-  set complete=]
+  set complete=t,.,kspell,i
   aut BufWritePost <buffer> Defer timeout 5 ripper-tags -R
 
 "	au InsertLeave <buffer> AsyncLint
