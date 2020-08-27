@@ -1,0 +1,9 @@
+#!/bin/bash
+
+server=$1
+shift
+
+if [ -z "$@" ]
+then mosquitto_sub -h $server -t 'players/#' | xargs -I{} playerctl {}
+else mosquitto_pub -h $server -t 'players' -m "$@"
+fi
