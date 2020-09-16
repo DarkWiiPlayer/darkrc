@@ -18,4 +18,4 @@ endfun
 
 comm -complete=shellcmd -nargs=* Defer call Defer(<q-args>, { r -> 0 })
 comm -complete=shellcmd -nargs=* DeferEcho call Defer(<q-args>, { result -> <SID>echo("Deferred job completed (".(result['tend']-result['tstart'])."s): ".<q-args>) })
-comm -complete=shellcmd -nargs=* DeferNotify call Defer(<q-args>, { result -> <SID>notify(""Deferred job completed (".(result['tend']-result['tstart'])."s):\n$ ".<q-args>) })
+comm -complete=shellcmd -nargs=* DeferNotify call Defer(<q-args>, { result -> <SID>notify("Deferred job completed (".(result['tend']-result['tstart'])."s):\n$ ".<q-args>) })
