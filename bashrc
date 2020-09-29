@@ -29,6 +29,12 @@ alias u='unicode'
 alias hlcat='highlight -O xterm256'
 alias please='sudo'
 
+if which nvim > /dev/null
+then
+	alias vim=nvim
+	alias oldvim=$(which vim)
+fi
+
 stty -ixon
 
 # Enable Vi editing mode
