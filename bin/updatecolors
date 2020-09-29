@@ -23,13 +23,16 @@ else
 	theme=light
 fi
 
-if which kitty; then
-	cat $HOME/darkrc/kitty_$theme.conf |\
-		grep '^[[:alpha:]]' |\
-		sed -s 's/ \+/=/' |\
-		sed -s 's/^.*$/set-colors --all \0/' |\
-		sort |\
-		kitty @ >/dev/null
-fi
+for socket in $(find /tmp/ -maxdepth 1 -name "kitty-$USER-*")
+do
+	if which kitty > /dev/null; then
+		cat $HOME/darkrc/kitty_$theme.conf |\
+			grep '^[[:alpha:]]' |\
+			sed -s 's/ \+/=/' |\
+			sed -s 's/^.*$/set-colors --all \0/' |\
+			sort |\
+			kitty @ --to unix:$socket >/dev/null
+	fi
+done
 
 pkill -HUP conky
