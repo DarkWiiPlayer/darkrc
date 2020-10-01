@@ -2,7 +2,7 @@
 " exec 'hi TabLineFill' . s:fg_tabline_bg . s:bg_tabline_bg . s:ft_none
 " exec 'hi TabLineSel' . s:fg_tabline_active_fg . s:bg_tabline_active_bg . s:ft_none
 
-set laststatus=0
+set laststatus=2
 set statusline=%#StatusBar#
 set statusline+=%#TabLineSel#
 set statusline+=%{&autowriteall?'\ \ 🖴\ ':''}%<
