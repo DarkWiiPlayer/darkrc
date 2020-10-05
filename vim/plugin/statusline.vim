@@ -5,7 +5,7 @@
 set laststatus=2
 set statusline=%#StatusBar#
 set statusline+=%#TabLineSel#
-set statusline+=%{&autowriteall?'\ \ 🖴\ ':''}%<
+set statusline+=%{&autowriteall?'\ \ 🖬\ ':''}%<
 set statusline+=%#TabLine#
 set statusline+=%y%t%M%R\ 
 set statusline+=%#TabLine#
