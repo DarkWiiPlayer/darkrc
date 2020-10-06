@@ -84,9 +84,9 @@ if v:version>=800
 	set breakindent
 	set breakindentopt=sbr
 	au WinNew * set breakindentopt=sbr
-	set showbreak=.\ 
+	set showbreak=↳\ 
 else
-	set showbreak=+->\ 
+	set showbreak=↳\	
 end
 set listchars=eol:¶,tab:\│\ ,trail:·,nbsp:…,space:·
 
