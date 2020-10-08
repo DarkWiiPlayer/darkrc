@@ -74,20 +74,8 @@ line2 = (len=80) ->
 	print '┌'..string.rep('─', len-2)..'┐'
 	print '└'..string.rep('─', len-2)..'┘'
 
-classbox = (name="Class") -> print [[
-print vim.col {
-	']]..name..[[' -- Title
-	{
-		'+ getValue'
-	}
-	{
-		'- value'
-	}
-}
-]]
-
 {
-	:tree, :box, :tab, :col, :row, :line, :line2, :classbox
+	:tree, :box, :tab, :col, :row, :line, :line2
 	-- Aliases
 	table: tab
 }
