@@ -12,7 +12,7 @@ function s:dumpState(state)
 	return l:newstate
 endfun
 
-let s:state = { "&number": "0", "&relativenumber": "0", "&colorcolumn": "0", "&laststatus": "0", "&fillchars": "eob:\\ " }
+let s:state = { "&number": "0", "&relativenumber": "0", "&colorcolumn": "0", "&laststatus": "0", "&fillchars": "eob:\\ ", "&showtabline": "0" }
 
 function Zen()
 	if exists("g:zenState")
