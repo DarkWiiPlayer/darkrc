@@ -1,0 +1,27 @@
+#!/usr/bin/env lua
+
+local arrr = require 'arrr'
+
+local options = arrr {
+	{ "Sort longest lines first", "--reverse", "-r" };
+} {...}
+
+local lines = {}
+
+for line in io.lines() do
+	table.insert(lines, {#line, line})
+end
+
+if options.reverse then
+	table.sort(lines, function(a, b)
+		return a[1] > b[1]
+	end)
+else
+	table.sort(lines, function(a, b)
+		return a[1] < b[1]
+	end)
+end
+
+for i, line in ipairs(lines) do
+	print(line[2])
+end
