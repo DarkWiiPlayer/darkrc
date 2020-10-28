@@ -89,6 +89,7 @@ else
 	set showbreak=↳\	
 end
 set listchars=eol:¶,tab:\│\ ,trail:·,nbsp:…,space:·
+set list
 
 " Allows setting vim options in other files
 set modeline
