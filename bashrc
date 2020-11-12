@@ -10,7 +10,6 @@ alias r='ranger'
 alias rr='(ranger)'
 alias ro='(f=$(tempfile); $(which ranger) --choosefiles $f; rifle $(cat $f); rm $f)'
 alias rf='(f=$(tempfile); $(which ranger) --choosefiles $f; cat $f; rm $f)'
-export HISTIGNORE='ls:clear:history'
 # alias cmatrix='cmatrix -b -C `r.choose green red blue white yellow cyan magenta black`'
 alias oneko='oneko -speed 20 -fg "#2f2f2f" -cursor 2 -name neko'
 alias sakura='oneko -bg "#ffddee" -sakura -name sakura'
@@ -28,6 +27,7 @@ alias qed='[ $RANDOM -ge $((32767 / 100 * 10)) ] && echo Quod Erat Demonstrandum
 alias u='unicode'
 alias hlcat='highlight -O xterm256'
 alias please='sudo'
+export HISTIGNORE='ls:clear:history:vimswitch'
 
 if which nvim > /dev/null
 then
