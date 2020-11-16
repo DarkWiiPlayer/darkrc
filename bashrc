@@ -27,7 +27,7 @@ alias qed='[ $RANDOM -ge $((32767 / 100 * 10)) ] && echo Quod Erat Demonstrandum
 alias u='unicode'
 alias hlcat='highlight -O xterm256'
 alias please='sudo'
-export HISTIGNORE='ls:clear:history:vimswitch'
+export HISTIGNORE='ls:clear:history:vimswitch*'
 
 if which nvim > /dev/null
 then
