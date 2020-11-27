@@ -35,4 +35,4 @@ do
 	fi
 done
 
-pkill -HUP conky
+pkill -SIGUSR1 conky
