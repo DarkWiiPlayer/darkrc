@@ -2,7 +2,7 @@ return [[$color3${time %Y-%m-%d}
 $color1${voffset -10}${font Quicksand:size=40}${time %H:%M}$font$color
 ${color2}Uptime:$color $alignr$uptime
 ${color2}At Queue:$color $alignr${execi 2 atq | wc -l } Jobs
-${color2}Due this week:$color $alignr${execi 2 task "("due.before:eow or due:eow")" export | lua -e 'print(#require"cjson".decode(io.read("a")))' } Tasks
+${color2}Due this week:$color $alignr${execi 2 task "("due.before:eow or due:eow")" export | luajit -e 'print(#require"cjson".decode(io.read("a")))' } Tasks
 #
 ${color3}Stats $hr$color
 ${color2}ip:$color $alignr${texeci 3 wget http://darkwiiplayer.com/api/ip --no-check-certificate -qO - 2>/dev/null }
