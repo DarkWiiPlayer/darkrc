@@ -1,5 +1,4 @@
 local config = {
-	monitor = 1,
 	double_buffer = true,
 	update_interval = 1,
 	alignment = 'bottom_right',
