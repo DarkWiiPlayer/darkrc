@@ -2,5 +2,5 @@
 "!!! makes use of marker '
 
 " Set up the runtime path
-set runtimepath=$VIMRUNTIME,$HOME/.config/nvim
+set runtimepath=$VIMRUNTIME,$HOME/.config/nvim,$HOME/.vim
 let &rtp=&rtp.','.expand('<sfile>:p:h').'/vim'
