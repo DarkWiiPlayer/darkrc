@@ -1,0 +1,60 @@
+#!/bin/sh
+
+indentation=$(git config hooks.indentation)
+
+new() {
+	git status --porcelain | grep -E '^AM|^M|^A' | sed 's/^[^ ]* *//'
+}
+
+prepare() {
+	index=$(git write-tree) > /dev/null
+	git stash push --keep-index --include-untracked > /dev/null
+}
+
+reset() {
+	git checkout stash -- '*'
+	git stash drop > /dev/null
+	git read-tree "$index"
+}
+
+check() {
+	file=$2
+	luajit -e "
+	for line in assert(io.open('$file')):lines() do
+		if not line:match('^%s*'):match('^$1*$') then
+			print('File \x1b[31m$file\x1b[00m is incorrectly indented!')
+			os.exit(1)
+		end
+	end"
+}
+
+case $indentation in
+	tab|tabs)
+		prepare
+		echo "Checking tab indentation"
+		for file in $(new); do
+			check '\t' $file || error=1
+		done
+		reset
+		;;
+	space|spaces)
+		prepare
+		echo "Checking space indentation"
+		for file in $(new); do
+			check ' ' $file || error=1
+		done
+		reset
+		;;
+	"")
+		echo "Skipping indentation check"
+		;;
+	*|off)
+		echo "Cannot check for indentation type \033[31m'$indentation'\033[00m"
+		exit 1
+		;;
+esac
+
+if [ -z "$error" ]
+then exit 0
+else exit 1
+fi
