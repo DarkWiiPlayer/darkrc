@@ -18,10 +18,11 @@
 [alias]
 	head = log -1 --show-signature --format=fuller
 	adog = log --all --decorate --oneline --graph --date-order
-  dog = log --decorate --oneline --graph --date-order
-  stat = log --oneline --stat --date-order
+	dog = log --decorate --oneline --graph --date-order
+	stat = log --oneline --stat --date-order
 	identity = "! git config user.name \"$(git config user.$1.name)\"; git config user.email \"$(git config user.$1.email)\"; :"
 	root = rev-parse --show-toplevel
+	fixup = commit --patch --no-edit --amend
 [user]
 	useConfigOnly = true
 [user "darkwiiplayer"]
