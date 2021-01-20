@@ -1,6 +1,10 @@
 #!/bin/sh
 
-for line in $@
+repos() {
+  (for name in $@; do find -L $name -name '*.git' -type d | sed 's/\/.git$//'; done)
+}
+
+for line in $(repos "$@")
 do
 	dir=$(pwd)
 	cd "$line"
