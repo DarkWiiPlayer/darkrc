@@ -45,10 +45,10 @@ case $indentation in
 		done
 		reset
 		;;
-	"")
+	""|off)
 		echo "Skipping indentation check"
 		;;
-	*|off)
+	*)
 		echo "Cannot check for indentation type \033[31m'$indentation'\033[00m"
 		exit 1
 		;;
