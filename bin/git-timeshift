@@ -1,0 +1,5 @@
+#!/bin/sh
+DATE="$1"; shift 1
+export GIT_AUTHOR_DATE=$(date +%s -d "$DATE")
+export GIT_COMMITTER_DATE=$GIT_AUTHOR_DATE
+git "$@"
