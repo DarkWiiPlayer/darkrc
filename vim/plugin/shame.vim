@@ -485,6 +485,8 @@ command! -nargs=? Tempfile exec 'new '.tempname()  | set filetype=<args> | au Bu
 onoremap al :<C-U>normal! 0vg$h<CR>
 onoremap il :<C-U>normal! ^vg_<CR>
 
+vnoremap <leader>p :""s+
+
 map S :shell<CR>
 
 nnoremap val 0vg$h
