@@ -3,7 +3,7 @@ function s:async_lint_done(bufnr, buffer)
 		call getbufvar(a:bufnr, "")
 		let l:pos = getcurpos()
 		call deletebufline(bufname(a:bufnr), 1, "$")
-		for line in a:buffer
+		for line in a:buffer[0:-2]
 			call appendbufline(bufname(a:bufnr), "$", line)
 		endfor
 		call deletebufline(bufname(a:bufnr), 1)
@@ -22,13 +22,12 @@ endfun
 
 function AsyncLint(bufnr, command)
 	if getbufvar(a:bufnr, "lint_job")==""
-		let l:buffer = []
-		let l:job = job_start(a:command, {
-		\ "in_io": "buffer", "in_name": bufname(a:bufnr),
-		\ "out_io": "pipe",
-		\ "out_cb": { pipe, text -> add(l:buffer, text) },
-		\ "close_cb": { pipe -> s:async_lint_done(a:bufnr, l:buffer) }
-		\ })
+		let l:job = jobstart(a:command, {
+		\	"on_stdout": { id, text -> s:async_lint_done(a:bufnr, text) },
+		\	"stdout_buffered": 1,
+		\})
+		call chansend(l:job, getline(1, line("$")))
+		call chanclose(l:job, "stdin")
 		call setbufvar(a:bufnr, "lint_job", l:job)
 	end
 endfun
@@ -38,4 +37,3 @@ augroup ASYNC_LINT
 	au TextChangedI * call s:async_lint_abort(bufnr("%"))
 	au TextChangedP * call s:async_lint_abort(bufnr("%"))
 augroup END
-
