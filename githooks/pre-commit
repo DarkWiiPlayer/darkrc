@@ -51,3 +51,10 @@ if [ -z "$error" ]
 then exit 0
 else exit 1
 fi
+
+hook=$(basename $0)
+if [ -f $GIT_DIR/hooks/$hook ]
+then
+	echo Running project-level hook: $GIT_DIR/hooks/$hook
+	$GIT_DIR/hooks/$hook
+fi
