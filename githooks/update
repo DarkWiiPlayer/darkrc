@@ -1,0 +1,7 @@
+#!/bin/sh
+hook=$(basename $0)
+if [ -f $GIT_DIR/hooks/$hook ]
+then
+	echo Running project-level hook: $GIT_DIR/hooks/$hook
+	$GIT_DIR/hooks/$hook
+fi
