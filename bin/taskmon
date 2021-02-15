@@ -1,0 +1,2 @@
+#!/bin/sh
+clear; task; while sleep 10; do clear; task; done
