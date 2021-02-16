@@ -24,6 +24,7 @@
 	root = rev-parse --show-toplevel
 	fixup = commit --patch --no-edit --amend
 	ts = timeshift
+	task = "! TASKDATA=$(git rev-parse --show-toplevel)/.git/task task"
 [user]
 	useConfigOnly = true
 [user "darkwiiplayer"]
