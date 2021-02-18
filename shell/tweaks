@@ -1,0 +1,22 @@
+#!/bin/sh
+
+stty -ixon
+
+if which nvim > /dev/null
+then
+	alias vim=nvim
+	alias oldvim=$(which vim)
+fi
+
+vimswitch() {
+	if [ -z "$EXPANDTAB" ]
+	then
+		export EXPANDTAB=yes
+		export TABSTOP=2
+		echo -e "Vim switched to \033[01;32mSpaces\033[00m mode"
+	else
+		unset EXPANDTAB
+		unset TABSTOP
+		echo -e "Vim switched to \033[01;35mTabs\033[00m mode"
+	fi
+}
