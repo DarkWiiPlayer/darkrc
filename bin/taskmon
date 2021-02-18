@@ -2,7 +2,7 @@
 clear
 task
 while
-	sleep 1 && inotifywait $HOME/.task/backlog.data -e CLOSE_WRITE > /dev/null 2>&1
+	sleep 1 && inotifywait -t 60 $HOME/.task/backlog.data -e CLOSE_WRITE > /dev/null 2>&1 || true
 do
 	clear
 	task
