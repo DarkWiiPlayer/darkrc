@@ -53,7 +53,7 @@ git__fetch() {
 }
 
 gitprompt () {
-	top=$(git rev-parse --show-toplevel 2>/dev/null)
+	top=$(timeout 1 git rev-parse --show-toplevel 2>/dev/null)
 	if [ -n "$top" ]
 	then
 		if [ "$BASH_AUTOFETCH" -gt 0 ]; then
@@ -62,13 +62,13 @@ gitprompt () {
 		else
 			f=3
 		fi
-		status=$(git status --short 2>/dev/null)
-		branch=$(git branch | grep -Po '(?<=\* )[[:alnum:]_.-]*')
-		modif=$(echo "$status" | grep -Po '^\s*M' | wc -l)
-		untracked=$(echo "$status" | grep -Po '^\?\?' | wc -l)
-		added=$(echo "$status" | grep -Po '^\s*[A]' | wc -l)
-		deleted=$(echo "$status" | grep -Po '^\s*[D]' | wc -l)
-		renamed=$(echo "$status" | grep -Eo '^\s*R' | wc -l)
+		git_status=$(timeout 1 git status --short 2>/dev/null)
+		git_branch=$(git branch | grep -Po '(?<=\* )[[:alnum:]_.-]*')
+		modif=$(echo "$git_status" | grep -Po '^\s*M' | wc -l)
+		untracked=$(echo "$git_status" | grep -Po '^\?\?' | wc -l)
+		added=$(echo "$git_status" | grep -Po '^\s*[A]' | wc -l)
+		deleted=$(echo "$git_status" | grep -Po '^\s*[D]' | wc -l)
+		renamed=$(echo "$git_status" | grep -Eo '^\s*R' | wc -l)
 		stat=$(git branch -vv | grep -P '^\*' | grep -Po '\[.*\]')
 		ahead=$(echo $stat | grep -Po '(?<=ahead )\d*')
 		behind=$(echo $stat | grep -Po '(?<=behind )\d*')
@@ -88,21 +88,21 @@ gitprompt () {
 			head=$(git rev-parse --short HEAD 2>&1)
 			if [ "$(echo "$head" | grep '^fatal')" ]
 			then
-				branch='{no commits}'
+				git_branch='{no commits}'
 			else
-				branch='#'"$head"
+				git_branch='#'"$head"
 			fi
 		fi
-		if [ "$branch" = 'master' ]
+		if [ "$git_branch" = 'master' ]
 		then
 			/bin/echo -ne "$blue"
-		elif [ $(echo "$branch" | grep '^#' ) ]
+		elif [ $(echo "$git_branch" | grep '^#' ) ]
 		then
 			/bin/echo -ne "$red"
 		else
 			/bin/echo -ne "$yellow"
 		fi
-		/bin/echo -ne "$branch\033[00;36m"
+		/bin/echo -ne "$git_branch\033[00;36m"
 
 		# SYNC
 		if [ -z "$ahead" ] && [ -z "$behind" ]
@@ -141,6 +141,7 @@ gitprompt () {
 		then
 			/bin/echo -ne " ${yellow}+$untracked"
 		fi
+		/bin/echo -ne "\033[00m"
 	else
 		exit 1
 	fi
