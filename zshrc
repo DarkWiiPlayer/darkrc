@@ -3,6 +3,8 @@ export HISTFILE=$HOME/.zsh_history
 export HISTFILESIZE=10000
 export HSITSIZE=10000
 
+bindkey -v
+
 setopt inc_append_history
 setopt extended_history
 setopt hist_find_no_dups
