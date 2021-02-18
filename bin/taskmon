@@ -1,2 +1,9 @@
 #!/bin/sh
-clear; task; while sleep 10; do clear; task; done
+clear
+task
+while
+	sleep 1 && inotifywait $HOME/.task/backlog.data -e CLOSE_WRITE > /dev/null 2>&1
+do
+	clear
+	task
+done
