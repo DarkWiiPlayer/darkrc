@@ -83,7 +83,7 @@ gitprompt () {
 		/bin/echo -ne "${purple}$(basename $top) "
 
 		# BRANCH
-		if [ -z "$branch" ]
+		if [ -z "$git_branch" ]
 		then
 			head=$(git rev-parse --short HEAD 2>&1)
 			if [ "$(echo "$head" | grep '^fatal')" ]
