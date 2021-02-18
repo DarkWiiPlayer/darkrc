@@ -1,10 +1,36 @@
-#!/bin/sh
+rlevel() {
+	if [ -n "$RANGER_LEVEL" ]
+	then if [ "$RANGER_LEVEL" -gt 1 ] && [ ! -z "$3" ]
+		then
+			/bin/echo -ne "$1$3$RANGER_LEVEL "
+		else
+			/bin/echo -ne "$1 "
+		fi
+	fi
+	if [ -n "$VIM_LEVEL" ]
+	then if [ "$VIM_LEVEL" -gt 1 ] && [ ! -z "$3" ]
+		then
+			/bin/echo -ne "$2$3$VIM_LEVEL "
+		else
+			/bin/echo -ne "$2 "
+		fi
+	fi
+}
+
+numjobs() {
+	jobs=$(jobs | wc -l)
+	if [ $jobs -gt 1 ] && [ ! -z "$2" ]
+	then echo "$1$2$jobs "
+	elif [ $jobs -gt 0 ]
+	then echo "$1 "
+	fi
+}
 
 git__fetch() {
-  if [ -f "$1/.git" ]
-    then dir="$(cat $top/.git | sed -e 's/^gitdir: //')"
-    else dir="$1/.git"
-  fi
+	if [ -f "$1/.git" ]
+		then dir="$(cat $top/.git | sed -e 's/^gitdir: //')"
+		else dir="$1/.git"
+	fi
 	if [ -n "$BASH_AUTOFETCH_TIMEOUT" ]; then
 		timeout=$BASH_AUTOFETCH_TIMEOUT
 	else
@@ -26,7 +52,7 @@ git__fetch() {
 	echo $run
 }
 
-git__prompt () {
+gitprompt () {
 	top=$(git rev-parse --show-toplevel 2>/dev/null)
 	if [ -n "$top" ]
 	then
@@ -76,7 +102,7 @@ git__prompt () {
 		else
 			/bin/echo -ne "$yellow"
 		fi
-    /bin/echo -ne "$branch\033[00;36m"
+		/bin/echo -ne "$branch\033[00;36m"
 
 		# SYNC
 		if [ -z "$ahead" ] && [ -z "$behind" ]
@@ -115,9 +141,7 @@ git__prompt () {
 		then
 			/bin/echo -ne " ${yellow}+$untracked"
 		fi
-  else
-    exit 1
+	else
+		exit 1
 	fi
 }
-
-git__prompt
