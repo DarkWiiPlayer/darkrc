@@ -22,7 +22,7 @@ export PROMPT_gitlong='$(gitprompt && echo -ne " ")%F5$(git log --oneline --no-d
 # export PS1nogit=
 # export PS1git=
 
-export HISTORY_IGNORE='(ls|vimswitch|clear)*'
+export HISTORY_IGNORE='(ls|vimswitch|clear)'
 zshaddhistory() {
 	[[ $1 != ${~HISTORY_IGNORE} ]]
 }
