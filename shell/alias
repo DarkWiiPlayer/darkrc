@@ -1,3 +1,5 @@
+alias ls="ls --color=auto"
+alias ll="ls -lA"
 alias gcd="source git-cd"
 alias g="source cd-improved"
 alias gg="cd $HOME; g ."
