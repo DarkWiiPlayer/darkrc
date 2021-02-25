@@ -25,6 +25,7 @@
 	fixup = commit --patch --no-edit --amend
 	ts = timeshift
 	task = "! TASKDATA=$(git rev-parse --show-toplevel)/.git/task task"
+	track = add --intent-to-add
 [user]
 	useConfigOnly = true
 [user "darkwiiplayer"]
