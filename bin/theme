@@ -1,0 +1,13 @@
+#!/bin/sh
+
+colours() {
+	for colour in 0 1 2 3 4 5 6 7
+	do
+		echo -n "\033[3${colour}m██ "
+	done
+	echo "\033[0m"
+}
+
+colours
+echo -n "\033[2m"
+colours
