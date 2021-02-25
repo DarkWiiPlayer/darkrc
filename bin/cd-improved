@@ -4,15 +4,15 @@ root="$(git rev-parse --show-toplevel 2>/dev/null)"
 
 if [ -z "$root" ]
 then
-  cd "$@"
+  builtin cd "$@"
 else
   if [ -z "$1" ]
   then
-    cd "$root"
+    builtin cd "$root"
   else
     if [ $(echo "$1" | grep '^/') ]
-    then cd "$root"$@
-    else cd "$@"
+    then builtin cd "$root"$@
+    else builtin cd "$@"
     fi
   fi
 fi
