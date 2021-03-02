@@ -1,9 +1,7 @@
 export HISTFILE=$HOME/.zsh_history
 export SAVEHIST=10000
 export HISTFILESIZE=10000
-export HSITSIZE=10000
-
-bindkey -v
+export HISTSIZE=10000
 
 setopt append_history
 setopt hist_find_no_dups
@@ -14,6 +12,8 @@ setopt hist_find_no_dups
 # setopt hist_ignore_all_dups
 setopt prompt_subst
 setopt hist_ignore_space
+
+bindkey -v
 
 prompt='%(?.%F{green}.%F{red})λ%f '
 export PROMPT_full='%B%F{magenta}%n%F{blue}@%F{magenta}%m%b %F{magenta}%~
