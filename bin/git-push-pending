@@ -11,3 +11,4 @@ echo "$repositories" \
 	| zenity --list --column Repository --column Path --text "Repositories that need pushing:" --multiple --title "Git" --separator ';' --width 800 --height 300 --print-column=2 2>/dev/null \
 	| tr ';' '\n' \
 	| xargs -P`nproc` -L 1 -I€ sh -c 'cd € && git push'
+notify-send Git 'Pushed everything 🎉'
