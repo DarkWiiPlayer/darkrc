@@ -10,6 +10,7 @@ do
 	if [ -d $root/.git/task ]
 	then
 		echo "→ \033[1;4;33m"$root"\033[0m"
-		(cd $root; git task 2>/dev/null | head -n -1 | sed -e '3d' )
+		(cd $root; git task 2>/dev/null | head -n -2 | sed -e '1d;3d' )
+		echo ''
 	fi
 done
