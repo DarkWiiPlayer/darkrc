@@ -174,8 +174,8 @@ function s:split_blame_entry(idx, entry)
 		let l:map[l:pair[:l:split-1]] = l:pair[l:split+1:]
 	endfor
 	let l:map["commit"]=a:entry[:match(a:entry, " ")-1]
-	let l:map["time"]=strftime("%Y-%d-%m %H:%M:%S", l:map["committer-time"])
-	let l:map["date"]=strftime("%Y-%d-%m", l:map["committer-time"])
+	let l:map["time"]=strftime("%Y-%m-%d %H:%M:%S", l:map["committer-time"])
+	let l:map["date"]=strftime("%Y-%m-%d", l:map["committer-time"])
 	if l:map["author"]=="Not Committed Yet"
 		let l:map["short"]="(Uncommitted)"
 	else
