@@ -132,7 +132,11 @@ end
 " Runs a sequence of commands asynchronously
 function! Async(array, ...)
 	if len(a:array) > 0
-		call job_start(a:array[0], {"out_io": "null", "in_io": "null", "err_io": "null", "exit_cb": function("Async", [a:array[1:-1]])})
+		if has("nvim")
+			call jobstart(a:array[0], {"on_exit": function("Async", [a:array[1:-1]])})
+		else
+			call job_start(a:array[0], {"out_io": "null", "in_io": "null", "err_io": "null", "exit_cb": function("Async", [a:array[1:-1]])})
+		end
 	end
 endfun
 
