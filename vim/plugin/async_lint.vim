@@ -35,5 +35,7 @@ endfun
 augroup ASYNC_LINT
 	au TextChanged * call s:async_lint_abort(bufnr("%"))
 	au TextChangedI * call s:async_lint_abort(bufnr("%"))
-	au TextChangedP * call s:async_lint_abort(bufnr("%"))
+	if has("nvim")
+		au TextChangedP * call s:async_lint_abort(bufnr("%"))
+	endif
 augroup END
