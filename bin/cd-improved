@@ -17,5 +17,4 @@ else
   fi
 fi
 
-git rev-parse --show-toplevel >/dev/null 2>&1 \
-  && prompt gitlong || prompt normal
+source smartprompt
