@@ -1,34 +1,57 @@
-function s:jobstart(command, options)
-	if has("nvim")
-		let a:options["on_exit"] = a:options["close_cb"]
-		return jobstart(a:command, a:options)
+function s:exit(code, buffer, start, end, callbacks)
+	if len(a:callbacks)>1
+		let [l:Success, l:Error] = a:callbacks
+	elseif len(a:callbacks)>0
+		let l:Success = a:callbacks[0]
+		let l:Error = a:callbacks[0]
 	else
-		return job_start(a:command, a:options)
+		let l:Success = { a -> a }
+		let l:Error = { a -> a }
 	end
+	if (a:code == 0)
+		return l:Success({"output": a:buffer, "tstart": a:start, "tend": a:end, "code": a:code})
+	else
+		return l:Error({"output": a:buffer, "tstart": a:start, "tend": a:end, "code": a:code})
+	endif
 endfun
 
-function Defer(command, callback)
+function Defer(command, ...)
 	let l:start = strftime("%s")
 	let l:buffer = []
-	call s:jobstart(a:command, {
-				\ "out_io": "pipe",
-				\ "out_cb": { pipe, text -> add(l:buffer, text) },
-				\ "close_cb": { pipe -> a:callback({"output": l:buffer, "tstart": l:start, "tend":strftime("%s")}) }
-				\ })
+  let l:callbacks = a:000
+	if has("nvim")
+		call jobstart(a:command, {
+					\ "out_io": "pipe",
+					\ "out_cb": { pipe, text -> add(l:buffer, text) },
+					\ "on_exit": { id, code -> <SID>exit(code, l:buffer, l:start, strftime("%s"), l:callbacks) }
+					\ })
+	else
+		call job_start(a:command, {
+					\ "out_io": "pipe",
+					\ "out_cb": { pipe, text -> add(l:buffer, text) },
+					\ "close_cb": { pipe -> <SID>exit(0, l:buffer, l:start, strftime("%s"), a:000) }
+					\ })
+	end
 endfun
 
 function s:expand(string)
 	return substitute(a:string, '%[:a-z]*', '\=expand(submatch(0))', 'g')
 endfun
 
-function s:echo(message)
+function s:echo(message, ...)
+	if (a:0 > 0)
+		exec "echohl ".a:1
+	end
 	echom a:message
+	if (a:0 > 0)
+		echohl None
+	end
 endfun
 
 function s:notify(message)
 	call Defer('notify-send "Vim" "'.a:message.'"', { b -> 0 })
 endfun
 
-comm -complete=shellcmd -nargs=* Defer call Defer(s:expand(<q-args>), { r -> 0 })
-comm -complete=shellcmd -nargs=* DeferEcho call Defer(s:expand(<q-args>), { result -> <SID>echo("Deferred job completed (".(result['tend']-result['tstart'])."s): ".s:expand(<q-args>)) })
-comm -complete=shellcmd -nargs=* DeferNotify call Defer(s:expand(<q-args>), { result -> <SID>notify("Deferred job completed (".(result['tend']-result['tstart'])."s):\n$ ".s:expand(<q-args>)) })
+comm -complete=shellcmd -nargs=* Defer call Defer(s:expand(<q-args>))
+comm -complete=shellcmd -nargs=* DeferEcho call Defer(s:expand(<q-args>), { result -> <SID>echo("Deferred job completed (".(result['tend']-result['tstart'])."s): ".s:expand(<q-args>)) }, { result -> <SID>echo("Deferred job errored with ".result['code']." (".(result['tend']-result['tstart'])."s): ".s:expand(<q-args>), 'WarningMsg') })
+comm -complete=shellcmd -nargs=* DeferNotify call Defer(s:expand(<q-args>), { result -> <SID>notify("Deferred job completed (".(result['tend']-result['tstart'])."s):\n$ ".s:expand(<q-args>)) }, { result -> <SID>notify("Deferred job errored with ".result['code']." (".(result['tend']-result['tstart'])."s):\n$ ".s:expand(<q-args>)) })
