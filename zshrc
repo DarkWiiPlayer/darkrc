@@ -43,3 +43,7 @@ prompt() {
 	export PROMPT_set=$1
 }
 prompt $PROMPT_set
+
+chpwd() {
+  source smartprompt
+}
