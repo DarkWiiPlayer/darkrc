@@ -1,4 +1,6 @@
 # vim: set filetype=gitconfig :miv #
+# [include]
+# path = $HOME/path/to/this/file
 [core]
 	editor = vim -f
 	excludesfile = .gitignore.local
