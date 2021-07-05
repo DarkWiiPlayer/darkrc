@@ -4,7 +4,7 @@ export EDITOR=vim
 
 export LESSCHARSET=utf-8
 
-export MANPATH="$HOME/.local/share/man:$(manpath)"
+# export MANPATH="$HOME/.local/share/man:$(manpath)"
 
 export LUA_PATH_5_3="$HOME/.luarocks/share/lua/5.3/?.lua;"\
 "$HOME/.luarocks/share/lua/5.3/?/init.lua;"\
