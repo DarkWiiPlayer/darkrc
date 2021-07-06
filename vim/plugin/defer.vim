@@ -18,20 +18,24 @@ endfun
 function Defer(command, ...)
 	let l:start = strftime("%s")
 	let l:buffer = []
-  let l:callbacks = a:000
+	let l:callbacks = a:000
 	if has("nvim")
 		call jobstart(a:command, {
-					\ "out_io": "pipe",
-					\ "out_cb": { pipe, text -> add(l:buffer, text) },
-					\ "on_exit": { id, code -> <SID>exit(code, l:buffer, l:start, strftime("%s"), l:callbacks) }
-					\ })
+			\ "out_io": "pipe",
+			\ "on_stdout": { pipe, text -> extend(l:buffer, text) },
+			\ "on_exit": { id, code -> <SID>exit(code, l:buffer, l:start, strftime("%s"), l:callbacks) }
+		\})
 	else
 		call job_start(a:command, {
-					\ "out_io": "pipe",
-					\ "out_cb": { pipe, text -> add(l:buffer, text) },
-					\ "close_cb": { pipe -> <SID>exit(0, l:buffer, l:start, strftime("%s"), a:000) }
-					\ })
+			\ "out_io": "pipe",
+			\ "out_cb": { pipe, text -> add(l:buffer, text) },
+			\ "close_cb": { pipe -> <SID>exit(0, l:buffer, l:start, strftime("%s"), a:000) }
+		\})
 	end
+endfun
+
+function s:replace(buf, text)
+	call nvim_buf_set_lines(a:buf, 0, nvim_buf_line_count(a:buf), 0, a:text)
 endfun
 
 function s:expand(string)
@@ -55,3 +59,4 @@ endfun
 comm -complete=shellcmd -nargs=* Defer call Defer(s:expand(<q-args>))
 comm -complete=shellcmd -nargs=* DeferEcho call Defer(s:expand(<q-args>), { result -> <SID>echo("Deferred job completed (".(result['tend']-result['tstart'])."s): ".s:expand(<q-args>)) }, { result -> <SID>echo("Deferred job errored with ".result['code']." (".(result['tend']-result['tstart'])."s): ".s:expand(<q-args>), 'WarningMsg') })
 comm -complete=shellcmd -nargs=* DeferNotify call Defer(s:expand(<q-args>), { result -> <SID>notify("Deferred job completed (".(result['tend']-result['tstart'])."s):\n$ ".s:expand(<q-args>)) }, { result -> <SID>notify("Deferred job errored with ".result['code']." (".(result['tend']-result['tstart'])."s):\n$ ".s:expand(<q-args>)) })
+comm -complete=shellcmd -count=0 -nargs=* DeferBuffer call Defer(s:expand(<q-args>), { result -> <SID>replace(<count>, result['output']) })
