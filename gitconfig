@@ -24,7 +24,7 @@
 	stat = log --oneline --stat --date-order
 	identity = "! git config user.name \"$(git config user.$1.name)\"; git config user.email \"$(git config user.$1.email)\"; :"
 	root = rev-parse --show-toplevel
-	fixup = commit --patch --no-edit --amend
+	fixup = "!git commit --patch --no-edit --amend $(git diff --name-only HEAD~1..HEAD)"
 	ts = timeshift
 	task = "! TASKDATA=$(git rev-parse --show-toplevel)/.git/task task"
 	track = add --intent-to-add
