@@ -5,9 +5,9 @@ function! s:kitty_bg_color()
 	if $TERM=="xterm-kitty"
 		let l:num_color=synIDattr(hlID("normal"), "bg")
 		if l:num_color!=""
-			let l:color=system("kitty @ get-colors | grep 'color".l:num_color." '")
+			let l:color=system("kitty @ get-colors | grep 'color".l:num_color."'")
 			let l:color=l:color[match(l:color, "#"):]
-			echom system("kitty @ set-colors background=".l:color)
+			echom system('kitty @ set-colors background="'.l:color.'"')
 		end
 	end
 endfun
