@@ -1,0 +1,22 @@
+#!/usr/bin/env lua
+
+local args do
+	local parse = require 'arrr' {
+		{ "Unescape instead of escaping", "--decode", "-d" };
+	}
+	args = parse{...}
+end
+
+local pattern, replace
+if args.decode then
+	pattern, replace = "%%%x%x", function(escape)
+		return string.char(tonumber(escape:sub(2, 3), 16))
+	end
+else
+	pattern = "[:/?#@!$&'()*+,;=[%]%%\n ]"
+	replace = function(plain)
+		return string.format("%%%0X", plain:byte())
+	end
+end
+
+io.write((io.read("a*"):gsub(pattern, replace)))
