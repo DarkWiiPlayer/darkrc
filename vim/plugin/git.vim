@@ -6,7 +6,6 @@
 "    ┌─┴─┴───┴─┴───┴─┴─┐    "
 "   ┌┘    Git Stuff    └┐   "
 "   └───────────────────┘   "
-
 augroup git
 
 " Find the root of a git repository
@@ -277,5 +276,6 @@ command! ShowGitRoot try
 		\| echo <sid>gitroot() 
 		\| catch | echo 'Not a git repository'
 		\| endtry
+command! GitDiff diffthis | vert bel split | exec "silent GitPrev" | diffthis
 
 augroup END
