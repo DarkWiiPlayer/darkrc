@@ -1,6 +1,9 @@
 # vim: set noexpandtab filetype=sh :miv #
 
-export EDITOR=vim
+if which nvim
+then export EDITOR=nvim
+else export EDITOR=vim
+fi
 
 export LESSCHARSET=utf-8
 
