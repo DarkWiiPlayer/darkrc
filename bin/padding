@@ -1,15 +1,23 @@
 #!/bin/sh
 
-h=0
 if [ -n "$1" ]
-then h="$1"
+then t="$1"
+else t="0"
 fi
-v=$h
 if [ -n "$2" ]
-then v="$2"
+then l="$2"
+else l="$t"
+fi
+if [ -n "$3" ]
+then b="$3"
+else b="$t"
+fi
+if [ -n "$4" ]
+then r="$4"
+else r="$l"
 fi
 
 if [ "$TERM" = "xterm-kitty" ]
 then
-	kitty @ set-spacing padding-h=$h padding-v=$v
+	kitty @ set-spacing padding-top=$t padding-left=$l padding-bottom=$b padding-right=$r
 fi
