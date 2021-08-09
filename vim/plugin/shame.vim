@@ -582,10 +582,10 @@ endfun
 noremap <C-s> :call <sid>saveprompt()<CR>
 nnoremap <C-n> :bnext<CR>
 nnoremap <C-p> :bprevious<CR>
-nnoremap <leader>j :lnext<cr>
-nnoremap <leader>k :lNext<cr>
-nnoremap <leader><leader>j :cnext<cr>
-nnoremap <leader><leader>k :cNext<cr>
+nnoremap <leader>j :lnext \| normal zt<cr>
+nnoremap <leader>k :lNext \| normal zt<cr>
+nnoremap <leader><leader>j :cnext \| normal zt<cr>
+nnoremap <leader><leader>k :cNext \| normal zt<cr>
 nnoremap <C-i> Bi <esc>i
 nnoremap <C-a> Ea <esc>a
 " This one does nothing, but I'm adding it to remember not to remap the tab key
