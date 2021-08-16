@@ -65,6 +65,6 @@ else
 	Light
 end
 
-if $TERM=="xterm-kitty"
+if $TERM=="xterm-kitty" || match($TERM, '-256color$')
 	Arcadia
 end
