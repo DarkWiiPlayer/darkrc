@@ -1,4 +1,4 @@
-#!/usr/bin/env luajit
+#!/usr/bin/env lua
 -- vim: set noexpandtab tabstop=3 :miv --
 
 local ansicolors = require 'ansicolors'
