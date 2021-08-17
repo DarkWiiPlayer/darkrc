@@ -2,7 +2,13 @@
 
 function! TryAutosave()
 	if &autowriteall && &mod && &buftype==""
-		silent write
+		if has("nvim")
+			do BufWritePre
+			silent write
+			do BufWritePost
+		else
+			silent write
+		end
 		redraw
 	end
 endfunction
