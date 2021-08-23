@@ -3,6 +3,7 @@ export SAVEHIST=10000
 export HISTFILESIZE=10000
 export HISTSIZE=10000
 
+alias hgrep='history 0 | grep '
 setopt append_history
 setopt hist_find_no_dups
 # setopt hist_ignore_dups
@@ -18,7 +19,7 @@ bindkey -v
 prompt='%(?.%F{green}.%F{red})λ%f '
 export PROMPT_full='%B%F{magenta}%n%F{blue}@%F{magenta}%m%b %F{magenta}%~
 '"$prompt"
-export PROMPT_gitlong='$(gitprompt && echo -ne " ")%F5$(git log --oneline --no-decorate -1 2>/dev/null)
+export PROMPT_gitlong='$(gitprompt && echo -ne " ")%F$(git log --oneline --no-decorate -1 2>/dev/null)
 %F{cyan}$(gitpath)'"$prompt"
 # export PS1tiny=
 # export PS1nano=
