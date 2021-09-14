@@ -1,8 +1,11 @@
 #!/bin/sh
 hook=$(basename $0)
+if [ -z "$GIT_DIR" ]
+then
+	GIT_DIR=$(git rev-parse --show-toplevel)/.git
+fi
 if [ -f $GIT_DIR/hooks/$hook ]
 then
 	echo Running project-level hook: $GIT_DIR/hooks/$hook
 	$GIT_DIR/hooks/$hook
 fi
-
