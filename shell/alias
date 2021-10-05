@@ -28,6 +28,7 @@ alias u='unicode'
 alias hlcat='highlight -O xterm256'
 alias please='sudo'
 alias ofw='on_file_write'
+alias amend='git commit --amend'
 mg() {
 	mkdir -p "$@"
 	source cd-improved "$1"
