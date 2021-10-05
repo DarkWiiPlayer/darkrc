@@ -56,7 +56,7 @@ gitprompt () {
 	top=$(timeout 1 git rev-parse --show-toplevel 2>/dev/null)
 	if [ -n "$top" ]
 	then
-		if [ "$SHELL_AUTOFETCH" -gt 0 ]; then
+		if [ "$SHELL_AUTOFETCH_TIMEOUT" -gt 0 ]; then
 			autofetch=$(git__fetch $top)
 			f=$((2-$autofetch))
 		else
