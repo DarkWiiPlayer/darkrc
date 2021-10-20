@@ -564,7 +564,7 @@ vnoremap > >gv
 
 nnoremap <S-l> :L<cr>
 noremap <space> :
-noremap <C-space> @:
+nnoremap <C-space> @:
 noremap Q @q
 nnoremap <S-space> gQ
 " This part is just supposed to make saving as inconvenient as possible
@@ -820,9 +820,6 @@ function! s:init_html_file()
 		put =l:text
 	endfunction
 
-	nnoremap <C-space> :call <sid>insert_tag(input(""), 0)<CR>
-
-	inoremap <buffer> <C-space> <C-o>""ciw<<C-o>""p><C-o>m'</<C-o>""p><C-o>`'<C-o>l
 	inoremap <buffer> <C-CR> <C-o>""diw<C-o>"_cc<<C-o>""p><C-o>o</<C-o>""p><C-o>O
 endfunction
 
