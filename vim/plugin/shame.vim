@@ -474,10 +474,10 @@ function! s:snapshot()
 endfun
 command! Snapshot call <sid>snapshot()
 
-command! Todo call matchadd('Todo', '^\s*\[ \?\].*$') |
-			\ call matchadd('Comment', '^\s*\[x\].*$') |
-			\ call matchadd('Comment', '^\s*\[-\].*$') |
-			\ call matchadd('Error', '^\s*\[!\].*$')
+command! Todo call matchadd('Todo', '^[ 	-]*\[ \?\].*$') |
+			\ call matchadd('Comment', '^[ 	-]*\[x\].*$') |
+			\ call matchadd('Comment', '^[ 	-]*\[-\].*$') |
+			\ call matchadd('Error', '^[ 	-]*\[!\].*$')
 command! -nargs=? Tempfile exec 'new '.tempname()  | set filetype=<args> | au BufDelete <buffer> call delete(expand('%'))
 
 "        ┌──────────────────────────┐
