@@ -493,6 +493,8 @@ vnoremap <leader>p ""s<C-R>+<esc>
 
 map S :shell<CR>
 
+nnoremap gn :tab split<CR>
+
 nnoremap val 0vg$h
 nnoremap vil ^vg_
 
