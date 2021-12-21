@@ -17,7 +17,8 @@ then r="$4"
 else r="$l"
 fi
 
-if [ "$TERM" = "xterm-kitty" ]
+if ! [ "$TERM" = "xterm-kitty" ]
 then
-	kitty @ set-spacing padding-top=$t padding-left=$l padding-bottom=$b padding-right=$r
+	/bin/echo -e '\033[33mWarning: not running inside Kitty!\033[0m'
 fi
+kitty @ --to $KITTY_LISTEN_ON set-spacing padding-top=$t padding-left=$l padding-bottom=$b padding-right=$r

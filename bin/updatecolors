@@ -10,6 +10,7 @@ then
 	gsettings set org.cinnamon.theme name "$theme"
 	gsettings set org.cinnamon.desktop.interface icon-theme "$theme"
 	gsettings set org.cinnamon.desktop.interface gtk-theme "$theme"
+	gsettings set org.gnome.desktop.background picture-uri "file://$HOME/wallpaper/dark.png"
 	theme=dark
 else
 	sed -i -e 's/kitty_dark.conf/kitty_light.conf/' $HOME/.config/kitty/kitty.conf
@@ -20,18 +21,14 @@ else
 	gsettings set org.cinnamon.theme name "$theme"
 	gsettings set org.cinnamon.desktop.interface icon-theme "$theme"
 	gsettings set org.cinnamon.desktop.interface gtk-theme "$theme"
+	gsettings set org.gnome.desktop.background picture-uri "file://$HOME/wallpaper/light.png"
 	theme=light
 fi
 
 for socket in $(find /tmp/ -maxdepth 1 -name "kitty-$USER-*")
 do
 	if which kitty > /dev/null; then
-		cat $HOME/darkrc/kitty_$theme.conf |\
-			grep '^[[:alpha:]]' |\
-			sed -s 's/ \+/=/' |\
-			sed -s 's/^.*$/set-colors --all \0/' |\
-			sort |\
-			kitty @ --to unix:$socket >/dev/null
+		kitty @ --to unix:$socket set-colors --configured $HOME/darkrc/kitty_$theme.conf >/dev/null
 	fi
 done
 
