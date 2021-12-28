@@ -20,3 +20,8 @@ vimswitch() {
 		echo -e "Vim switched to \033[01;35mTabs\033[00m mode"
 	fi
 }
+
+for function in $(find $(dirname $(dirname $0))/fun/ -type f -name "*.sh")
+do
+  source $function
+done
