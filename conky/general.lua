@@ -13,8 +13,8 @@ ${color2}vpn:$color $alignr${execi 2 expressvpn status | grep -Po 'Not connected
 #${color2}ip:$color $alignr${execi 2 ~/.bin/location}
 #
 ${color3}Ping $hr
-${color2}Google: $color$alignr${execi 2 ping google.de -c 1 | grep -Po '(?<=time=).*'}
-${color2}Server: $color$alignr${execi 2 ping darkwiiplayer.com -c 1 | grep -Po '(?<=time=).*'}
+${color2}Google: $color$alignr${execi 2 timeout 1 ping google.de -c 1 | grep -Po '(?<=time=).*'}
+${color2}Server: $color$alignr${execi 2 timeout 1 ping darkwiiplayer.com -c 1 | grep -Po '(?<=time=).*'}
 #
 ${color3}CPU $hr
 $color$cpu%$color2 CPU Usage
