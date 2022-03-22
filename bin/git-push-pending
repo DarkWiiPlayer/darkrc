@@ -5,7 +5,9 @@ repositories=$(git-pending "$@" \
 	| lua -e 'for line in io.lines() do print(line:match("[^/]+$")); print((line:gsub("^[^ ]* ", ""))) end' \
 )
 if [ -z "$repositories" ]
-then exit
+then
+	notify-send Git "No pending repositories"
+	exit
 fi
 echo "$repositories" \
 	| zenity --list --column Repository --column Path --text "Repositories that need pushing:" --multiple --title "Git" --separator ';' --width 800 --height 300 --print-column=2 2>/dev/null \
