@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if [ -z "$2" ]
+then target="."
+else target="$2"
+fi
+
+initial=$(pwd)
+for directory in $(find $target -name "$1" -type d)
+do
+	if [ -d "$directory/.git" ]; then
+		cd $directory
+		/bin/echo -e "$directory\t$(git log --format="%h" -1)"
+		cd $initial
+	fi
+done
