@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ -z "$1" ]
-then win_id=$(xwininfo | awk 'match($0, /Window id: (0x[0-9a-f]+)/, cap){print cap[1]}')
+then win_id=$(xdotool getwindowfocus) #$(xwininfo | awk 'match($0, /Window id: (0x[0-9a-f]+)/, cap){print cap[1]}')
 else win_id=$1
 fi
 
