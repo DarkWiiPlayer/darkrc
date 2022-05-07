@@ -1,8 +1,5 @@
 alias ls="ls --color=auto"
 alias ll="ls -lAh"
-alias gcd="source git-cd"
-alias g="source cd-improved"
-alias gg="builtin cd $HOME; g ."
 alias hello='echo "Hello :)"'
 alias w='watch -t -d -n 1'
 alias setclip='xclip -selection c'
@@ -14,16 +11,8 @@ alias rf='(f=$(tempfile); $(which ranger) --choosefiles $f; cat $f; rm $f)'
 alias oneko='oneko -speed 20 -fg "#2f2f2f" -cursor 2 -name neko'
 alias sakura='oneko -bg "#ffddee" -sakura -name sakura'
 alias tmux='tmux -2'
-alias pi='ssh pi -t ''tmux a -t home \|\| tmux new-session -s home'''
-alias server='ssh server -t ''tmux a -t home \|\| tmux new-session -s home'''
-alias ltc='getclip | luac -l -'
-alias sign='gpg --armor --no-version --detach-sign --local-user darkwiiplayer'
-alias workspace='cd ~/workspace'
 alias ranger='source ranger'
-alias ta='tmux a -t'
 alias co='checkout'
-alias qed='[ $RANDOM -ge $((32767 / 100 * 10)) ] && echo Quod Erat Demonstrandum || echo Quo Errat Demonstrator'
-alias u='unicode'
 alias hlcat='highlight -O xterm256'
 alias ofw='on_file_write'
 alias amend='git commit --amend'
@@ -31,6 +20,7 @@ alias amend='git commit --amend'
 alias yeet='rm -r'
 alias please='sudo'
 alias shit='git'
+alias qed='[ $RANDOM -ge $((32767 / 100 * 10)) ] && echo Quod Erat Demonstrandum || echo Quo Errat Demonstrator'
 mg() {
 	mkdir -p "$@"
 	source cd-improved "$1"
