@@ -1,5 +1,5 @@
 alias ls="ls --color=auto"
-alias ll="ls -lA"
+alias ll="ls -lAh"
 alias gcd="source git-cd"
 alias g="source cd-improved"
 alias gg="builtin cd $HOME; g ."
@@ -19,16 +19,18 @@ alias server='ssh server -t ''tmux a -t home \|\| tmux new-session -s home'''
 alias ltc='getclip | luac -l -'
 alias sign='gpg --armor --no-version --detach-sign --local-user darkwiiplayer'
 alias workspace='cd ~/workspace'
-alias shit='git'
 alias ranger='source ranger'
 alias ta='tmux a -t'
 alias co='checkout'
 alias qed='[ $RANDOM -ge $((32767 / 100 * 10)) ] && echo Quod Erat Demonstrandum || echo Quo Errat Demonstrator'
 alias u='unicode'
 alias hlcat='highlight -O xterm256'
-alias please='sudo'
 alias ofw='on_file_write'
 alias amend='git commit --amend'
+# Funny
+alias yeet='rm -r'
+alias please='sudo'
+alias shit='git'
 mg() {
 	mkdir -p "$@"
 	source cd-improved "$1"
