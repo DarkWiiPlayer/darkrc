@@ -96,6 +96,9 @@ gitprompt () {
 		if [ "$git_branch" = 'master' ]
 		then
 			/bin/echo -ne "$blue"
+		elif [ "$git_branch" = 'main' ]
+		then
+			/bin/echo -ne "$blue"
 		elif [ $(echo "$git_branch" | grep '^#' ) ]
 		then
 			/bin/echo -ne "$red"
