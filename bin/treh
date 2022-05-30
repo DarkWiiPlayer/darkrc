@@ -1,0 +1,83 @@
+#!/usr/bin/env lua
+
+local arrr = require 'arrr'
+
+local options do
+	local parse = arrr {
+		{ "Enable coloured output", "--colour", "-c" };
+		{ "Display hidden files", "--hidden", "-h" };
+	}
+
+	options = parse {...}
+
+	local inspect = require 'inspect'
+end
+
+local structure = {}
+
+for line in io.stdin:lines() do
+	local dir = structure
+	for segment in line:gmatch("[^/]+") do
+		if not dir[segment] then dir[segment] = {} end
+		dir = dir[segment]
+	end
+end
+
+local function reshape(input, name)
+	local output = {name = name}
+	for key, value in pairs(input) do
+		if options.hidden or not key:find("^%..+") then
+			table.insert(output, reshape(value, key))
+		end
+	end
+	table.sort(output, function(a, b)
+		return a.name < b.name
+	end)
+	return output
+end
+
+structure = reshape(structure)
+
+local escape do
+	if options.colour then
+		function escape(num, str)
+			return string.format("\x1b[%im%s\x1b[%im", num, str, 0)
+		end
+	else
+		function escape(num, str)
+			return str
+		end
+	end
+end
+
+local function line(line)
+	return escape(37, line)
+end
+
+local function name(tab)
+	local name = tab.name or '.'
+	if #tab > 0 then
+		return escape(33, name)
+	else
+		return escape(0, name)
+	end
+end
+
+local function draw(tab, prefix, first)
+	prefix = prefix or ''
+	first = first or ''
+	print(first .. name(tab))
+	for index, path in ipairs(tab) do
+		local new do
+			if index < #tab then
+				draw(path, prefix .. line'│  ', prefix .. line'├──')
+			else
+				draw(path, prefix .. line'   ', prefix .. line'└──')
+			end
+		end
+	end
+end
+
+for i, value in ipairs(structure) do
+	draw(value)
+end
