@@ -9,7 +9,7 @@ do
 	for i in 1 2 3 4
 	do
 		say "Start working... 🔨"
-	   sleep $((60 * 25))
+		sleep $((60 * 25))
 		if [ 4 -eq "$i" ]
 		then
 			say "Take a break... 💤"
