@@ -4,7 +4,7 @@ say() {
 	if [ -n "$DISPLAY" ]; then
 		notify-send "Pomodoro 🍅" "$1"
 	fi
-	echo "🍅 Pomodoro: $1"
+	printf "%s -- 🍅 Pomodoro: %s\n" "$(date +'%H:%M:%S')" "$1"
 }
 
 while true
