@@ -15,11 +15,11 @@ do
 		sleep $((60 * 25))
 		if [ 4 -eq "$i" ]
 		then
-			say "Take a short break... 💤"
-			sleep $((60 * 5))
-		else
 			say "Take a longer break... 💤"
 			sleep $((60 * 15))
+		else
+			say "Take a short break... 💤"
+			sleep $((60 * 5))
 		fi
 	done
 done
