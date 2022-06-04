@@ -3,6 +3,8 @@ export SAVEHIST=10000
 export HISTFILESIZE=10000
 export HISTSIZE=10000
 
+alias scratch="scratch $SHELL"
+
 alias hgrep='history 0 | grep '
 setopt append_history
 setopt hist_find_no_dups
@@ -46,5 +48,5 @@ prompt() {
 prompt $PROMPT_set
 
 chpwd() {
-  source smartprompt
+	source smartprompt
 }
