@@ -29,7 +29,7 @@ if [ -n "$filter" ]; then
 	ln -s $GIT_DIR/ .git
 	$filter
 	git add --all
-	rm -rf .git
+	rm .git
 fi
 
 if [ -n "$validation" ]; then
