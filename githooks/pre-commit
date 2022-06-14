@@ -1,7 +1,7 @@
 #!/bin/sh
 
 filter=$(git config hooks.filter)
-validation=$(git config hooks.validation)
+validate=$(git config hooks.validate)
 indentation=$(git config hooks.indentation)
 temp=$(mktemp -p /dev/shm -d -t git-hook.XXXX)
 export GIT_DIR=$(git rev-parse --show-toplevel)/.git
@@ -32,19 +32,27 @@ if [ -n "$filter" ]; then
 	rm .git
 fi
 
-if [ -n "$validation" ]; then
-	$validation || error=1
+if [ -n "$validate" ]; then
+	/bin/echo -e "\x1b[33mValidating commit\x1b[0m"
+	/bin/echo -e "\x1b[2mλ $validate\x1b[0m"
+	if $validate
+	then
+		/bin/echo -e "\x1b[32mValidation Passed!\x1b[0m"
+	else
+		error=1
+		/bin/echo -e "\x1b[1;31mValidation Failed!\x1b[0m"
+	fi
 fi
 
 case $indentation in
 	tab|tabs)
-		echo "Checking tab indentation"
+		/bin/echo -e "\x1b[2mChecking tab indentation"
 		for file in $(new); do
 			check '\t' $file || error=1
 		done
 		;;
 	space|spaces)
-		echo "Checking space indentation"
+		/bin/echo -e "\x1b[2mChecking space indentation"
 		for file in $(new); do
 			check ' ' $file || error=1
 		done
