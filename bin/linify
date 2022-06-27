@@ -1,0 +1,73 @@
+#!/usr/bin/env lua
+
+-- Ajdacent characters numbering:
+--   1
+-- 2 + 3
+--   4
+-- '+' = it's another plus
+-- '.' = it's something else
+
+local adjacency_char_map = {
+	["...."] = "┼";
+	["...+"] = "│";
+	["..+."] = "─";
+	["..++"] = "┌";
+	[".+.."] = "─";
+	[".+.+"] = "┐";
+	[".++."] = "─";
+	[".+++"] = "┬";
+	["+..."] = "│";
+	["+..+"] = "│";
+	["+.+."] = "└";
+	["+.++"] = "├";
+	["++.."] = "┘";
+	["++.+"] = "┤";
+	["+++."] = "┴";
+	["++++"] = "┼";
+}
+
+local input do
+	input = setmetatable({}, {__index = function(self, key)
+		if type(key) == "number" then
+			return {}
+		end
+	end})
+
+	for line in io.stdin:lines() do
+		local buf = {}
+		for char in line:gmatch(".") do
+			table.insert(buf, char)
+		end
+		table.insert(input, buf)
+	end
+end
+
+local function rawipairs(tab)
+	return function(tab, i)
+		i = i + 1
+		if rawget(tab, i) then
+			return i, rawget(tab, i)
+		end
+	end, tab, 0
+end
+
+local output = {}
+for lnum, line in rawipairs(input) do
+	output[lnum] = {}
+	for cnum, char in rawipairs(line) do
+		if char == "+" then
+			local adjacency = 
+				(input[lnum-1][cnum] == "+" and "+" or ".")
+				..(line[cnum-1] == "+" and "+" or ".")
+				..(line[cnum+1] == "+" and "+" or ".")
+				..(input[lnum+1][cnum] == "+" and "+" or ".")
+			output[lnum][cnum] = adjacency_char_map[adjacency]
+		else
+			output[lnum][cnum] = char
+		end
+	end
+end
+
+for _, line in ipairs(output) do
+	print(table.concat(line))
+end
