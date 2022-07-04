@@ -318,7 +318,7 @@ function! MatchingLinesDict(pattern)
 	return list
 endfunc
 com! -nargs=1 List call setloclist(0, MatchingLinesDict(<f-args>)) 
-               \ | lopen
+	\ | lopen
 
 function! LocationAddLineCol(filename, lnum, text, col)
 	call setloclist(0, [{'filename': a:filename, 'lnum': a:lnum, 'desc': a:text, 'col': a:col}], 'a')
@@ -515,12 +515,13 @@ nnoremap <leader>n :next<CR>:args<CR>
 nnoremap <leader>p :previous<CR>:args<CR>
 
 let g:jmp_dist = 8
-map <C-j> :exec "normal ".g:jmp_dist."j"<CR>
-map <C-k> :exec "normal ".g:jmp_dist."k"<CR>
+exec 'noremap gj '.g:jmp_dist.'j'
+exec 'noremap gk '.g:jmp_dist.'k'
+
+nnoremap <C-k> ddkP
+nnoremap <C-j> ddp
 nnoremap <C-h> b
 nnoremap <C-l> e
-" Yes, not 'noremap', do whatever is mapped to J and K assuming
-" it is some sort of custom up-down motion, but g:jmp_dist times
 
 " --- Marks ---
 nnoremap <leader>m :marks abcdefghijklmnopqrstuvwxyz<CR>
@@ -541,13 +542,6 @@ nnoremap <leader>= <C-a>
 
 " --- Text ---
 nnoremap U ~h
-
-" --- MOVEMENT ---
-" noremap j gj
-" noremap k gk
-
-noremap gj j
-noremap gk k
 
 " --- CLIPBOARD ---
 nnoremap Y y$
