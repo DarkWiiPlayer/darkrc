@@ -35,8 +35,8 @@ local input do
 
 	for line in io.stdin:lines() do
 		local buf = {}
-		for char in line:gmatch(".") do
-			table.insert(buf, char)
+		for p, char in utf8.codes(line) do
+			table.insert(buf, utf8.char(char))
 		end
 		table.insert(input, buf)
 	end
