@@ -4,7 +4,8 @@ filter=$(git config hooks.filter)
 validate=$(git config hooks.validate)
 indentation=$(git config hooks.indentation)
 temp=$(mktemp -p /dev/shm -d -t git-hook.XXXX)
-export GIT_DIR=$(git rev-parse --show-toplevel)/.git
+export SRC_DIR=$(pwd)
+export WORK_DIR=$(git rev-parse --show-toplevel)
 
 new() {
 	git status --porcelain | grep -E '^AM|^M|^A' | sed 's/^[^ ]* *//'
@@ -26,7 +27,7 @@ git checkout-index --prefix="$temp/index/" --all
 cd $temp/index/
 
 if [ -n "$filter" ]; then
-	ln -s $GIT_DIR/ .git
+	ln -s $WORK_DIR/.git/ .git
 	sh -c "$filter"
 	git add --all
 	rm .git
@@ -70,14 +71,14 @@ if [ -n "$error" ]
 then exit 1
 fi
 
-cd $GIT_DIR
+cd $WORK_DIR/.git
 rm -rf $temp
 
 hook=$(basename $0)
-if [ -f "$GIT_DIR/hooks/$hook" ]
+if [ -f "$WORK_DIR/.git/hooks/$hook" ]
 then
-	echo Running project-level hook: $GIT_DIR/hooks/$hook
-	$GIT_DIR/hooks/$hook
+	echo Running project-level hook: $WORK_DIR/.git/hooks/$hook
+	$WORK_DIR/.git/hooks/$hook
 	error=$?
 	if [ -n "$error" ]
 	then exit $error
