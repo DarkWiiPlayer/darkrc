@@ -1,0 +1,9 @@
+#!/bin/sh
+
+sock="$(git rev-parse --show-toplevel)/nvim.sock"
+if [ -S "$sock" ]
+then
+	exec nvim --server "$sock" --remote-tab $@
+else
+	exec nvim --listen "$sock" $@
+fi
