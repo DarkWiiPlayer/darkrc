@@ -27,7 +27,7 @@ git checkout-index --prefix="$temp/index/" --all
 cd $temp/index/
 
 if [ -n "$filter" ]; then
-	ln -s $WORK_DIR/.git/ .git
+	ln -s "$WORK_DIR"/.git/ .git
 	sh -c "$filter"
 	git add --all
 	rm .git
@@ -71,14 +71,14 @@ if [ -n "$error" ]
 then exit 1
 fi
 
-cd $WORK_DIR/.git
+cd "$WORK_DIR"/.git
 rm -rf $temp
 
 hook=$(basename $0)
 if [ -f "$WORK_DIR/.git/hooks/$hook" ]
 then
-	echo Running project-level hook: $WORK_DIR/.git/hooks/$hook
-	$WORK_DIR/.git/hooks/$hook
+	echo Running project-level hook: "$WORK_DIR"/.git/hooks/$hook
+	"$WORK_DIR"/.git/hooks/$hook
 	error=$?
 	if [ -n "$error" ]
 	then exit $error
