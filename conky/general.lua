@@ -18,20 +18,22 @@ ${color2}Server: $color$alignr${execi 2 timeout 1 ping darkwiiplayer.com -c 1 | 
 #
 ${color3}CPU $hr
 $color$cpu%$color2 CPU Usage
-$color${cpubar 8}$color
+$color${cpubar 4}$color
 ${color2}Frequency:$color $alignr$freq_g GHz
 #
 ${color3}Memory $hr$color
 $color$memperc%${color2} RAM Usage
-$color${membar 8}$color
+$color${membar 4}$color
 $mem / $memmax
 ${color2}Processes:$color $processes  ${color2}Running:$color $running_processes
 #
 ${color3}Storage $hr
 ${color2}root $alignr$color${fs_used /}/${fs_size /}
-$color${fs_bar 8 /}
+$color${fs_bar 4 /}
+${color2}home $alignr$color${fs_used /home}/${fs_size /home}
+$color${fs_bar 4 /home}
 ${color2}data $alignr$color${fs_used /data}/${fs_size /data}
-$color${fs_bar 8 /data}
+$color${fs_bar 4 /data}
 #
 ${color3}Networking $hr
 ${color2}Up:$color ${upspeed enp3s0} ${color2} - Down:$color ${downspeed enp3s0}
