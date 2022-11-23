@@ -18,7 +18,7 @@ setopt hist_ignore_space
 
 bindkey -v
 
-prompt='%(?.%F{green}.%F{red})λ%f '
+prompt='%F{blue}$(if [ "$RANGER_LEVEL" -gt 0 ]; then echo -ne "R."; fi)%(?.%F{green}.%F{red})λ%f '
 export PROMPT_full='%B%F{magenta}%n%F{blue}@%F{magenta}%m%b %F{magenta}%~
 '"$prompt"
 export PROMPT_gitlong='$(gitprompt && echo -ne " ")%F$(git log --oneline --no-decorate -1 2>/dev/null)
