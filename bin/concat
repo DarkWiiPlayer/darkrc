@@ -1,0 +1,11 @@
+#!/usr/bin/env lua
+
+local first = true
+for line in io.lines() do
+	if first then
+		first = false
+	else
+		io.write(...)
+	end
+	io.write(line)
+end
