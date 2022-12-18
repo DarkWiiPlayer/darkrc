@@ -30,7 +30,6 @@
 	track = add --intent-to-add
 	h = log -1 --format=%h
 	hash = log -1 --format=%H
-	ignore = "!$(git config --get core.editor) $(git rev-parse --show-toplevel)/.git/info/exclude"
 [user]
 	useConfigOnly = true
 [user "darkwiiplayer"]
