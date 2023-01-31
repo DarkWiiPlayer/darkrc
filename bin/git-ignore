@@ -2,7 +2,7 @@
 
 if [ -z "$@" ]
 then
-	!$(git config --get core.editor) $(git rev-parse --show-toplevel)/.git/info/exclude
+	$(git config --get core.editor) $(git rev-parse --show-toplevel)/.git/info/exclude
 else
 	ls -d "$@" >> "$(git rev-parse --show-toplevel)/.git/info/exclude"
 fi
