@@ -1,3 +1,4 @@
+alias e="find-edit"
 alias ls="ls --color=auto"
 alias ll="ls -lAh"
 alias hello='echo "Hello :)"'
