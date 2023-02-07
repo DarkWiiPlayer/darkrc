@@ -6,7 +6,7 @@ then
 else
 	if which fzf > /dev/null
 	then
-		file=$(fzf -q "$1")
+		file=$(fzf -1 -q "$1")
 		found=$?
 	elif which dmenu > /dev/null
 	then
