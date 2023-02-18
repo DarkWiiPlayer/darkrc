@@ -1,6 +1,7 @@
 alias e="find-edit"
 alias ls="ls --color=auto"
 alias ll="ls -lAh"
+alias ff="find_files"
 alias hello='echo "Hello :)"'
 alias w='watch -t -d -n 1'
 alias setclip='xclip -selection c'
