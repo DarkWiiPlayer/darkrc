@@ -1,0 +1,9 @@
+#!/usr/bin/env lua
+
+local buf = {}
+
+for _, argument in ipairs{...} do
+	table.insert(buf, "-name '"..argument:gsub("'", [['"'"']]).."'")
+end
+
+os.execute("find . " .. table.concat(buf, " -or "))
