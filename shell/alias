@@ -1,28 +1,31 @@
-alias e="find-edit"
-alias ls="ls --color=auto"
-alias ll="ls -lAh"
-alias ff="find_files"
-alias hello='echo "Hello :)"'
-alias w='watch -t -d -n 1'
-alias setclip='xclip -selection c'
-alias getclip='xclip -selection clipboard -o'
-alias r='ranger'
-alias rr='$(whereis ranger | cut -d " " -f 2)'
-alias ro='(f=$(tempfile); $(which ranger) --choosefiles $f; rifle $(cat $f); rm $f)'
-alias rf='(f=$(tempfile); $(which ranger) --choosefiles $f; cat $f; rm $f)'
-alias oneko='oneko -speed 20 -fg "#2f2f2f" -cursor 2 -name neko'
-alias sakura='oneko -bg "#ffddee" -sakura -name sakura'
-alias tmux='tmux -2'
-alias ranger='source ranger'
-alias co='checkout'
-alias hlcat='highlight -O xterm256'
-alias ofw='on_file_write'
 alias amend='git commit --amend'
+alias bat="batcat"
+alias co='checkout'
+alias e="find-edit"
+alias ff="find_files"
+alias getclip='xclip -selection clipboard -o'
+alias hello='echo "Hello :)"'
+alias hlcat='highlight -O xterm256'
+alias ll="ls -lAh"
+alias ls="ls --color=auto"
+alias ofw='on_file_write'
+alias oneko='oneko -speed 20 -fg "#2f2f2f" -cursor 2 -name neko'
+alias r='ranger'
+alias ranger='source ranger'
+alias rf='(f=$(tempfile); $(which ranger) --choosefiles $f; cat $f; rm $f)'
+alias ro='(f=$(tempfile); $(which ranger) --choosefiles $f; rifle $(cat $f); rm $f)'
+alias rr='$(whereis ranger | cut -d " " -f 2)'
+alias sakura='oneko -bg "#ffddee" -sakura -name sakura'
+alias setclip='xclip -selection c'
+alias tmux='tmux -2'
+alias w='watch -t -d -n 1'
+
 # Funny
-alias yeet='rm -r'
 alias please='sudo'
-alias shit='git'
 alias qed='[ $RANDOM -ge $((32767 / 100 * 10)) ] && echo Quod Erat Demonstrandum || echo Quo Errat Demonstrator'
+alias shit='git'
+alias yeet='rm -r'
+
 mg() {
 	mkdir -p "$@"
 	source cd-improved "$1"
