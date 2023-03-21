@@ -7,9 +7,12 @@ function use(plugins)
 end
 
 use {
-	'wbthomason/packer.nvim';
 	'neovim/nvim-lspconfig';
 	'pigpigyyy/Yuescript-vim';
+	'vim-scripts/openscad.vim';
+	'wbthomason/packer.nvim';
 	'ziglang/zig.vim';
-	'neovim/nvim-lspconfig';
+	-- Colour Schemes
+	'DarkWiiPlayer/papercolor-theme';
+	'optionalg/Arcadia';
 }
