@@ -1,0 +1,3 @@
+#!/bin/sh
+
+date +%s -d "$(zenity --entry)" | tr -d '\n' | xclip -selection c
