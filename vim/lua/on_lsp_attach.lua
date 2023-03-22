@@ -1,6 +1,6 @@
 local opts = { noremap=true, silent=true }
 
-return function(client, bufnr)
+return function(_, bufnr)
 	-- Enable completion triggered by <c-x><c-o>
 	vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -23,5 +23,5 @@ return function(client, bufnr)
 	vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, bufopts)
 	vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
 	vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-	vim.keymap.set('n', '<leader>f', vim.lsp.buf.formatting, bufopts)
+	--vim.keymap.set('n', '<leader>f', vim.lsp.buf.formatting, bufopts)
 end
