@@ -1,3 +1,9 @@
 #!/bin/sh
 
-date +%s -d "$(zenity --entry)" | tr -d '\n' | xclip -selection c
+format() {
+	echo "true\nR\n0 seconds ago\nRelative Time\n\nD\nMarch 5, 2020\nLong Date\n\nd\n05/03/2020\nShort Date\n\nT\n11:28:27 AM\nLong Time\n\nt\n11:28 AM\nShort Time\n\nF\nThursday, March 5, 2020 11:28:27 AM\nLong Date/Time\n\nf\n5 March 2020 11:28\nShort Date/Time" \
+		| zenity --list --column "check" --column "short" --column "Example" --column "Format" --radiolist --hide-column 2 --print-column 2 --width 500 --height 400 \
+		--title "Format" --text "Please pick a desired date format:"
+}
+
+date -d "$(zenity --entry --title "Time and Date" --text "Please enter the target date:")" +"<t:%s:$(format)>" | tr -d '\n' | xclip -selection c
