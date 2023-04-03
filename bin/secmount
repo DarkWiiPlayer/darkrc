@@ -1,0 +1,20 @@
+#!/bin/sh
+
+target=$(realpath "$1")
+if ! [ -d "$target" ]
+then
+  echo "Directory '$(basename "$target")' does not exist!"
+  exit 1
+fi
+back="$(dirname "$target")/.$(basename "$target")"
+if ! [ -d "$back" ]
+then
+  mkdir -p "$back"
+  passwd=$(zenity --password)
+  echo $passwd | secret-tool store --label "SecureFS $target" application securefs directory "$target"
+  echo $passwd | securefs c "$back"
+else
+  passwd=$(secret-tool lookup application securefs directory "$target")
+fi
+
+exec echo $passwd | securefs mount "$back" "$target"
