@@ -14,9 +14,9 @@ then
   mkdir -p "$back"
   passwd=$(zenity --password --title $title)
   if zenity --question --title $title --text "Save password in login keyring?"
-  then echo $passwd | secret-tool store --label "SecureFS $target" application securefs directory "$target"
+  then echo -n $passwd | secret-tool store --label "SecureFS $target" application securefs directory "$target"
   fi
-  echo $passwd | securefs c "$back"
+  echo -n $passwd | securefs c "$back"
 else
   passwd=$(secret-tool lookup application securefs directory "$target")
   if [ -z "$passwd" ]
@@ -24,4 +24,4 @@ else
   fi
 fi
 
-exec echo $passwd | securefs mount "$back" "$target"
+exec echo -n $passwd | securefs mount "$back" "$target"
