@@ -1,5 +1,7 @@
 #!/bin/sh
 
+title="SecMount"
+
 target=$(realpath "$1")
 if ! [ -d "$target" ]
 then
@@ -10,11 +12,16 @@ back="$(dirname "$target")/.$(basename "$target")"
 if ! [ -d "$back" ]
 then
   mkdir -p "$back"
-  passwd=$(zenity --password)
-  echo $passwd | secret-tool store --label "SecureFS $target" application securefs directory "$target"
+  passwd=$(zenity --password --title $title)
+  if zenity --question --title $title --text "Save password in login keyring?"
+  then echo $passwd | secret-tool store --label "SecureFS $target" application securefs directory "$target"
+  fi
   echo $passwd | securefs c "$back"
 else
   passwd=$(secret-tool lookup application securefs directory "$target")
+  if [ -z "$passwd" ]
+  then passwd=$(zenity --password --title $title)
+  fi
 fi
 
 exec echo $passwd | securefs mount "$back" "$target"
