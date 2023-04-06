@@ -36,7 +36,8 @@ fi
 for socket in $(find /tmp/ -maxdepth 1 -name "kitty-$USER-*")
 do
 	if which kitty > /dev/null; then
-		kitty @ --to unix:$socket set-colors --configured $HOME/darkrc/kitty_$theme.conf >/dev/null
+		theme=$(cat $HOME/.config/kitty/kitty.conf | sed -n '/^include/p' | sed -n -e 's/^include //' -e 's|$HOME|'"$HOME"'|' -e '/kitty_.*.conf$/p')
+		kitty @ --to unix:$socket set-colors --configured $theme >/dev/null
 	fi
 done
 
