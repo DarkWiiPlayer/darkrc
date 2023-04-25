@@ -28,11 +28,5 @@ alias yeet='rm -r'
 
 mg() {
 	mkdir -p "$@"
-	source cd-improved "$1"
-}
-git-mg() {
-	mkdir -p "$@"
-	cd "$1"
-	git init
-	source cd-improved "."
+	cd "$@"
 }
