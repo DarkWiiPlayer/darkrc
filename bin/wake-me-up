@@ -1,0 +1,7 @@
+#!/bin/sh
+
+start=$(date +%s)
+$@
+if [ $(($(date +%s) - $start)) -gt 0 ]
+  then notify-send "Command finished:" "$*"
+fi
