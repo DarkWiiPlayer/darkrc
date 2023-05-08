@@ -5,8 +5,12 @@ function! s:kitty_bg_color()
 	if $TERM=="xterm-kitty" || $KITTY_LISTEN_ON != ""
 		let l:num_color=synIDattr(hlID("normal"), "bg")
 		if l:num_color!=""
-			let l:color=system("kitty @ --to $KITTY_LISTEN_ON get-colors | grep 'color".l:num_color."'")
-			let l:color=l:color[match(l:color, "#"):]
+			if match(l:num_color, "^\\d\\{3}$")==0
+				let l:color=system("kitty @ --to $KITTY_LISTEN_ON get-colors | grep 'color".l:num_color."'")
+				let l:color=l:color[match(l:color, "#"):]
+			elseif match(l:num_color, "^#\\x\\{6}$")==0
+				let l:color=l:num_color
+			end
 			call system('kitty @ --to $KITTY_LISTEN_ON set-colors background="'.l:color.'"')
 			call system("cat ".$HOME."/darkrc/kitty_".&bg.".conf | grep cursor | sed -e 's/ /=/' | xargs -L 1 kitty @ --to $KITTY_LISTEN_ON set-colors")
 		end
