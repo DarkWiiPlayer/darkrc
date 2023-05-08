@@ -501,8 +501,11 @@ nnoremap vil ^vg_
 " --- ! as in ranger ---
 nnoremap ! :!
 
-" --- Find Files ---
-nnoremap <leader>f :find *
+" --- Telescope ---
+nnoremap <leader>f :Telescope find_files<CR>
+nnoremap <leader>ld :Telescope lsp_definitions<CR>
+nnoremap <leader>lr :Telescope lsp_references<CR>
+nnoremap <leader>ll :Telescope lsp_
 
 " --- F5 ---
 nnoremap <F5> :nnoremap <buffer> <F5> :<lt>CR><left><left><left><left>
