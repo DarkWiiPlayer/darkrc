@@ -11,8 +11,8 @@ function! s:kitty_bg_color()
 			elseif match(l:num_color, "^#\\x\\{6}$")==0
 				let l:color=l:num_color
 			end
-			call system('kitty @ --to $KITTY_LISTEN_ON set-colors background="'.l:color.'"')
-			call system("cat ".$HOME."/darkrc/kitty_".&bg.".conf | grep cursor | sed -e 's/ /=/' | xargs -L 1 kitty @ --to $KITTY_LISTEN_ON set-colors")
+			call jobstart('kitty @ --to $KITTY_LISTEN_ON set-colors background="'.l:color.'"')
+			call jobstart("cat ".$HOME."/darkrc/kitty_".&bg.".conf | grep cursor | sed -e 's/ /=/' | xargs -L 1 kitty @ --to $KITTY_LISTEN_ON set-colors")
 		end
 	end
 endfun
