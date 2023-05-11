@@ -9,6 +9,7 @@ end
 use {
 	'neovim/nvim-lspconfig';
 	{ 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } };
+	{ 'nvim-treesitter/nvim-treesitter', { cmd = 'TSUpdate' } };
 	'pigpigyyy/Yuescript-vim';
 	'vim-scripts/openscad.vim';
 	'wbthomason/packer.nvim';
