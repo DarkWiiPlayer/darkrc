@@ -5,23 +5,25 @@ title="SecMount"
 target=$(realpath "$1")
 if ! [ -d "$target" ]
 then
-  echo "Directory '$(basename "$target")' does not exist!"
-  exit 1
+	echo "Directory '$(basename "$target")' does not exist!"
+	exit 1
 fi
 back="$(dirname "$target")/.$(basename "$target")"
 if ! [ -d "$back" ]
 then
-  mkdir -p "$back"
-  passwd=$(zenity --password --title $title)
-  if zenity --question --title $title --text "Save password in login keyring?"
-  then echo -n $passwd | secret-tool store --label "SecureFS $target" application securefs directory "$target"
-  fi
-  echo -n $passwd | securefs c "$back"
+	mkdir -p "$back"
+	passwd=$(zenity --password --title $title)
+	if zenity --question --title $title --text "Save password in login keyring?"
+	then
+		echo 'echo -n $passwd | secret-tool store --label "SecureFS $target" application securefs directory "$target"'
+		echo -n $passwd | secret-tool store --label "SecureFS $target" application securefs directory "$target"
+	fi
+	echo -n $passwd | securefs c "$back"
 else
-  passwd=$(secret-tool lookup application securefs directory "$target")
-  if [ -z "$passwd" ]
-  then passwd=$(zenity --password --title $title)
-  fi
+	passwd=$(secret-tool lookup application securefs directory "$target")
+	if [ -z "$passwd" ]
+	then passwd=$(zenity --password --title $title)
+	fi
 fi
 
 exec echo -n $passwd | securefs mount "$back" "$target"
