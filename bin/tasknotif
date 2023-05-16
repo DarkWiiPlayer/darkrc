@@ -1,0 +1,53 @@
+#!/usr/bin/env lua
+
+local json = require 'cjson'
+local arrr = require 'arrr'
+local inspect = require "inspect"
+
+local function zulu_offset()
+	local current = os.date("*t")
+	current.isdst = false
+	local zulu = os.date("!*t")
+	return os.difftime(os.time(current), os.time(zulu))
+end
+
+local params do
+	local parse = arrr {
+		{ "Time or something", "--time", "-t", "time" };
+	}
+
+	local function validate(args)
+		return args
+	end
+
+	params = validate(parse(arg))
+end
+
+local done = {}
+
+while true do
+	local data = json.decode(io.popen("task export"):read("*a"))
+	for _, task in ipairs(data) do
+		if task.status == "pending" and task.due then
+			local due do
+				local d = {}
+				d.year, d.month, d.day, d.hour, d.min, d.sec
+				= task.due:match("(%d%d%d%d)(%d%d)(%d%d)T(%d%d)(%d%d)(%d%d)Z")
+				d.sec = d.sec + zulu_offset()
+				due = os.time(d)
+			end
+
+			if os.difftime(due, os.time()) < 3600*params.time then
+				if not done[task.uuid] then
+					done[task.uuid] = task
+					print("Notifying:", task.uuid, task.description)
+					os.execute("notify-send 'Task due soon' '"..task.description:gsub([[']], [['"'"']]).."'")
+				end
+			end
+		end
+	end
+
+	if not os.execute("sleep 3") then
+		os.exit()
+	end
+end
