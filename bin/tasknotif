@@ -1,8 +1,8 @@
 #!/usr/bin/env lua
 
-local json = require 'cjson'
-local arrr = require 'arrr'
-local inspect = require "inspect"
+local json = require "cjson"
+local arrr = require "arrr"
+local shapeshift = require "shapeshift"
 
 local function zulu_offset()
 	local current = os.date("*t")
@@ -13,14 +13,16 @@ end
 
 local params do
 	local parse = arrr {
-		{ "Time or something", "--time", "-t", "time" };
+		{ "Time or something", "--minutes", "-m", "number" };
+		{ "Use Zenity to display a window instead of sending a notification", "--zenity", "-z" }
 	}
 
-	local function validate(args)
-		return args
-	end
+	local validate = shapeshift.table {
+		__extra = "keep";
+		minutes = shapeshift.default(30, shapeshift.is.number);
+	}
 
-	params = validate(parse(arg))
+	params = select(2, validate(parse(arg)))
 end
 
 local done = {}
@@ -29,25 +31,37 @@ while true do
 	local data = json.decode(io.popen("task export"):read("*a"))
 	for _, task in ipairs(data) do
 		if task.status == "pending" and task.due then
-			local due do
+			do
 				local d = {}
 				d.year, d.month, d.day, d.hour, d.min, d.sec
 				= task.due:match("(%d%d%d%d)(%d%d)(%d%d)T(%d%d)(%d%d)(%d%d)Z")
 				d.sec = d.sec + zulu_offset()
-				due = os.time(d)
+				task.due = os.time(d)
 			end
 
-			if os.difftime(due, os.time()) < 3600*params.time then
+			-- If anything gets postponed outside of the warning time,
+			-- remove it from the done list
+			if done[task.uuid] then
+				if os.difftime(task.due, os.time()) > 60*params.minutes then
+					done[task.uuid] = nil
+				end
+			end
+
+			if os.difftime(task.due, os.time()) < 60*params.minutes then
 				if not done[task.uuid] then
 					done[task.uuid] = task
 					print("Notifying:", task.uuid, task.description)
-					os.execute("notify-send 'Task due soon' '"..task.description:gsub([[']], [['"'"']]).."'")
+					if params.zenity then
+						os.execute(string.format("zenity --warning --title '%s' --text '%s'", "Task due soon", task.description))
+					else
+						os.execute("notify-send 'Task due soon' '"..task.description:gsub([[']], [['"'"']]).."'")
+					end
 				end
 			end
 		end
 	end
 
-	if not os.execute("sleep 3") then
+	if not os.execute("sleep 5") then
 		os.exit()
 	end
 end
