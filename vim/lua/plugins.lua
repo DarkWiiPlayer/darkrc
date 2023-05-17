@@ -24,6 +24,9 @@ use {
 	'wbthomason/packer.nvim';
 	'ziglang/zig.vim';
 	-- Colour Schemes
+	'AlessandroYorba/Alduin';
 	'DarkWiiPlayer/papercolor-theme';
+	'ayu-theme/ayu-vim';
+	'dracula/vim';
 	'optionalg/Arcadia';
 }
