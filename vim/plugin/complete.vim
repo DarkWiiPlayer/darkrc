@@ -1,15 +1,17 @@
 function s:autocomplete(enabled)
 	if a:enabled
+		let g:autocomplete=1
 		for letter in (split("abcdefghijklmnopqrstuvwxyz", ".\\zs"))
 			exec "inoremap ".letter." ".letter.""
 		endfor
-		let g:autcomplete=1
+		echo "Autocomplete enabled"
 	else
+		unlet g:autocomplete
 		for letter in (split("abcdefghijklmnopqrstuvwxyz", ".\\zs"))
 			exec "iunmap ".letter
 		endfor
-		unlet g:autocomplete
-	end
+		echo "Autocomplete disabled"
+	endif
 endfun
 
 command -nargs=1 Complete call <SID>autocomplete(<q-args> == "on")
