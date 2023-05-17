@@ -1,3 +1,8 @@
 #!/bin/sh
 
-find $1 -type d -name .git | xargs dirname | fzf
+root=$1
+shift 1
+if [ -n "$*" ]
+  then find $root -type d -name .git | xargs dirname | fzf -q "$*"
+  else find $root -type d -name .git | xargs dirname | fzf
+fi
