@@ -8,7 +8,7 @@ alias hello='echo "Hello :)"'
 alias hlcat='highlight -O xterm256'
 alias ll="ls -lAh"
 alias ls="ls --color=auto"
-alias ofw='on_file_write'
+alias ofw='on-file-write'
 alias oneko='oneko -speed 20 -fg "#2f2f2f" -cursor 2 -name neko'
 alias r='ranger'
 alias ranger='source ranger'
