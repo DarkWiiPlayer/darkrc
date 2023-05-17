@@ -21,7 +21,7 @@ alias tmux='tmux -2'
 alias w='watch -t -d -n 1'
 alias wmu='wake-me-up'
 pp() {
-  cd $(find_git_project $HOME/workspace "$@")
+	cd $(find-git-project $HOME/workspace "$@")
 }
 
 # Funny
