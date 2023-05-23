@@ -24,4 +24,6 @@ return function(_, bufnr)
 	vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
 	vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
 	--vim.keymap.set('n', '<leader>f', vim.lsp.buf.formatting, bufopts)
+
+	vim.api.nvim_buf_create_user_command(bufnr, "Format", vim.lsp.buf.format, {})
 end
