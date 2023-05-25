@@ -4,5 +4,5 @@ WINID=$(kitty @ ls | jq ".[0].platform_window_id")
 
 wmctrl -i -r $WINID -b add,maximized_vert,maximized_horz
 xprop -id $(printf "0x%x" $WINID) -f _MOTIF_WM_HINTS 32c -set _MOTIF_WM_HINTS "0x2, 0x0, 0x0, 0x0, 0x0"
-kitty @ --to $KITTY_LISTEN_ON set-font-size 20
-kitty @ --to $KITTY_LISTEN_ON set-spacing padding=40
+kitty @ --to $KITTY_LISTEN_ON set-font-size 14
+kitty @ --to $KITTY_LISTEN_ON set-spacing padding=20
