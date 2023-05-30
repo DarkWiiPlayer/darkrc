@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ -e "$1" ]
+then
+	root=$1
+	shift 1
+else
+	root=$(pwd)
+fi
+
+if [ -n "$*" ]
+then find "$root" -maxdepth 1 -type d | fzf -q "$*"
+else find "$root" -maxdepth 1 -type d | fzf
+fi
