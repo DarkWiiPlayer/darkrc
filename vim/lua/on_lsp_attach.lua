@@ -19,6 +19,13 @@ return function(_, bufnr)
 		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 	end, bufopts)
 
+	vim.api.nvim_buf_create_user_command(bufnr, "LspSetWorkspace", function()
+		for i, workspace in ipairs(vim.lsp.buf.list_workspace_folders()) do
+			vim.lsp.buf.remove_workspace_folder(workspace)
+		end
+		vim.lsp.buf.add_workspace_folder(vim.cmd("pwd"))
+	end, {})
+
 	vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
 	vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, bufopts)
 	vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
