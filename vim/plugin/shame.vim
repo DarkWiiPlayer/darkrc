@@ -503,9 +503,11 @@ nnoremap ! :!
 
 " --- Telescope ---
 nnoremap <leader>f :Telescope find_files<CR>
+nnoremap <leader>b :Telescope buffers<CR>
 nnoremap <leader>ld :Telescope lsp_definitions<CR>
 nnoremap <leader>lr :Telescope lsp_references<CR>
 nnoremap <leader>ll :Telescope lsp_
+nnoremap <leader>C :Telescope colorscheme<CR>
 
 " --- F5 ---
 nnoremap <F5> :nnoremap <buffer> <F5> :<lt>CR><left><left><left><left>
@@ -633,23 +635,23 @@ digraph ss 223
 
 command! HLProgress syntax match Comment /\_.*\ze\n.*\%#/
 
-vnoremap <leader>g :<C-u>call <SID>GrepOperator(visualmode())<CR>
-nnoremap <leader>g :set operatorfunc=<SID>GrepOperator<CR>g@
-function! s:GrepOperator(type)
-	let reg1 = @@
-	if a:type==# 'v'
-		execute "normal! `<v`>y"
-	elseif a:type==# 'char'
-		execute "normal! `[y`]"
-	else
-		return
-	end
-	echom "vimgrep! /\\M".escape(@@, "\\")."/ *"
-	silent! execute "vimgrep /\\M".escape(@@, "\\")."/j *"
-	let @@ = reg1
-	copen
-	set nowrap
-endfunction
+" vnoremap <leader>g :<C-u>call <SID>GrepOperator(visualmode())<CR>
+" nnoremap <leader>g :set operatorfunc=<SID>GrepOperator<CR>g@
+" function! s:GrepOperator(type)
+" 	let reg1 = @@
+" 	if a:type==# 'v'
+" 		execute "normal! `<v`>y"
+" 	elseif a:type==# 'char'
+" 		execute "normal! `[y`]"
+" 	else
+" 		return
+" 	end
+" 	echom "vimgrep! /\\M".escape(@@, "\\")."/ *"
+" 	silent! execute "vimgrep /\\M".escape(@@, "\\")."/j *"
+" 	let @@ = reg1
+" 	copen
+" 	set nowrap
+" endfunction
 
 " Window Height stuff
 command! EqualH call Equal()
