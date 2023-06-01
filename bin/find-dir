@@ -9,6 +9,6 @@ else
 fi
 
 if [ -n "$*" ]
-then find "$root" -maxdepth 1 -type d | fzf -q "$*"
-else find "$root" -maxdepth 1 -type d | fzf
+then find "$root" -maxdepth 1 -type d | fzf -1 -q "$*"
+else find "$root" -maxdepth 1 -type d | fzf -1
 fi

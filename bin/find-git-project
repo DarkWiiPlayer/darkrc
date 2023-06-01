@@ -3,6 +3,6 @@
 root=$1
 shift 1
 if [ -n "$*" ]
-then find $root -type d -name .git | xargs dirname | fzf -q "$*"
-else find $root -type d -name .git | xargs dirname | fzf
+then find $root -type d -name .git | xargs dirname | fzf -1 -q "$*"
+else find $root -type d -name .git | xargs dirname | fzf -1
 fi
