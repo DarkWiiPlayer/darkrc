@@ -18,19 +18,20 @@
 [push]
 	default = matching
 [alias]
-	head = log -1 --show-signature --format=fuller
 	adog = log --all --decorate --oneline --graph --date-order
 	dog = log --decorate --oneline --graph --date-order
-	stat = log --oneline --stat --date-order
+	fadd = "! git status --porcelain | sed 's/^...//' | fzf -m --layout=reverse-list | xargs git add"
+	fixup = "!git commit --patch --no-edit --amend $(git diff --name-only HEAD~1..HEAD)"
+	h = log -1 --format=%h
+	hash = log -1 --format=%H
+	head = log -1 --show-signature --format=fuller
 	identity = "! git config user.name \"$(git config user.$1.name)\"; git config user.email \"$(git config user.$1.email)\"; :"
 	root = rev-parse --show-toplevel
-	fixup = "!git commit --patch --no-edit --amend $(git diff --name-only HEAD~1..HEAD)"
-	ts = timeshift
+	stat = log --oneline --stat --date-order
 	task = "! TASKDATA=$(git rev-parse --show-toplevel)/.git/task task"
 	time = "! TIMEWARRIORDB=$(git rev-parse --show-toplevel)/.git/time timew"
 	track = add --intent-to-add
-	h = log -1 --format=%h
-	hash = log -1 --format=%H
+	ts = timeshift
 [user]
 	useConfigOnly = true
 [user "darkwiiplayer"]
