@@ -38,3 +38,5 @@
 	# Public identity for Github & co. 
 	name = DarkWiiPlayer
 	email = darkwiiplayer@hotmail.com
+[init]
+	defaultBranch = main
