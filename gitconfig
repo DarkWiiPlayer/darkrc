@@ -25,7 +25,7 @@
 	h = log -1 --format=%h
 	hash = log -1 --format=%H
 	head = log -1 --show-signature --format=fuller
-	identity = "! git config user.name \"$(git config user.$1.name)\"; git config user.email \"$(git config user.$1.email)\"; :"
+	identity = "! git config user.name \"$(git config user.$1.name)\"; git config user.email \"$(git config user.$1.email)\"; git config commit.gpgSign \"$(git config user.$1.gpgSign)\"; :"
 	root = rev-parse --show-toplevel
 	stat = log --oneline --stat --date-order
 	task = "! TASKDATA=$(git rev-parse --show-toplevel)/.git/task task"
