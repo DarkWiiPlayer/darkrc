@@ -1,16 +1,28 @@
 #!/bin/sh
 
+ignore="-not -path */.git/*"
+
+while test $# != 0
+do
+	case "$1" in
+		-h) unset ignore ;;
+		--) shift; break ;;
+		*) break ;;
+	esac
+	shift
+done
+
 if [ -f "$1" ]
 then
 	$EDITOR $1
 else
 	if which fzf > /dev/null
 	then
-		file=$(find . -type f | fzf -1 -q "$*")
+		file=$(find . $ignore -type f | fzf -m -1 -q "$*")
 		found=$?
 	elif which dmenu > /dev/null
 	then
-		file=$(find . -type f -name '*'"$1"'*' | sed -e 's/^\.\///' | dmenu -l 20)
+		file=$(find . $ignore -type f -name '*'"$1"'*' | sed -e 's/^\.\///' | dmenu -l 20)
 		found=$?
 	else
 		echo "Found neither fzf nor dmenu"
