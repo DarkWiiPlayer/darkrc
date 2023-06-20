@@ -1,0 +1,5 @@
+#!/usr/bin/env lua
+
+for i, argument in ipairs{...} do
+	print(i, argument)
+end
