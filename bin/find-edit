@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ignore="-not -path */.git/*"
+ignore='-not -path "*/.*/*"'
 
 while test $# != 0
 do
@@ -16,20 +16,10 @@ if [ -f "$1" ]
 then
 	$EDITOR $1
 else
-	if which fzf > /dev/null
+	file=$(sh -c "find . $ignore -type f" | fzf -m -1 -q "$*")
+	if [ "$?" -eq 0 ]
 	then
-		file=$(find . $ignore -type f | fzf -m -1 -q "$*")
-		found=$?
-	elif which dmenu > /dev/null
-	then
-		file=$(find . $ignore -type f -name '*'"$1"'*' | sed -e 's/^\.\///' | dmenu -l 20)
-		found=$?
-	else
-		echo "Found neither fzf nor dmenu"
+		echo "$file" | xargs -d '\n' $EDITOR
 	fi
 fi
 
-if [ "$found" -eq 0 ]
-then
-	echo "$file" | xargs -d '\n' $EDITOR
-fi
