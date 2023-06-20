@@ -564,6 +564,7 @@ vnoremap > >gv
 nnoremap <S-l> :L<cr>
 noremap <space> :
 nnoremap <C-space> @:
+inoremap <C-space> 
 noremap Q @q
 nnoremap <S-space> gQ
 " This part is just supposed to make saving as inconvenient as possible
