@@ -1,3 +1,4 @@
+alias gfc='git fadd && git commit'
 alias amend='git commit --amend'
 alias bat="batcat"
 alias co='checkout'
