@@ -1,4 +1,6 @@
 " For my patched version of the papercolor theme
+
+set termguicolors
 let g:only_generic_hl=1
 
 function! s:kitty_bg_color()
