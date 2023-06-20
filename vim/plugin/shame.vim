@@ -502,10 +502,14 @@ nnoremap vil ^vg_
 nnoremap ! :!
 
 " --- Telescope ---
+nnoremap <leader>! :Telescope diagnostics<CR>
+nnoremap <leader>? :Telescope keymaps<CR>
 nnoremap <leader>f :Telescope find_files<CR>
 nnoremap <leader>b :Telescope buffers<CR>
 nnoremap <leader>ld :Telescope lsp_definitions<CR>
 nnoremap <leader>lr :Telescope lsp_references<CR>
+nnoremap <leader>ls :Telescope lsp_document_symbols<CR>
+nnoremap <leader>lS :Telescope lsp_workspace_symbols<CR>
 nnoremap <leader>ll :Telescope lsp_
 nnoremap <leader>C :Telescope colorscheme<CR>
 
@@ -601,7 +605,6 @@ com! Trailing let _s=@/ | %s/\v(\\@<!\s)+$//ge | let @/=_s
 nnoremap <C-d> :copy .<CR>
 vnoremap <C-d> :copy '><CR>
 nnoremap dcx 0d$
-nnoremap <leader>: :let @* = @:<CR>
 nnoremap <expr> R ":%s/\\<\\(".expand("<cword>")."\\)\\>/"
 vnoremap <expr> R ":<C-u>%s/".VisualSelection()."/"
 " Put in new line with indentation
