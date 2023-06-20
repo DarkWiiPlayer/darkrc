@@ -28,5 +28,12 @@ use {
 	'DarkWiiPlayer/papercolor-theme';
 	'ayu-theme/ayu-vim';
 	'dracula/vim';
+	'jaredgorski/fogbell.vim';
 	'optionalg/Arcadia';
+	'rakr/vim-two-firewatch';
+	'rebelot/kanagawa.nvim';
+	'sainnhe/sonokai';
+	'shaunsingh/nord.nvim';
+	'sts10/vim-pink-moon';
+	'whatyouhide/vim-gotham';
 }
