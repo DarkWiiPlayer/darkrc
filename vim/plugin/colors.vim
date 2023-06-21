@@ -1,6 +1,3 @@
-" For my patched version of the papercolor theme
-
-set termguicolors
 let g:only_generic_hl=1
 
 function! s:kitty_bg_color()
@@ -55,16 +52,6 @@ com! Light silent! let g:colors_name_bak = g:colors_name
 	\ | silent! exec "colorscheme ".g:colors_name_bak
 	\ | silent! delc PaperColor
 
-" Commands for some colorschemes I often use
-com! Ayu colorscheme ayu
-com! Arcadia colorscheme arcadia
-com! Alduin colorscheme alduin
-com! Moria colorscheme moria
-com! Molokai colorscheme molokai
-com! Iceberg colorscheme iceberg
-com! Papercolor colorscheme PaperColor | delc PaperColor
-com! Firewatch colorscheme two-firewatch
-
 if filereadable($HOME."/.dark")
 	Dark
 else
@@ -72,5 +59,6 @@ else
 end
 
 if $TERM=="xterm-kitty" || match($TERM, '-256color$')
-	Arcadia
+	set termguicolors
+	colorscheme sierra
 end
