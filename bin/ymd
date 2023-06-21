@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ -z "$*" ]
+then
+  date +"%Y%m%d"
+else
+  date +"%Y%m%d" --date "$*"
+fi
