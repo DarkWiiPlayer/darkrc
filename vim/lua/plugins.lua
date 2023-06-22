@@ -25,6 +25,7 @@ use {
 	'ziglang/zig.vim';
 	-- Colour Schemes
 	'AlessandroYorba/Alduin';
+	'AlessandroYorba/Sierra';
 	'DarkWiiPlayer/papercolor-theme';
 	'ayu-theme/ayu-vim';
 	'dracula/vim';
