@@ -486,6 +486,8 @@ command! -nargs=? Tempfile exec 'new '.tempname()  | set filetype=<args> | au Bu
 "        │ └──────────────────────┴─┤
 "        └──────────────────────────┘
 
+nnoremap <leader><space> :Neotree<CR>
+
 onoremap al :<C-U>normal! 0vg$h<CR>
 onoremap il :<C-U>normal! ^vg_<CR>
 
