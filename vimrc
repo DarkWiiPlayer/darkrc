@@ -9,6 +9,13 @@ if has("nvim")
 	lua pcall(require, "plugins")
 end
 
+set nocompatible
+
 au VimEnter * TSEnable highlight
 au VimEnter * TSEnable incremental_selection
 au VimEnter * TSEnable indent
+
+set foldlevel=99
+set foldlevelstart=99
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()

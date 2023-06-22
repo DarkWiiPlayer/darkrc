@@ -6,9 +6,6 @@
 
 " Sessions
 set sessionoptions=blank,buffers,curdir,folds,help,options,tabpages
-set foldmethod=marker
-
-set nocompatible
 
 " some conditional configs
 if has('mouse')
