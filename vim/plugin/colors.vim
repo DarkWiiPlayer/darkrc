@@ -60,5 +60,9 @@ end
 
 if $TERM=="xterm-kitty" || match($TERM, '-256color$')
 	set termguicolors
-	colorscheme sierra
+	if &bg=="dark"
+		colorscheme sierra
+	else
+		colorscheme PaperColor
+	end
 end
