@@ -7,7 +7,7 @@ local function use(plugins)
 end
 
 use {
-	'neovim/nvim-lspconfig';
+	'wbthomason/packer.nvim';
 	{ 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } };
 	{ 'nvim-treesitter/nvim-treesitter', { cmd = ':TSUpdate' } };
 	{ 'nvim-neo-tree/neo-tree.nvim',
@@ -16,7 +16,8 @@ use {
 			"nvim-lua/plenary.nvim",
 			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 			"MunifTanjim/nui.nvim",
-		}
+		};
+		config = require 'neo-tree-setup';
 	};
 	{ 'jinh0/eyeliner.nvim', config = function()
 		require('eyeliner').setup {
@@ -25,9 +26,9 @@ use {
 		}
 	end};
 	'leafo/moonscript-vim';
+	'neovim/nvim-lspconfig';
 	'pigpigyyy/Yuescript-vim';
 	'vim-scripts/openscad.vim';
-	'wbthomason/packer.nvim';
 	'ziglang/zig.vim';
 	-- Colour Schemes
 	'AlessandroYorba/Alduin';
