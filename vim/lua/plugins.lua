@@ -1,4 +1,4 @@
-function use(plugins)
+local function use(plugins)
 	return require('packer').startup(function(use)
 		for _, plugin in ipairs(plugins) do
 			use(plugin)
@@ -9,7 +9,7 @@ end
 use {
 	'neovim/nvim-lspconfig';
 	{ 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } };
-	{ 'nvim-treesitter/nvim-treesitter', { cmd = 'TSUpdate' } };
+	{ 'nvim-treesitter/nvim-treesitter', { cmd = ':TSUpdate' } };
 	{ 'nvim-neo-tree/neo-tree.nvim',
 		branch = "v2.x",
 		requires = {
@@ -17,7 +17,13 @@ use {
 			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 			"MunifTanjim/nui.nvim",
 		}
-	},
+	};
+	{ 'jinh0/eyeliner.nvim', config = function()
+		require('eyeliner').setup {
+			highlight_on_key = true;
+			dim = true;
+		}
+	end};
 	'leafo/moonscript-vim';
 	'pigpigyyy/Yuescript-vim';
 	'vim-scripts/openscad.vim';
