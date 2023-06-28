@@ -2,21 +2,22 @@
 
 ignore='-not -path "*/.*/*"'
 
+root="."
 while test $# != 0
 do
 	case "$1" in
-		-h) unset ignore ;;
+		-h) unset ignore; shift ;;
+		-r) root="$2"; shift 2;;
 		--) shift; break ;;
 		*) break ;;
 	esac
-	shift
 done
 
 if [ -f "$1" ]
 then
 	$EDITOR $1
 else
-	file=$(sh -c "find . $ignore -type f" | fzf -m -1 -q "$*")
+	file=$(sh -c "find $root $ignore -type f" | fzf -m -1 -q "$*")
 	if [ "$?" -eq 0 ]
 	then
 		echo "$file" | xargs -d '\n' $EDITOR
