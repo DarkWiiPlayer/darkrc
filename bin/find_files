@@ -1,9 +1,16 @@
 #!/usr/bin/env lua
 
+local arrr = require 'arrr'
+local params = arrr {
+	{ "Sets the root to search in", "--root", "-r", 'root' };
+}{...}
+
 local buf = {}
 
-for _, argument in ipairs{...} do
+local root = params.root or "."
+
+for _, argument in ipairs(params) do
 	table.insert(buf, "-name '"..argument:gsub("'", [['"'"']]).."'")
 end
 
-os.execute("find . " .. table.concat(buf, " -or "))
+os.execute("find "..root.." " .. table.concat(buf, " -or "))
