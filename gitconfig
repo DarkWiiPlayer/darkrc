@@ -32,6 +32,7 @@
 	time = "! TIMEWARRIORDB=$(git rev-parse --show-toplevel)/.git/time timew"
 	track = add --intent-to-add
 	ts = timeshift
+	reword = commit --amend
 [user]
 	useConfigOnly = true
 [user "darkwiiplayer"]
