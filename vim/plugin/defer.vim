@@ -23,6 +23,7 @@ function Defer(command, ...)
 		call jobstart(a:command, {
 			\ "out_io": "pipe",
 			\ "on_stdout": { pipe, text -> extend(l:buffer, text) },
+			\ "on_stderr": { pipe, text -> extend(l:buffer, text) },
 			\ "on_exit": { id, code -> <SID>exit(code, l:buffer, l:start, strftime("%s"), l:callbacks) }
 		\})
 	else
@@ -52,6 +53,11 @@ function s:echo(message, ...)
 	end
 endfun
 
+function s:scratch(result)
+	new
+	call nvim_buf_set_lines(0, 0, nvim_buf_line_count(0), 0, a:result["output"])
+endfun
+
 function s:notify(message)
 	call Defer('notify-send "Vim" "'.a:message.'"', { b -> 0 })
 endfun
@@ -59,4 +65,5 @@ endfun
 comm -complete=shellcmd -nargs=* Defer call Defer(s:expand(<q-args>))
 comm -complete=shellcmd -nargs=* DeferEcho call Defer(s:expand(<q-args>), { result -> <SID>echo("Deferred job completed (".(result['tend']-result['tstart'])."s): ".s:expand(<q-args>)) }, { result -> <SID>echo("Deferred job errored with ".result['code']." (".(result['tend']-result['tstart'])."s): ".s:expand(<q-args>), 'WarningMsg') })
 comm -complete=shellcmd -nargs=* DeferNotify call Defer(s:expand(<q-args>), { result -> <SID>notify("Deferred job completed (".(result['tend']-result['tstart'])."s):\n$ ".s:expand(<q-args>)) }, { result -> <SID>notify("Deferred job errored with ".result['code']." (".(result['tend']-result['tstart'])."s):\n$ ".s:expand(<q-args>)) })
+comm -complete=shellcmd -nargs=* DeferScratch call Defer(s:expand(<q-args>), function("<SID>scratch"))
 comm -complete=shellcmd -count=0 -nargs=* DeferBuffer call Defer(s:expand(<q-args>), { result -> <SID>replace(<count>, result['output']) })
