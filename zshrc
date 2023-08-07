@@ -62,6 +62,7 @@ prompt() {
 }
 prompt $PROMPT_set
 
+source smartprompt
 chpwd() {
 	source smartprompt
 }
