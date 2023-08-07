@@ -18,7 +18,22 @@ setopt hist_ignore_space
 
 bindkey -v
 
-prompt='%F{blue}$(if [ "$RANGER_LEVEL" -gt 0 ]; then echo -ne "R."; fi)%(?.%F{green}.%F{red})λ%f '
+timew_prompt() {
+	if [ $(timew get dom.active) -eq "1" ]
+	then echo '\x1b[31m●\x1b[0m '
+	fi
+}
+
+ranger_prompt() {
+	if [ -e "$RANGER_LEVEL" ]
+	then
+		for num in $(seq "$RANGER_LEVEL")
+		do echo -n »
+		done
+	fi
+}
+
+prompt='%F{red}$(timew_prompt)%(?.%F{green}.%F{red})λ%F{blue}$(ranger_prompt)%f '
 export PROMPT_full='%B%F{magenta}%n%F{blue}@%F{magenta}%m%b %F{magenta}%~
 '"$prompt"
 export PROMPT_gitlong='$(gitprompt && echo -ne " ")%F$(git log --oneline --no-decorate -1 2>/dev/null)
