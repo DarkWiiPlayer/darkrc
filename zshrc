@@ -18,17 +18,27 @@ setopt hist_ignore_space
 
 bindkey -v
 
+which task > /dev/null && which jq > /dev/null
+run_task_prompt=$?
 task_prompt() {
-	tasks="$(task +ACTIVE export | jq -r '.[].description' | sed 's/^/‣ /')"
-	if [ -n "$tasks" ]
+	if [ -z $run_task_prompt ]
 	then
-		echo "\x1b[30m$tasks\n\x1b[0m"
+		tasks="$(task +ACTIVE export | jq -r '.[].description' | sed 's/^/‣ /')"
+		if [ -n "$tasks" ]
+		then
+			echo "\x1b[30m$tasks\n\x1b[0m"
+		fi
 	fi
 }
 
+which timew > /dev/null
+run_timew_prompt=$?
 timew_prompt() {
-	if [ $(timew get dom.active) -eq "1" ]
-	then echo '\x1b[31m●\x1b[0m '
+	if [ -z $run_timew_prompt ]
+	then
+		if [ $(timew get dom.active) -eq "1" ]
+		then echo '\x1b[31m●\x1b[0m '
+		fi
 	fi
 }
 
