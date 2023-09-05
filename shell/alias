@@ -43,7 +43,7 @@ alias qed='[ $RANDOM -ge $((32767 / 100 * 10)) ] && echo Quod Erat Demonstrandum
 alias shit='git'
 alias yeet='rm -r'
 
-mg() {
+mcd() {
 	mkdir -p "$@"
 	cd "$@"
 }
