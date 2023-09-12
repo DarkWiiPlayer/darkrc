@@ -17,7 +17,7 @@ if [ -f "$1" ]
 then
 	$EDITOR $1
 else
-	file=$(sh -c "find $root $ignore -type f" | fzf -m -1 -q "$*")
+	file=$(sh -c "find $root $ignore -type f" | fzf -i -m -1 -q "$*")
 	if [ "$?" -eq 0 ]
 	then
 		echo "$file" | xargs -d '\n' $EDITOR
