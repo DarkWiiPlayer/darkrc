@@ -21,7 +21,7 @@ bindkey -v
 which task > /dev/null && which jq > /dev/null
 run_task_prompt=$?
 task_prompt() {
-	if [ -z $run_task_prompt ]
+	if [ $run_task_prompt -eq 0 ]
 	then
 		tasks="$(task +ACTIVE export | jq -r '.[].description' | sed 's/^/‣ /')"
 		if [ -n "$tasks" ]
@@ -34,7 +34,7 @@ task_prompt() {
 which timew > /dev/null
 run_timew_prompt=$?
 timew_prompt() {
-	if [ -z $run_timew_prompt ]
+	if [ $run_timew_prompt -eq 0 ]
 	then
 		if [ $(timew get dom.active) -eq "1" ]
 		then echo '\x1b[31m●\x1b[0m '
