@@ -26,7 +26,7 @@ task_prompt() {
 		tasks="$(task +ACTIVE export | jq -r '.[].description' | sed 's/^/‣ /')"
 		if [ -n "$tasks" ]
 		then
-			echo "\x1b[30m$tasks\n\x1b[0m"
+			echo "%F{black}$tasks\n%{%}"
 		fi
 	fi
 }
@@ -37,7 +37,7 @@ timew_prompt() {
 	if [ $run_timew_prompt -eq 0 ]
 	then
 		if [ $(timew get dom.active) -eq "1" ]
-		then echo '\x1b[31m●\x1b[0m '
+		then echo '%F{red}● '
 		fi
 	fi
 }
@@ -52,7 +52,7 @@ ranger_prompt() {
 }
 
 prompt='$(task_prompt)%(?.%F{green}.%F{red})λ%F{blue}$(ranger_prompt)%f '
-export PROMPT_full='%F{red}$(timew_prompt)%B%F{magenta}%n%F{blue}@%F{magenta}%m%b %F{magenta}%~
+export PROMPT_full='$(timew_prompt)%B%F{magenta}%n%F{blue}@%F{magenta}%m%b %F{magenta}%~
 '"$prompt"
 export PROMPT_gitlong='%F{red}$(timew_prompt)$(gitprompt && echo -ne " ")%F$(git log --oneline --no-decorate -1 2>/dev/null)
 %F{cyan}$(gitpath)'"$prompt"
