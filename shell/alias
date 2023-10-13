@@ -24,17 +24,19 @@ pp() {
 }
 
 gfc() {
+	command="fadd"
 	unset patch
 	while test $# != 0
 	do
 		case "$1" in
 			--patch | -p) patch="--patch" ;;
+			--untracked | -u) command="faddall" ;;
 			--) shift; break ;;
 			*) break ;;
 		esac
 		shift
 	done
-	git fadd $patch && git commit $@
+	git $command $patch && git commit $@
 }
 
 # Funny
