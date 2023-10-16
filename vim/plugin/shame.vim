@@ -529,6 +529,8 @@ exec 'noremap gk '.g:jmp_dist.'k'
 
 nnoremap <C-k> ddkP
 nnoremap <C-j> ddp
+vnoremap <C-k> :m '<-2<CR>gv
+vnoremap <C-j> :m '>+1<CR>gv
 nnoremap <C-h> b
 nnoremap <C-l> e
 
