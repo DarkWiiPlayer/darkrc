@@ -1,0 +1,7 @@
+#!/bin/sh
+
+for sheet in $(in2csv --names "$1")
+do
+	basename=$(echo $1 | sed -e 's/\.[^\.]\+$//')
+	in2csv --sheet "$sheet" "$1" | csvformat -D \; > "$basename-$sheet.csv"
+done

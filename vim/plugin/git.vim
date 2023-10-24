@@ -265,11 +265,6 @@ command! GitFirst call <sid>git_first() | call s:git_info()
 command! GitLast call <sid>git_last() | call s:git_info()
 command! GitInfo call <sid>git_info()
 command! -nargs=1 GitCheckout call <sid>file_at_revision(<f-args>)
-command! -nargs=? GitCompare try
-		\| call s:gitroot() | call <sid>git_diff(<f-args>)
-		\| catch
-		\| echo 'Not a git repo!' 
-		\| endtry
 command! GitRoot call <SID>cd_git_root('%')
 command! GitOrig exec 'e '.b:git_original_file
 command! ShowGitRoot try
