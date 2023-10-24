@@ -271,6 +271,6 @@ command! ShowGitRoot try
 		\| echo <sid>gitroot() 
 		\| catch | echo 'Not a git repository'
 		\| endtry
-command! GitDiff diffthis | vert bel split | exec "silent GitPrev" | diffthis
+command! GitDiff set nolist | diffthis | vert bel split | exec "silent GitPrev" | set nolist | diffthis
 
 augroup END
