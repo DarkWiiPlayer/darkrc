@@ -1,5 +1,3 @@
-local opts = { noremap=true, silent=true }
-
 return function(_, bufnr)
 	-- Enable completion triggered by <c-x><c-o>
 	vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -20,7 +18,7 @@ return function(_, bufnr)
 	end, bufopts)
 
 	vim.api.nvim_buf_create_user_command(bufnr, "LspSetWorkspace", function()
-		for i, workspace in ipairs(vim.lsp.buf.list_workspace_folders()) do
+		for _, workspace in ipairs(vim.lsp.buf.list_workspace_folders()) do
 			vim.lsp.buf.remove_workspace_folder(workspace)
 		end
 		vim.lsp.buf.add_workspace_folder(vim.cmd("pwd"))
@@ -29,7 +27,11 @@ return function(_, bufnr)
 	vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
 	vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, bufopts)
 	vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
-	vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+	if require("telescope") then
+		vim.keymap.set('n', 'gr', function() vim.cmd("Telescope lsp_references") end, bufopts)
+	else
+		vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+	end
 	--vim.keymap.set('n', '<leader>f', vim.lsp.buf.formatting, bufopts)
 
 	vim.api.nvim_buf_create_user_command(bufnr, "Format", vim.lsp.buf.format, {})
