@@ -6,7 +6,7 @@ set runtimepath=$VIMRUNTIME,$HOME/.config/nvim,$HOME/.vim
 let &rtp=&rtp.','.expand('<sfile>:p:h').'/vim'
 
 if has("nvim")
-	lua pcall(require, "plugins")
+	lua require("pack/setup")
 end
 
 set nocompatible

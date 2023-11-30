@@ -1,7 +1,10 @@
 local function use(plugins)
 	return require('packer').startup(function(use)
 		for _, plugin in ipairs(plugins) do
-			use(plugin)
+			local success, message = pcall(use, plugin)
+			if not success then
+				print(message)
+			end
 		end
 	end)
 end
@@ -17,7 +20,7 @@ use {
 			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 			"MunifTanjim/nui.nvim",
 		};
-		config = require 'neo-tree-setup';
+		config = require 'pack.setup.neotree';
 	};
 	{ 'jinh0/eyeliner.nvim', config = function()
 		require('eyeliner').setup {
@@ -30,7 +33,7 @@ use {
 	'pigpigyyy/Yuescript-vim';
 	'vim-scripts/openscad.vim';
 	'ziglang/zig.vim';
-	-- Colour Schemes
+--	Colour Schemes
 	'AlessandroYorba/Alduin';
 	'AlessandroYorba/Sierra';
 	'DarkWiiPlayer/papercolor-theme';
