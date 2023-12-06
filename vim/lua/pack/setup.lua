@@ -28,8 +28,10 @@ use {
 		end
 	};
 	{
-		"simrat39/symbols-outline.nvim", config = function()
-			require("symbols-outline").setup()
+		"hedyhli/outline.nvim",
+		config = function()
+			vim.keymap.set("n", "<leader>o", "<cmd>OutlineOpen<CR><cmd>OutlineFocus<CR>", { desc = "Toggle Outline" })
+			require("outline").setup()
 		end
 	};
 	{ 'jinh0/eyeliner.nvim', config = function()
