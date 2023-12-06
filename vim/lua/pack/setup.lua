@@ -22,6 +22,11 @@ use {
 		};
 		config = require 'pack.setup.neotree';
 	};
+	{
+		"stevearc/aerial.nvim", config = function()
+			require("aerial").setup()
+		end
+	};
 	{ 'jinh0/eyeliner.nvim', config = function()
 		require('eyeliner').setup {
 			highlight_on_key = true;
