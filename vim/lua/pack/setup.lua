@@ -27,6 +27,11 @@ use {
 			require("aerial").setup()
 		end
 	};
+	{
+		"simrat39/symbols-outline.nvim", config = function()
+			require("symbols-outline").setup()
+		end
+	};
 	{ 'jinh0/eyeliner.nvim', config = function()
 		require('eyeliner').setup {
 			highlight_on_key = true;
