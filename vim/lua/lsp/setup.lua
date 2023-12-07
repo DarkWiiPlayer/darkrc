@@ -1,20 +1,15 @@
 local config = require 'lspconfig'
 
-config.lua_ls.setup {
-	on_attach = require 'lsp.attach'
-}
-config.zls.setup {
-	on_attach = require 'lsp.attach'
-}
-config.standardrb.setup {
-	on_attach = require 'lsp.attach'
-}
-config.clangd.setup {
-	on_attach = require 'lsp.attach'
-}
-config.solargraph.setup {
-	on_attach = require 'lsp.attach'
-}
-config.denols.setup {
-	on_attach = require 'lsp.attach'
-}
+local default = { on_attach = require 'lsp.attach' }
+for _, language in ipairs {
+	"html",
+	"cssls",
+	"clangd",
+	"denols",
+	"lua_ls",
+	"solargraph",
+	"standardrb",
+	"zls",
+} do
+	config[language].setup(default)
+end
