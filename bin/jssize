@@ -1,0 +1,7 @@
+#!/bin/sh
+
+curl https://cdn.jsdelivr.net/gh/"$1" \
+	| tail +7 \
+	| head -n -1 \
+	| gzip \
+	| wc --bytes
