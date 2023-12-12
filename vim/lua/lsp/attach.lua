@@ -34,5 +34,7 @@ return function(_, bufnr)
 	end
 	--vim.keymap.set('n', '<leader>f', vim.lsp.buf.formatting, bufopts)
 
-	vim.api.nvim_buf_create_user_command(bufnr, "Format", vim.lsp.buf.format, {})
+	vim.api.nvim_buf_create_user_command(bufnr, "Format", function()
+		vim.lsp.buf.format()
+	end, {})
 end
