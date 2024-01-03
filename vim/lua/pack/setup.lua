@@ -49,6 +49,7 @@ use {
 	'AlessandroYorba/Alduin';
 	'AlessandroYorba/Sierra';
 	'DarkWiiPlayer/papercolor-theme';
+	'EdenEast/nightfox.nvim';
 	'axvr/photon.vim';
 	'ayu-theme/ayu-vim';
 	'dracula/vim';
