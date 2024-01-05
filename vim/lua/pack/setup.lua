@@ -53,7 +53,7 @@ use {
 	'ayu-theme/ayu-vim';
 	'dracula/vim';
 	'jaredgorski/fogbell.vim';
-	'kvrohit/mellow';
+	'kvrohit/mellow.nvim';
 	'optionalg/Arcadia';
 	'rakr/vim-two-firewatch';
 	'rebelot/kanagawa.nvim';
