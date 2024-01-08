@@ -35,11 +35,23 @@ use {
 		end
 	};
 	{ 'jinh0/eyeliner.nvim', config = function()
-		require('eyeliner').setup {
-			highlight_on_key = true;
-			dim = true;
-		}
-	end};
+			require('eyeliner').setup {
+				highlight_on_key = true;
+				dim = true;
+			}
+		end
+	};
+	{
+		'chentoast/marks.nvim';
+		config = function()
+			require'marks'.setup {
+				sign_priority = { lower=10, upper=15, builtin=8, bookmark=20 },
+				excluded_filetypes = {},
+				excluded_buftypes = {},
+				mappings = {}
+			}
+		end
+	};
 	'leafo/moonscript-vim';
 	'neovim/nvim-lspconfig';
 	'pigpigyyy/Yuescript-vim';
