@@ -52,6 +52,7 @@ use {
 			}
 		end
 	};
+	'folke/twilight.nvim';
 	'leafo/moonscript-vim';
 	'neovim/nvim-lspconfig';
 	'pigpigyyy/Yuescript-vim';
