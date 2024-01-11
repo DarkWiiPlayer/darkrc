@@ -1,5 +1,8 @@
 return function()
 	require('neo-tree').setup {
+		window = {
+			width = 25;
+		};
 		filesystem = {
 			use_libuv_file_watcher = true;
 		};

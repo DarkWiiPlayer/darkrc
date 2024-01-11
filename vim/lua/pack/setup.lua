@@ -28,11 +28,7 @@ use {
 		end
 	};
 	{
-		"hedyhli/outline.nvim",
-		config = function()
-			vim.keymap.set("n", "<leader>o", "<cmd>OutlineOpen<CR><cmd>OutlineFocus<CR>", { desc = "Toggle Outline" })
-			require("outline").setup()
-		end
+		"hedyhli/outline.nvim", config = require 'pack.setup.outline';
 	};
 	{ 'jinh0/eyeliner.nvim', config = function()
 			require('eyeliner').setup {
