@@ -118,14 +118,6 @@ abbrev eshrug ¯\_(ツ)_/¯
 
 " === GENERAL UTILITIES ===
 
-" --- TEXT SNIPPETS ---
-
-" -- Global --
-
-if !exists('s:snippets')
-	let s:snippets = {}
-end
-
 " Runs a sequence of commands asynchronously
 function! Async(array, ...)
 	if len(a:array) > 0
@@ -136,57 +128,6 @@ function! Async(array, ...)
 		end
 	end
 endfun
-
-function! s:make_snippet(name, lines)
-	let s:snippets[a:name] = a:lines
-endfun
-
-function! s:make_snippet_range(name, line_start, line_end)
-	call s:make_snippet(a:name, getline(a:line_start, a:line_end))
-endfun
-
-function! s:insert_snippet(name)
-	for line in get(s:snippets, a:name, [])
-		put =line
-	endfor
-endfun
-
-function! MkSnip(name, str)
-	call s:make_snippet(a:name, split(a:str, '\n'))
-endfun
-
-command! -nargs=1 Snippet call s:insert_snippet(<f-args>)
-command! -range -nargs=1 MkSnippet call s:make_snippet_range(<f-args>, <line1>, <line2>)
-
-" -- Filetype --
-
-if !exists('s:ft_snippets')
-	let s:ft_snippets = {}
-end
-
-function! s:make_ft_snippet(ft, name, lines)
-	if !get(s:ft_snippets, a:ft, 0)
-		let s:ft_snippets[a:ft] = {}
-	end
-	let s:ft_snippets[a:ft][a:name] = a:lines
-endfun
-
-function! s:make_ft_snippet_range(ft, name, line_start, line_end)
-	call s:make_ft_snippet(a:ft, a:name, getline(a:line_start, a:line_end))
-endfun
-
-function! s:insert_ft_snippet(ft, name)
-	for line in get(get(s:ft_snippets, a:ft, {}), a:name, [])
-		put =line
-	endfor
-endfun
-
-function! MkFTSnip(ft, name, str)
-	call s:make_ft_snippet(a:ft, a:name, split(a:str, '\n'))
-endfun
-
-command! -nargs=1 FTSnippet call s:insert_ft_snippet(&filetype, <f-args>)
-command! -range -nargs=1 FTMkSnippet call s:make_ft_snippet_range(&filetype, <f-args>, <line1>, <line2>)
 
 function! RangeChooser()
 	let temp = tempname()
