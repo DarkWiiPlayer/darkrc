@@ -16,6 +16,8 @@ setopt hist_find_no_dups
 setopt prompt_subst
 setopt hist_ignore_space
 
+autoload -U compinit; compinit
+
 bindkey -v
 
 which task > /dev/null && which jq > /dev/null
