@@ -5,7 +5,7 @@ for _, language in ipairs {
 	"html",
 	"cssls",
 	"clangd",
-	"denols",
+	"tsserver",
 	"lua_ls",
 	"solargraph",
 	"standardrb",
