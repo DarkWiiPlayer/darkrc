@@ -1,6 +1,7 @@
 alias bat="batcat"
 alias co='checkout'
 alias e="find-edit"
+alias fcd="cd \$(find . -type d | fzf)"
 alias ff="find_files"
 alias getclip='xclip -selection clipboard -o'
 alias hello='echo "Hello :)"'
