@@ -4,6 +4,7 @@
 " Set up the runtime path
 set runtimepath=$VIMRUNTIME,$HOME/.config/nvim,$HOME/.vim
 let &rtp=&rtp.','.expand('<sfile>:p:h').'/vim'
+let &rtp=&rtp.','.expand('<sfile>:p:h').'/vim/pack/*/start/*'
 
 if has("nvim")
 	lua require("pack/setup")
