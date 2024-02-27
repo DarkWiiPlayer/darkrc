@@ -1,7 +1,7 @@
 return function()
 	require('neo-tree').setup {
 		window = {
-			position = "right";
+			position = "left";
 			width = 25;
 		};
 		filesystem = {
