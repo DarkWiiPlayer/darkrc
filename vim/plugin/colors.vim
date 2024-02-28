@@ -1,8 +1,14 @@
 let g:only_generic_hl=1
 
-function! s:kitty_bg_color()
+function! s:wez_color(value)
+	let g:__color = a:value
+	lua vim.g.__color = vim.base64.encode(vim.g.__color)
+	call chansend(v:stderr, "\x1b]1337;SetUserVar=bgcolor=".g:__color."\x07")
+endfun
+
+function! s:term_bg_color()
+	let l:num_color=synIDattr(hlID("normal"), "bg")
 	if $TERM=="xterm-kitty" || $KITTY_LISTEN_ON != ""
-		let l:num_color=synIDattr(hlID("normal"), "bg")
 		if l:num_color!=""
 			if match(l:num_color, "^\\d\\{3}$")==0
 				let l:color=system("kitty @ --to $KITTY_LISTEN_ON get-colors | grep 'color".l:num_color."'")
@@ -13,27 +19,30 @@ function! s:kitty_bg_color()
 			call jobstart('kitty @ --to $KITTY_LISTEN_ON set-colors background="'.l:color.'"')
 			call jobstart("cat ".$HOME."/darkrc/kitty_".&bg.".conf | grep cursor | sed -e 's/ /=/' | xargs -L 1 kitty @ --to $KITTY_LISTEN_ON set-colors")
 		end
+	elseif $TERM_PROGRAM=="WezTerm"
+		call <SID>wez_color(l:num_color)
 	end
 endfun
 
-augroup kitty
-	au ColorScheme * call <SID>kitty_bg_color()
+augroup termcolors
+	au ColorScheme * call <SID>term_bg_color()
 augroup END
 
-function! s:kitty_bg_color_reset()
-	if filereadable($HOME."/.dark")
-		let l:file = $HOME."/darkrc/kitty_dark.conf"
-	else
-		let l:file = $HOME."/darkrc/kitty_light.conf"
+function! s:term_bg_color_reset()
+	if $TERM=="xterm-kitty" || $KITTY_LISTEN_ON != ""
+		if filereadable($HOME."/.dark")
+			let l:file = $HOME."/darkrc/kitty_dark.conf"
+		else
+			let l:file = $HOME."/darkrc/kitty_light.conf"
+		end
+		call system("kitty @ --to ".$KITTY_LISTEN_ON." set-colors ".l:file)
+	elseif $TERM_PROGRAM=="WezTerm"
 	end
-	call system("kitty @ --to ".$KITTY_LISTEN_ON." set-colors ".l:file)
 endfun
 
-if $TERM=="xterm-kitty" || $KITTY_LISTEN_ON != ""
-	augroup kitty
-		au VimLeavePre * call <SID>kitty_bg_color_reset()
-	augroup END
-end
+augroup termcolors
+	au VimLeavePre * call <SID>term_bg_color_reset()
+augroup END
 
 com! Dark silent! let g:colors_name_bak = g:colors_name
 	\ | let g:ayucolor="dark"
