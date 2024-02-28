@@ -20,6 +20,15 @@ alias setclip='xclip -selection c'
 alias tmux='tmux -2'
 alias w='watch -t -d -n 1'
 alias wmu='wake-me-up'
+if [ "$TERM_PROGRAM" = "WezTerm" ]
+
+then wezvar() {
+	name="$1"; shift
+	value="$*"
+	printf "\033]1337;SetUserVar=%s=%s\007" "$name" $(echo -n "$value" | base64)
+}
+fi
+
 pp() {
 	cd $(find-git-project $HOME/workspace "$@")
 }
