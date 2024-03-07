@@ -20,7 +20,7 @@ use {
 			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 			"MunifTanjim/nui.nvim",
 		};
-		config = require 'pack.setup.neotree';
+		config = require 'config.neotree';
 	};
 	{
 		"stevearc/aerial.nvim", config = function()
@@ -28,7 +28,7 @@ use {
 		end
 	};
 	{
-		"hedyhli/outline.nvim", config = require 'pack.setup.outline';
+		"hedyhli/outline.nvim", config = require 'config.outline';
 	};
 	{ 'jinh0/eyeliner.nvim', config = function()
 			require('eyeliner').setup {
