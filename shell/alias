@@ -1,4 +1,4 @@
-alias bat="batcat"
+alias bat='batcat --theme="$(bat_theme)"'
 alias co='checkout'
 alias e="find-edit"
 alias fcd="cd \$(find . -type d | fzf)"
@@ -20,8 +20,15 @@ alias setclip='xclip -selection c'
 alias tmux='tmux -2'
 alias w='watch -t -d -n 1'
 alias wmu='wake-me-up'
-if [ "$TERM_PROGRAM" = "WezTerm" ]
 
+bat_theme() {
+	if [ -e $HOME/.dark ]
+	then echo 'Monokai Extended Bright'
+	else echo 'Monokai Extended Light'
+	fi
+}
+
+if [ "$TERM_PROGRAM" = "WezTerm" ]
 then wezvar() {
 	name="$1"; shift
 	value="$*"
