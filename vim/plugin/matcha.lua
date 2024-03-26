@@ -55,7 +55,7 @@ vim.api.nvim_create_user_command("Matcha", function(params)
 end, {nargs="+"})
 
 vim.api.nvim_create_user_command("MatchaLocal", function(params)
-	vim.fn.setloclist(0, findLocations(params.farts))
+	vim.fn.setloclist(0, findLocations(params.fargs))
 	vim.cmd("lopen")
 	vim.cmd("lrewind")
 end, {nargs="+"})
