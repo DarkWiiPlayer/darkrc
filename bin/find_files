@@ -2,7 +2,7 @@
 
 local arrr = require 'arrr'
 local params = arrr {
-	{ "Sets the root to search in", "--root", "-r", 'root' };
+	{ "Sets the root to search in", "--root", "-r", true };
 }{...}
 
 local buf = {}
