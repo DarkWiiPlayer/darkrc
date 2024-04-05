@@ -7,6 +7,8 @@ temp=$(mktemp -p /dev/shm -d -t git-hook.XXXX)
 export SRC_DIR=$(pwd)
 export WORK_DIR=$(git rev-parse --show-toplevel)
 
+export commit=commit
+
 new() {
 	git status --porcelain | grep -E '^AM|^M|^A' | sed 's/^[^ ]* *//'
 }
@@ -22,7 +24,29 @@ check() {
 	end"
 }
 
+get_marks() {
+	git status --porcelain | cut --bytes 4- | while read file
+	do
+		if [ -e "$temp/index/$file" ]
+		then
+			grep -n -i no$commit "$temp/index/$file" | sed "s/:/ /" | while read line
+			do
+				echo "$file:$line"
+			done
+		fi
+	done
+}
+
 git checkout-index --prefix="$temp/index/" --all
+
+marks=$(get_marks)
+if [ -n "$marks" ]
+then
+	/bin/echo -e "\x1b[31m'no$commit' mark(s) found:\x1b[0m"
+	echo $marks
+	rm -rf $temp
+	exit 1
+fi
 
 cd $temp/index/
 
