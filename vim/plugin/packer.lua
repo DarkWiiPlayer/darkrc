@@ -30,13 +30,6 @@ use {
 	{
 		"hedyhli/outline.nvim", config = require 'config.outline';
 	};
-	{ 'jinh0/eyeliner.nvim', config = function()
-			require('eyeliner').setup {
-				highlight_on_key = true;
-				dim = true;
-			}
-		end
-	};
 	'folke/twilight.nvim';
 	'leafo/moonscript-vim';
 	'neovim/nvim-lspconfig';
