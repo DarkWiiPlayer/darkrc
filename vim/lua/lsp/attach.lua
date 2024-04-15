@@ -37,5 +37,5 @@ return function(_, bufnr)
 
 	vim.api.nvim_buf_create_user_command(bufnr, "LspWorkspaces", function()
 		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-	end, bufopts)
+	end, {})
 end
