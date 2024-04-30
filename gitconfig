@@ -16,7 +16,7 @@
 [merge]
 	tool = vimdiff
 [push]
-	default = matching
+	default = nothing
 [alias]
 	adog = log --all --decorate --oneline --graph --date-order
 	dog = log --decorate --oneline --graph --date-order
