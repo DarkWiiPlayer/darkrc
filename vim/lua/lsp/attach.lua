@@ -38,4 +38,12 @@ return function(_, bufnr)
 	vim.api.nvim_buf_create_user_command(bufnr, "LspWorkspaces", function()
 		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 	end, {})
+
+	vim.api.nvim_buf_create_user_command(bufnr, "Rename", function(params)
+		if #params.fargs > 0 then
+			vim.lsp.buf.rename(params.fargs[1])
+		else
+			vim.lsp.buf.rename()
+		end
+	end, {nargs = "?"})
 end
