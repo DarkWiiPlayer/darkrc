@@ -19,6 +19,7 @@ for _, language in ipairs {
 	"solargraph",
 	"standardrb",
 	"zls",
+	"yamlls" -- bun install --global yaml-language-server
 } do
 	config[language].setup(ensure_capabilities(default))
 end
