@@ -6,6 +6,27 @@ local function nextcol(state)
 	end
 end
 
+local function unquote(args)
+	local result = {}
+	local term
+	if args[1]:find([=[^["']]=]) then
+		term = args[1]:sub(1, 1) .. "$"
+	elseif args[1]:find("^%[=*%[") then
+		local num = args[1]:find("[", 2, true) - 2
+		term = "]" .. string.rep("=", num) .. "]$"
+	else
+		return args
+	end
+	for _, arg in ipairs(args) do
+		table.insert(result, arg)
+		if term and arg:find(term) then
+			result = {table.concat(result, " "):sub(#term, -#term)}
+			term = nil
+		end
+	end
+	return result
+end
+
 local function colmatch(str, pattern)
 	return nextcol, {str=str,pattern=pattern,last=0}
 end
@@ -49,13 +70,13 @@ local function findLocations(args)
 end
 
 vim.api.nvim_create_user_command("Matcha", function(params)
-	vim.fn.setqflist(findLocations(params.fargs))
+	vim.fn.setqflist(findLocations(unquote(params.fargs)))
 	vim.cmd("copen")
 	vim.cmd("crewind")
 end, {nargs="+"})
 
 vim.api.nvim_create_user_command("MatchaLocal", function(params)
-	vim.fn.setloclist(0, findLocations(params.fargs))
+	vim.fn.setloclist(0, findLocations(unquote(params.fargs)))
 	vim.cmd("lopen")
 	vim.cmd("lrewind")
 end, {nargs="+"})
