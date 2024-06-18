@@ -214,8 +214,6 @@ function! s:git_root_to_path()
 	end
 endfun
 
-call s:git_root_to_path()
-
 function! s:blame_command(what, line1, line2)
 	let l:what=tolower(a:what)
 	if l:what=="date"
