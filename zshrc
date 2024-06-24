@@ -16,6 +16,10 @@ setopt hist_find_no_dups
 setopt prompt_subst
 setopt hist_ignore_space
 
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd '\' edit-command-line
+
 autoload -U compinit; compinit
 
 bindkey -v
