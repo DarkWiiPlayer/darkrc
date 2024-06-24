@@ -29,7 +29,7 @@ run_task_prompt=$?
 task_prompt() {
 	if [ $run_task_prompt -eq 0 ]
 	then
-		tasks="$(task +ACTIVE export | jq -r '.[].description' | sed 's/^/‣ /')"
+		tasks="$(task rc.verbose: +ACTIVE export | jq -r '.[].description' | sed 's/^/‣ /')"
 		if [ -n "$tasks" ]
 		then
 			echo "%F{black}$tasks\n%{%}"
@@ -39,17 +39,17 @@ task_prompt() {
 due_soon_prompt() {
 	if [ $run_task_prompt -eq 0 ]
 	then
-		if [ "$(task +PENDING due.before:30min count)" -gt 0 ]; then
-			echo "%F{red}%B$(task +PENDING +DUE count)%b "; return
+		if [ "$(task rc.verbose: +PENDING due.before:30min count)" -gt 0 ]; then
+			echo "%F{red}%B$(task rc.verbose: +PENDING +DUE count)%b "; return
 		fi
-		if [ "$(task +PENDING due.before:1h count)" -gt 0 ]; then
-			echo "%F{yellow}%B$(task +PENDING +DUE count)%b "; return
+		if [ "$(task rc.verbose: +PENDING due.before:1h count)" -gt 0 ]; then
+			echo "%F{yellow}%B$(task rc.verbose: +PENDING +DUE count)%b "; return
 		fi
-		if [ "$(task +PENDING due.before:3h count)" -gt 0 ]; then
-			echo "%F{green}%B$(task +PENDING +DUE count)%b "; return
+		if [ "$(task rc.verbose: +PENDING due.before:3h count)" -gt 0 ]; then
+			echo "%F{green}%B$(task rc.verbose: +PENDING +DUE count)%b "; return
 		fi
-		if [ "$(task +PENDING due.before:tomorrow count)" -gt 0 ]; then
-			echo "%F{black}%B$(task +PENDING +DUE count)%b "; return
+		if [ "$(task rc.verbose: +PENDING due.before:tomorrow count)" -gt 0 ]; then
+			echo "%F{black}%B$(task rc.verbose: +PENDING +DUE count)%b "; return
 		fi
 	fi
 }
