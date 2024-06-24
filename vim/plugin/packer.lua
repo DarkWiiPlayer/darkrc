@@ -30,6 +30,15 @@ use {
 	{
 		"hedyhli/outline.nvim", config = require 'config.outline';
 	};
+	{
+		'folke/trouble.nvim';
+		tag = "v3.4.3";
+		cmd = "Trouble";
+		opts = {};
+		config = function()
+			require("trouble").setup()
+		end;
+	};
 	'folke/twilight.nvim';
 	'leafo/moonscript-vim';
 	'ms-jpq/coq_nvim';
