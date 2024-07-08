@@ -5,6 +5,8 @@ let &rtp=&rtp.','.expand('<sfile>:p:h').'/vim/pack/*/start/*'
 
 set nocompatible
 
+set updatetime=600
+
 au VimEnter * TSEnable highlight
 au VimEnter * TSEnable incremental_selection
 au VimEnter * TSEnable indent

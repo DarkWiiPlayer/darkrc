@@ -46,4 +46,29 @@ return function(_, bufnr)
 			vim.lsp.buf.rename()
 		end
 	end, {nargs = "?"})
+
+	vim.api.nvim_buf_create_user_command(bufnr, "LspDocumentHighlight", function(args)
+		local disable = vim.b.document_highlight
+		arg = args.fargs[1]
+		if arg then
+			if string.lower(arg) == "on" then
+				disable = false
+			elseif string.lower(arg) == "off" then
+				disable = true
+			else
+				error "Argument must be either 'on' or 'off' or absent"
+			end
+		end
+		if disable then
+			require("lsp.document_highlight").stop(bufnr)
+			vim.b.document_highlight = false
+		else
+			require("lsp.document_highlight").start(bufnr)
+			vim.b.document_highlight = true
+		end
+	end, {nargs = "?", complete = function(lead)
+		return vim.fn.filter({ "on", "off" }, function(_, val)
+			return val:find("^" .. lead)
+		end)
+	end})
 end
