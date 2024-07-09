@@ -20,7 +20,8 @@
 [alias]
 	adog = log --all --decorate --oneline --graph --date-order
 	dog = log --decorate --oneline --graph --date-order
-	fadd = "! git pick-modified | xargs --open-tty git add"
+	fadd = "! git pick | xargs --open-tty git add"
+	fig = "! git pick | xargs -L1 git ignore"
 	faddall = "! git status --porcelain | cut -b 4- | fzf --multi --layout=reverse-list | xargs --open-tty git add"
 	fixup = "!git commit --patch --no-edit --amend $(git diff --name-only HEAD~1..HEAD)"
 	h = log -1 --format=%h
@@ -34,8 +35,6 @@
 	track = add --intent-to-add
 	ts = timeshift
 	reword = commit --amend --no-verify
-	pick-modified = "! git status --porcelain | sed '/^??/d' | cut -b 4- | fzf --multi --layout reverse-list"
-	pm = pick-modified
 [user]
 	useConfigOnly = true
 [user "darkwiiplayer"]
