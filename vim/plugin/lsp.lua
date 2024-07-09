@@ -10,7 +10,17 @@ end, function()
 end)
 
 local default = { on_attach = require 'lsp.attach' }
-for _, language in ipairs {
+setmetatable(default, {__call = function(self, other)
+	local new = {}
+	for _, tab in ipairs{self, other} do
+		for key, value in pairs(tab) do
+			new[key] = value
+		end
+	end
+	return new
+end})
+
+for key, value in pairs {
 	"clangd",
 	"cssls",
 	"html",
@@ -19,9 +29,30 @@ for _, language in ipairs {
 	"standardrb",
 	"svelte",
 	"tsserver",
-	"yamlls", -- bun install --global yaml-language-server
 	"zls",
---	"ruby_lsp",
+	yamlls = default {
+		settings = {
+			yaml = {
+				format = { enable = true }
+			}
+		}
+	}, -- bun install --global yaml-language-server
+	"ruby_lsp",
 } do
-	config[language].setup(ensure_capabilities(default))
+	local language, settings if type(key) == "string" then
+		language, settings = key, value
+	else
+		language, settings = value, default
+	end
+
+	config[language].setup(ensure_capabilities(settings))
+end
+
+function _G.ls(name)
+	for _, server in pairs(vim.lsp.get_clients()) do
+		if server.config.name == name then
+			return server
+		end
+		error("No running language server with name " .. name)
+	end
 end
