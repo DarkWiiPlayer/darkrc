@@ -18,3 +18,5 @@ set foldexpr=nvim_treesitter#foldexpr()
 
 com Pin BHK
 com Drop BHD
+
+nnoremap g# :b #<CR>
