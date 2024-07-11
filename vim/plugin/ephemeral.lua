@@ -1,9 +1,9 @@
 vim.api.nvim_create_user_command("Pin", function()
-	vim.bo.bufhidden = "delete"
+	vim.bo.bufhidden = nil
 end, {})
 
 vim.api.nvim_create_user_command("Drop", function()
-	vim.bo.bufhidden = nil
+	vim.bo.bufhidden = "delete"
 end, {})
 
 vim.api.nvim_create_user_command("Ephemeral", function(params)
