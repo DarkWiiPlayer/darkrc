@@ -37,7 +37,6 @@ for key, value in pairs {
 			}
 		}
 	}, -- bun install --global yaml-language-server
-	"ruby_lsp",
 } do
 	local language, settings if type(key) == "string" then
 		language, settings = key, value
