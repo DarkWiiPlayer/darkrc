@@ -107,3 +107,5 @@ source smartprompt
 chpwd() {
 	source smartprompt
 }
+
+export SCAFFOLD_DIR="$(dirname $0)"
