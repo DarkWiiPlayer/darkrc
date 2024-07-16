@@ -8,10 +8,12 @@ end, {})
 
 vim.api.nvim_create_user_command("Ephemeral", function(params)
 	if params.args == "" then
-		print(vim.g.ephemeral_buffers
-			and "New buffers are ephemeral"
-			or "New buffers are permanent"
-		)
+		vim.api.nvim_echo({
+			{"New buffers are "},
+			vim.g.ephemeral_buffers
+				and {"ephemeral", "DiffDelete"}
+				or {"permanent", "DiffAdd"};
+		}, false, {})
 	elseif params.args == "on" then
 		vim.g.ephemeral_buffers = true
 	elseif params.args == "off" then
