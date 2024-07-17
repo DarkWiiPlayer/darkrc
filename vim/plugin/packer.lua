@@ -55,6 +55,7 @@ use {
 	'EdenEast/nightfox.nvim';
 	'axvr/photon.vim';
 	'ayu-theme/ayu-vim';
+	'comfysage/evergarden';
 	'dracula/vim';
 	'jaredgorski/fogbell.vim';
 	'kvrohit/mellow.nvim';
