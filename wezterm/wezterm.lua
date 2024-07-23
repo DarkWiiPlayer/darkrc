@@ -14,6 +14,8 @@ config.window_padding = {
 
 config.font = wezterm.font "Fira Code"
 
+config.default_prog = { 'zsh', '-l' }
+
 local darkfile = os.getenv("HOME") .. "/.dark"
 
 wezterm.add_to_config_reload_watch_list(darkfile)
