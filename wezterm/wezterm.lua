@@ -1,5 +1,7 @@
 local wezterm = require "wezterm"
 
+require("variables").listen()
+
 local config = wezterm.config_builder()
 
 config.hide_tab_bar_if_only_one_tab = true
@@ -14,7 +16,7 @@ config.window_padding = {
 
 config.font = wezterm.font "Fira Code"
 
-config.default_prog = { 'zsh', '-l' }
+config.default_prog = { 'zsh', '--login' }
 
 local darkfile = os.getenv("HOME") .. "/.dark"
 
