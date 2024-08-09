@@ -2,7 +2,9 @@
 
 if [ -f "$HOME/.dark" ]
 then
-	sed -i -e 's/kitty_light.conf/kitty_dark.conf/' $HOME/.config/kitty/kitty.conf
+	if [ -f $HOME/.config/kitty/kitty.conf ]
+	then sed -i -e 's/kitty_light.conf/kitty_dark.conf/' $HOME/.config/kitty/kitty.conf
+	fi
 	# Mint
 	theme='Mint-Y-Dark-Pink'
 	gsettings set org.cinnamon.desktop.background picture-uri "file://$HOME/wallpaper/dark.png"
@@ -17,7 +19,9 @@ then
 	gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
 	theme=dark
 else
-	sed -i -e 's/kitty_dark.conf/kitty_light.conf/' $HOME/.config/kitty/kitty.conf
+	if [ -f $HOME/.config/kitty/kitty.conf ]
+	then sed -i -e 's/kitty_dark.conf/kitty_light.conf/' $HOME/.config/kitty/kitty.conf
+	fi
 	theme='Mint-Y-Dark-Pink'
 	# Mint
 	gsettings set org.cinnamon.desktop.background picture-uri "file://$HOME/wallpaper/light.png"
