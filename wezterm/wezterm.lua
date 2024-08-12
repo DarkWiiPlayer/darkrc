@@ -17,6 +17,7 @@ config.window_padding = {
 config.font = wezterm.font "Fira Code"
 
 config.default_prog = { 'zsh', '--login' }
+config.audible_bell = "Disabled"
 
 local darkfile = os.getenv("HOME") .. "/.dark"
 
