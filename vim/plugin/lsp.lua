@@ -26,6 +26,7 @@ for key, value in pairs {
 	"html",
 	"lua_ls",
 	"solargraph",
+	"ruby_lsp",
 	"standardrb",
 	"svelte",
 	"tsserver",
