@@ -3,65 +3,142 @@
 local json = require "cjson"
 local arrr = require "arrr"
 local shapeshift = require "shapeshift"
+local lumber = require("lumber")
+
+local log = lumber.new {
+	level = lumber.levels.WARN;
+	format = require "lumber.format.term";
+	filter = function(message)
+		if type(message) == "string" then
+			return message
+		else
+			return require("inspect")(message)
+		end
+	end
+}
+
+local default_config = {
+	{ notify = "zenity", minutes = 60 };
+	{ notify = "notify", minutes = 180 };
+}
 
 local function zulu_offset()
 	local current = os.date("*t")
 	current.isdst = false
 	local zulu = os.date("!*t")
+	--- @cast zulu -string
+	--- @cast current -string
 	return os.difftime(os.time(current), os.time(zulu))
+end
+
+local config_file do
+	local xdg_home = os.getenv("XDG_CONFIG_HOME")
+	local home = os.getenv("HOME")
+	if xdg_home then
+		config_file = xdg_home .. "/task/tasknotif.lua"
+	elseif home then
+		config_file = home .. "/.config/task/tasknotif.lua"
+	else
+		config_file = "tasknotif.lua"
+	end
 end
 
 local params do
 	local parse = arrr {
-		{ "Time or something", "--minutes", "-m", "number" };
-		{ "Use Zenity to display a window instead of sending a notification", "--zenity", "-z" }
+		{ "Configuration to use (default: "..config_file..")", "--config", "-c" };
+		{ "Sets the log level", "--log", nil, true };
+		{ "Ignore anything that's already due soon at program start", "--pre-check" };
 	}
 
 	local validate = shapeshift.table {
 		__extra = "keep";
-		minutes = shapeshift.default(30, shapeshift.is.number);
+		precheck = shapeshift.default(false, shapeshift.is.boolean);
 	}
 
 	params = select(2, validate(parse(arg)))
 end
 
+if params.log then
+	log.level = lumber.levels[string.upper(params.log)]
+end
+
+log:debug("Params", params)
+
+log:info "Starting taskwarrior notifier"
+
+--- @type table
+local config if params.config then
+	config = assert(loadfile(params.config))()
+else
+	local chunk = loadfile(config_file)
+	config = chunk and chunk() or default_config
+end
+
 local done = {}
+for severity in ipairs(config) do
+	done[severity] = {}
+end
 
-while true do
-	local data = json.decode(io.popen("task export"):read("*a"))
-	for _, task in ipairs(data) do
-		if task.status == "pending" and task.due then
-			do
-				local d = {}
-				d.year, d.month, d.day, d.hour, d.min, d.sec
-				= task.due:match("(%d%d%d%d)(%d%d)(%d%d)T(%d%d)(%d%d)(%d%d)Z")
-				d.sec = d.sec + zulu_offset()
-				task.due = os.time(d)
-			end
-
-			-- If anything gets postponed outside of the warning time,
-			-- remove it from the done list
-			if done[task.uuid] then
-				if os.difftime(task.due, os.time()) > 60*params.minutes then
-					done[task.uuid] = nil
+--- @param run boolean Whether there should be any notification at all
+local function check(run)
+	-- Save handled tasks in the current loop so the same task doesn't get several notififations at once
+	local handled = {}
+	if run == nil then run = true end
+	for severity, condition in ipairs(config) do
+		log:debug(condition)
+		local data = json.decode(io.popen("task export"):read("*a"))
+		for _, task in ipairs(data) do
+			if task.status == "pending" and task.due then
+				do
+					local d = {}
+					d.year, d.month, d.day, d.hour, d.min, d.sec
+					= task.due:match("(%d%d%d%d)(%d%d)(%d%d)T(%d%d)(%d%d)(%d%d)Z")
+					d.sec = d.sec + zulu_offset()
+					task.due = os.time(d)
 				end
-			end
 
-			if os.difftime(task.due, os.time()) < 60*params.minutes then
-				if not done[task.uuid] then
-					done[task.uuid] = task
-					print("Notifying:", task.uuid, task.description)
-					if params.zenity then
-						os.execute(string.format("zenity --warning --title '%s' --text '%s'", "Task due soon", task.description))
-					else
-						os.execute("notify-send 'Task due soon' '"..task.description:gsub([[']], [['"'"']]).."'")
+				-- If anything gets postponed outside of the warning time,
+				-- remove it from the done list
+				if done[severity][task.uuid] then
+					if os.difftime(task.due, os.time()) > 60 * condition.minutes then
+						done[severity][task.uuid] = nil
+					end
+				end
+
+				if os.difftime(task.due, os.time()) < 60 * condition.minutes then
+					if handled[task.uuid] then
+						log:info("Skipping task "..task.uuid..": already handled in this loop")
+					end
+					if not done[severity][task.uuid] then
+						done[severity][task.uuid] = task
+						if run and not handled[task.uuid] then
+							log:info("Notifying:", task.uuid, task.description)
+							if condition.notify == "zenity" then
+								os.execute(string.format("zenity --warning --title '%s' --text '%s'", "Task due soon", task.description))
+							elseif condition.notify == "notify" then
+								os.execute("notify-send 'Task due soon' '"..task.description:gsub([[']], [['"'"']]).."'")
+							else
+								error("Unknown notification type: " .. tostring(condition.notify))
+							end
+							handled[task.uuid] = task
+						end
 					end
 				end
 			end
 		end
 	end
+end
 
-	if not os.execute("sleep 5") then
+if params.precheck then
+	log:info "Doing initial pre-scan"
+	check(false)
+end
+
+log:info "Starting scan loop"
+while true do
+	check(true)
+	if not os.execute("sleep 30") then
+		log:info "Exiting taskwarrior notifier"
 		os.exit()
 	end
 end
