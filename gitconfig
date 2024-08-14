@@ -22,7 +22,7 @@
 	dog = log --decorate --oneline --graph --date-order
 	fadd = "! git pick | xargs --open-tty git add"
 	fig = "! git pick | xargs -L1 git ignore"
-	faddall = "! git status --porcelain | cut -b 4- | fzf --multi --layout=reverse-list | xargs --open-tty git add"
+	faddall = "! git pick --untracked | xargs --open-tty git add"
 	fixup = "!git commit --patch --no-edit --amend $(git diff --name-only HEAD~1..HEAD)"
 	h = log -1 --format=%h
 	hash = log -1 --format=%H

@@ -4,8 +4,18 @@ mkdir -p "$(git rev-parse --git-dir)/fzf"
 history="$(git rev-parse --git-dir)/fzf/history"
 null=$(printf "\0")
 
+untracked='/^?? /d'
+
+while test $# != 0
+do
+	case "$1" in
+		(--untracked | -u) untracked="" ;;
+	esac
+	shift
+done
+
 IFS=''
-git status --porcelain | while read line
+git status --porcelain | sed "$untracked" | while read line
 do
 	path=$(echo $line | cut -b 4-)
 	type=$(echo $line | cut -b -3)
