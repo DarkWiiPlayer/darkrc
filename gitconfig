@@ -33,6 +33,7 @@
 	task = "! TASKDATA=$(git rev-parse --show-toplevel)/.git/task task"
 	time = "! TIMEWARRIORDB=$(git rev-parse --show-toplevel)/.git/time timew"
 	track = add --intent-to-add
+	treh = ! git status --porcelain | sed -e 's/^\\(..\\) \\(.*\\)$/\\2 (\\1)/' | treh --stdin
 	ts = timeshift
 	reword = commit --amend --no-verify
 [user]
