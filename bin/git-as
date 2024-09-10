@@ -1,9 +1,18 @@
 #!/bin/sh
 user=$1
 shift 1
-export GIT_AUTHOR_NAME="$(git config user.$user.name)"
-export GIT_AUTHOR_EMAIL="$(git config user.$user.email)"
-export GIT_COMMITTER_NAME="$(git config user.$user.name)"
-export GIT_COMMITTER_EMAIL="$(git config user.$user.email)"
-echo "Running as $GIT_COMMITTER_NAME <$GIT_COMMITTER_EMAIL>"
-git "$@"
+if [ -z "$@" ]
+then
+	# Run as `eval $(git as identity)` or prepend with git command
+	echo export GIT_AUTHOR_NAME="'$(git config user.$user.name)'"
+	echo export GIT_AUTHOR_EMAIL="'$(git config user.$user.email)'"
+	echo export GIT_COMMITTER_NAME="'$(git config user.$user.name)'"
+	echo export GIT_COMMITTER_EMAIL="'$(git config user.$user.email)'"
+else
+	export GIT_AUTHOR_NAME="$(git config user.$user.name)"
+	export GIT_AUTHOR_EMAIL="$(git config user.$user.email)"
+	export GIT_COMMITTER_NAME="$(git config user.$user.name)"
+	export GIT_COMMITTER_EMAIL="$(git config user.$user.email)"
+	echo "Running as $GIT_COMMITTER_NAME <$GIT_COMMITTER_EMAIL>"
+	git "$@"
+fi
