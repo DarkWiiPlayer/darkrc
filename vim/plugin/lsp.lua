@@ -20,12 +20,20 @@ setmetatable(default, {__call = function(self, other)
 	return new
 end})
 
+-- init_options -> during server initialization
+-- settings -> sent as config change event right after initialization
 local configs = setmetatable({
 	yamlls = default {
 		settings = {
 			yaml = {
 				format = { enable = true }
 			}
+		}
+	},
+	ruby_lsp = default {
+		init_options = {
+			formatter = "standard";
+			linters = { "standard" };
 		}
 	},
 }, {__index = function() return default end})
@@ -35,8 +43,8 @@ for _, language in ipairs {
 	"cssls",
 	"html",
 	"lua_ls",
-	"solargraph",
 	"ruby_lsp",
+	"solargraph",
 	"standardrb",
 	"svelte",
 	"tsserver",
