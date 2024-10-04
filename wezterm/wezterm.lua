@@ -24,9 +24,9 @@ local darkfile = os.getenv("HOME") .. "/.dark"
 wezterm.add_to_config_reload_watch_list(darkfile)
 
 if io.open(darkfile) then
-	config.color_scheme = "Apprentice (base16)"
+	config.color_scheme = "lovelace"
 else
-	config.color_scheme = "Atelier Plateau Light (base16)"
+	config.color_scheme = "Londontube (light) (terminal.sexy)"
 end
 
 return config
