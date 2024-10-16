@@ -25,7 +25,7 @@ check() {
 }
 
 get_marks() {
-	git status --porcelain | cut --bytes 4- | while read file
+	git status --porcelain | sed "/^[ ?]/d" | cut --bytes 4- | while read file
 	do
 		if [ -e "$temp/index/$file" ]
 		then
