@@ -1,0 +1,13 @@
+#!/bin/sh
+case $1 in
+	ssh) ssh_host=$2
+esac
+
+if [ -n "$ssh_host" ]
+then
+	target="$(ssh $ssh_host tmux ls | cut -d : -f 1 | fzf)"
+	[ -n "$target" ] && ssh $ssh_host -t tmux a -t "$target"
+else
+	target="$(tmux ls | cut -d : -f 1 | fzf)"
+	[ -n "$target" ] && tmux a -t "$target"
+fi

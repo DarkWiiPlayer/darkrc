@@ -20,6 +20,7 @@ alias setclip='xclip -selection c'
 alias tmux='tmux -2'
 alias w='watch -t -d -n 1'
 alias wmu='wake-me-up'
+alias tmfa='tmux-fzf'
 
 bat_theme() {
 	if [ -e $HOME/.dark ]
