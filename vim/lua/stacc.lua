@@ -4,8 +4,6 @@
 --- @type number Namespace id for the plugin
 local ns = vim.api.nvim_create_namespace("stacc")
 
-local locations = {}
-
 --- @class Location
 --- @field [1] number Buffer Number
 --- @field [2] number ExtMark ID
@@ -16,18 +14,19 @@ local locations = {}
 --- @field locations Location[] Array listing all the locations with newest ones having the highest indices
 --- @field namespace number Namespace ID used for ExtMarks
 local stacc = {
-	locations = locations;
+	locations = {};
 	namespace = ns;
 }
+stacc.__index = stacc
 
 --- Pushes a new location to the stack
 --- @param description string A message to display when returning to this location
-function stacc.push(description)
+function stacc:push(description)
 	local bufnr = vim.fn.bufnr()
 	local line, column = unpack(vim.api.nvim_win_get_cursor(0))
 	line = line - 1 -- 0-based :help api-indexing
 	local id = vim.api.nvim_buf_set_extmark(bufnr, ns, line, column, {})
-	table.insert(locations, {bufnr, id, description, vim.fn.line(".")})
+	table.insert(self.locations, {bufnr, id, description, vim.fn.line(".")})
 end
 
 --- Pops a given number of items from the task stack
@@ -37,15 +36,15 @@ end
 --- @return number bufnr Buffer number of the stack entry
 --- @return number row Line number (1-indexed)
 --- @return number col Column number (1-indexed)
-function stacc.pop(count)
-	if count > #locations then
-		error("stack only has "..#locations.." elements.")
+function stacc:pop(count)
+	if count > #self.locations then
+		error("stack only has "..#self.locations.." elements.")
 	end
 	local bufnr, description
 	local final = vim.api.nvim_win_get_cursor(0)
 	for _=1, count do
 		local id
-		bufnr, id, description = unpack(table.remove(locations))
+		bufnr, id, description = unpack(table.remove(self.locations))
 		final = vim.api.nvim_buf_get_extmark_by_id(bufnr, ns, id, {})
 		vim.api.nvim_buf_del_extmark(bufnr, ns, id)
 		final[1] = final[1] + 1 -- Make line 1-indexed
@@ -59,8 +58,14 @@ function stacc.pop(count)
 end
 
 --- Clears the entire stack
-function stacc.clear()
-	stacc.pop(#locations)
+function stacc:clear()
+	stacc.pop(#self.locations)
+end
+
+function stacc:new(new)
+	new = new or {}
+	new.locations = new.locations or {}
+	return setmetatable(new, self)
 end
 
 return stacc
