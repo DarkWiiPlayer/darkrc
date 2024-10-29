@@ -35,6 +35,7 @@ local handler = function(params)
 		local count = #stacc.locations
 		if count == 0 then
 			print("Stacc is empty. Push with `:"..command.." description of current task`")
+			print("Manipulate with :"..command.." pop|drop|clear")
 		else
 			for i, location in ipairs(stacc.locations) do
 				local bufnr, id, description = unpack(location)
@@ -47,8 +48,9 @@ local handler = function(params)
 					description
 				))
 			end
-			print(":"..command.." pop|clear")
 		end
+	elseif params.args == "drop" then
+		stacc:drop(1)
 	elseif params.args == "clear" then
 		stacc:clear()
 	elseif params.args == "pop" then
