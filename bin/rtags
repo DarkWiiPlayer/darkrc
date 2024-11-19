@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ -n "$1" ]
+then mask="^$1:"
+else mask='^\/'
+fi
+
+pwd=$(pwd | sed -e 's/\//\\\//g')
+cat $HOME/.config/ranger/tagged | sed -e "/$mask/!d" -e "s/$mask//" -e "/^$pwd/!d"

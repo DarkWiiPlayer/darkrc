@@ -1,4 +1,5 @@
 local config = require 'lspconfig'
+local util = require 'lspconfig.util'
 
 local ensure_capabilities
 xpcall(function()
@@ -23,17 +24,20 @@ end})
 -- init_options -> during server initialization
 -- settings -> sent as config change event right after initialization
 local configs = setmetatable({
+	ruby_lsp = default {
+		init_options = {
+			formatter = "standard";
+			linters = { "standard" };
+		}
+	},
+	standardrb = default {
+		root_dir = util.root_pattern("Gemfile", ".git", ".standard.yml");
+	},
 	yamlls = default {
 		settings = {
 			yaml = {
 				format = { enable = true }
 			}
-		}
-	},
-	ruby_lsp = default {
-		init_options = {
-			formatter = "standard";
-			linters = { "standard" };
 		}
 	},
 }, {__index = function() return default end})
