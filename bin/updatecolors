@@ -7,14 +7,13 @@ then
 	fi
 	# Mint
 	theme='Mint-Y-Dark-Pink'
-	gsettings set org.cinnamon.desktop.background picture-uri "file://$HOME/wallpaper/dark.png"
+	wallpaper=$(find $HOME/wallpaper/ -maxdepth 1 -name "dark.*")
 	gsettings set org.cinnamon.desktop.interface cursor-theme 'DMX-White'
 	gsettings set org.cinnamon.desktop.wm.preferences theme 'Mint-Y-Dark'
 	gsettings set org.cinnamon.theme name "$theme"
 	gsettings set org.cinnamon.desktop.interface icon-theme "$theme"
 	gsettings set org.cinnamon.desktop.interface gtk-theme "$theme"
 	# Ubuntu
-	gsettings set org.gnome.desktop.background picture-uri "file://$HOME/wallpaper/dark.png"
 	gsettings set org.gnome.desktop.interface gtk-theme "Yaru-purple-dark"
 	gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
 	theme=dark
@@ -23,19 +22,21 @@ else
 	then sed -i -e 's/kitty_dark.conf/kitty_light.conf/' $HOME/.config/kitty/kitty.conf
 	fi
 	theme='Mint-Y-Dark-Pink'
+	wallpaper=$(find $HOME/wallpaper/ -maxdepth 1 -name "light.*")
 	# Mint
-	gsettings set org.cinnamon.desktop.background picture-uri "file://$HOME/wallpaper/light.png"
 	gsettings set org.cinnamon.desktop.interface cursor-theme 'DMX-Black'
 	gsettings set org.cinnamon.desktop.wm.preferences theme 'Mint-Y'
 	gsettings set org.cinnamon.theme name "$theme"
 	gsettings set org.cinnamon.desktop.interface icon-theme "$theme"
 	gsettings set org.cinnamon.desktop.interface gtk-theme "$theme"
 	# Ubuntu
-	gsettings set org.gnome.desktop.background picture-uri "file://$HOME/wallpaper/light.png"
 	gsettings set org.gnome.desktop.interface gtk-theme "Yaru-purple"
 	gsettings set org.gnome.desktop.interface color-scheme "prefer-light"
 	theme=light
 fi
+
+gsettings set org.cinnamon.desktop.background picture-uri "file://$wallpaper"
+gsettings set org.gnome.desktop.background picture-uri "file://$wallpaper"
 
 for socket in $(find /tmp/ -maxdepth 1 -name "kitty-$USER-*")
 do
