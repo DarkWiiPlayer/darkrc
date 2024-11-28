@@ -51,7 +51,7 @@ for _, language in ipairs {
 	"solargraph",
 	"standardrb",
 	"svelte",
-	"tsserver",
+	"ts_ls",
 	"zls",
 	"yamlls", -- bun install --global yaml-language-server
 } do
