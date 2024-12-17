@@ -160,85 +160,6 @@ endfunction
 
 command! -bar RangerChooser call RangeChooser()
 
-" --- AUTO CLOSE ---
-
-function! s:autoClose_HelperOpen(open, close)
-	let next_c = getline(".")[col(".")-1]
-	if match(next_c, "\s")
-		return a:open.a:close."\<Left>"
-	else
-		return a:open
-	end
-endfunc
-
-function! s:autoClose_HelperClose(open, close)
-	if getline(".")[col(".")-1] ==# a:close
-		return "\<Right>"
-	elseif getline(line(".")+1)
-		if match(getline(line(".")+1), "\M^\s*".escape(a:close, "\\"))
-			return "\<Down>\<Home>\<C-o>f".a:close."\<Right>"
-		end
-	else
-		return a:close
-	end
-endfunc
-
-function! s:autoClose_HelperDouble(open)
-	if getline(".")[col(".")-1] ==# a:open " Step over
-		return "\<Right>"
-	else
-		return a:open.a:open."\<left>"
-	end
-endfunc
-
-function! s:autoClose_HelperEnter()
-	if exists("b:autoClose_Pairs")
-		let next_c = getline(".")[col(".")-1]
-		let prev_c = getline(".")[col(".")-2]
-
-		if (next_c !=# "") && (prev_c !=# "")
-			if exists("b:autoClose_Pairs[prev_c]")
-				if (next_c ==# b:autoClose_Pairs[prev_c])
-					return "\<C-o>m'\<enter>\<C-o>`'\<enter>"
-				end
-			end
-		end
-	end
-	return "\<enter>"
-endfunc
-
-function! s:autoClose_HelperSpace()
-	if exists("b:autoClose_Pairs")
-		let next_c = getline(".")[col(".")-1]
-		let prev_c = getline(".")[col(".")-2]
-
-		if (next_c !=# "") && (prev_c !=# "")
-			if exists("b:autoClose_Pairs[prev_c]")
-				if (next_c ==# b:autoClose_Pairs[prev_c])
-					return "\<space>\<C-o>h\<space>"
-				end
-			end
-		end
-	end
-	return "\<space>"
-endfunc
-
-function! s:autoClose_AddPair(open, close)
-	if !exists("b:autoClose_Pairs")
-		let b:autoClose_Pairs = {}
-	end
-	let b:autoClose_Pairs[a:open] = a:close
-
-	if a:open!=#a:close
-		exe "inoremap <buffer> <expr> ".a:open." <SID>autoClose_HelperOpen('".a:open."', '".a:close."')"
-		exe "inoremap <buffer> <expr> ".a:close." <SID>autoClose_HelperClose('".a:open."', '".a:close."')"
-	else
-		exe "inoremap <buffer> <expr> ".a:open." <SID>autoClose_HelperDouble('".a:open."')"
-	end
-	inoremap <buffer> <expr> <enter> <SID>autoClose_HelperEnter()
-	inoremap <buffer> <expr> <space> <SID>autoClose_HelperSpace()
-endfunc
-
 function! MatchingLines(pattern)
 	let list = []
 	let pattern = a:pattern
@@ -666,16 +587,6 @@ if has("autocmd")
 endif
 
 " === FILETYPE SPECIFIC STUFF ===
-
-" --- GENERIC STUFF ---
-au BufNewFile,BufRead * :call <sid>init_generic_file()
-
-function! s:init_generic_file()
-	call s:autoClose_AddPair("[", "]")
-	call s:autoClose_AddPair("(", ")")
-	call s:autoClose_AddPair("{", "}")
-	call s:autoClose_AddPair('"', '"')
-endfunc
 
 " --- VIMSCRIPT STUFF ---
 au BufNewFile,BufRead *.vim,*vimrc :call <sid>init_vim_file()
