@@ -41,7 +41,7 @@ use {
 	};
 	'folke/twilight.nvim';
 	'leafo/moonscript-vim';
-	'ms-jpq/coq_nvim';
+	{'ms-jpq/coq_nvim', config = require 'config.coq'};
 	'ms-jpq/coq.artifacts';
 	'ms-jpq/coq.thirdparty';
 	'neovim/nvim-lspconfig';

@@ -1,6 +1,0 @@
-xpcall(function()
-	require("coq")
-	vim.api.nvim_command("command COQ COQnow --shut-up")
-end, function()
-	vim.api.nvim_command("command COQ echoerr 'COQ not loaded.'")
-end)
