@@ -77,7 +77,7 @@ ranger_prompt() {
 prompt='$(task_prompt)%(?.%F{green}.%F{red})λ%F{blue}$(ranger_prompt)%f '
 export PROMPT_full='$(due_soon_prompt)%B%F{magenta}%n%F{blue}@%F{magenta}%m%b %F{magenta}%~
 '"$prompt"
-export PROMPT_gitlong='$(due_soon_prompt)$(gitprompt && echo -ne " ")%F$(git log --oneline --no-decorate -1 2>/dev/null)
+export PROMPT_gitlong='$(due_soon_prompt)$(gitprompt && echo -ne " ")%F$(git log --color --oneline --no-decorate -1 2>/dev/null)
 %F{cyan}$(gitpath)'"$prompt"
 # export PS1tiny=
 # export PS1nano=
