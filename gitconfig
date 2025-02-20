@@ -8,13 +8,12 @@
 	# Sign commits by default
 	gpgSign = true
 [diff]
-	tool = vimdiff
-	guitool = gvimdiff
+	tool = nvimdiff
 [difftool]
 	confirm = false
 	prompt = false
 [merge]
-	tool = vimdiff
+	tool = nvimdiff
 [push]
 	default = nothing
 [alias]
