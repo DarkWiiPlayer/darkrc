@@ -21,6 +21,6 @@ do
 	type=$(echo $line | cut -b -3)
 	/bin/echo -e "$type\x00$(basename $path)\x00$path"
 done \
-	| fzf --multi --with-nth=2 -d '\0' -q "$*" --history=$history \
+	| fzf --reverse --multi --with-nth=2 -d '\0' -q "$*" --history=$history \
 	--preview='if [ ${1} = "??" ]; then /bin/echo -e "\x1b[32m"; cat {3}; else git diff --color {3}; fi' \
 	| cut -d "$null" -f 3-
