@@ -26,8 +26,10 @@ local function recompute_window(window)
 
 	local dimensions = window:get_dimensions()
 
+	local no_title = override.window_decorations and (not override.window_decorations:find("TITLE"))
+
 	local padding
-	if dimensions.is_full_screen then
+	if dimensions.is_full_screen or no_title then
 		padding = math.min(dimensions.pixel_width, dimensions.pixel_height) * 0.05
 	else
 		padding = 10
