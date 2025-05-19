@@ -21,6 +21,7 @@ alias tmux='tmux -2'
 alias w='watch -t -d -n 1'
 alias wmu='wake-me-up'
 alias tmfa='tmux-fzf'
+alias gp='git push $(git remote | fzf --select-1 --preview='"'ls -l'"') $(git rev-parse --abbrev-ref HEAD)'
 
 bat_theme() {
 	if [ -e $HOME/.dark ]
