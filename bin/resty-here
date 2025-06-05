@@ -1,0 +1,17 @@
+#!/bin/sh
+
+if [ -f "openresty.conf" ]
+then config="openresty.conf"
+else
+	if [ -f "nginx.conf" ]
+	then config="nginx.conf"
+	else
+		config="openresty.conf"
+		cp /usr/local/openresty/example.conf $config
+		$EDITOR $config
+	fi
+fi
+
+mkdir -p logs
+
+exec nginx -p $(pwd) -c $config -g "daemon off;" "$@"
