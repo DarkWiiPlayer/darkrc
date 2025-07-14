@@ -2,8 +2,8 @@
 
 id=$(xdotool selectwindow)
 
-before=$(xprop -id $id 32c _NET_WM_WINDOW_OPACITY | lua -e 'print(tonumber(io.read():match("= .*$"):sub(2)))')
-initial=$(xprop -id $id 32c _NET_WM_WINDOW_OPACITY | lua -e 'print(math.floor(tonumber(io.read():match("= .*$"):sub(2)) / 0xffffffff * 100 + 0.5))')
+before=$(xprop -id $id 32c _NET_WM_WINDOW_OPACITY | lua -e 'print(tonumber(string.match(io.read() or "=", "= .*$"):sub(2)))' || echo 4294967295)
+initial=$(xprop -id $id 32c _NET_WM_WINDOW_OPACITY | lua -e 'print(math.floor(tonumber(io.read():match("= .*$"):sub(2)) / 0xffffffff * 100 + 0.5))' || echo 100)
 
 ((zenity --scale --title "Opacity" --value=$initial --print-partial; echo $? >&3) \
 | lua -e 'for line in io.lines() do print(string.format("0x%08x", math.floor(tonumber(line) / 100 * 0xffffffff + 0.5))) end' \
