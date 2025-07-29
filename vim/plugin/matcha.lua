@@ -70,13 +70,17 @@ local function findLocations(args)
 end
 
 vim.api.nvim_create_user_command("Matcha", function(params)
-	vim.fn.setqflist(findLocations(unquote(params.fargs)))
+	local locations = findLocations(unquote(params.fargs))
+	if not locations[1] then return print("Nothing found") end
+	vim.fn.setqflist(locations)
 	vim.cmd("copen")
 	vim.cmd("crewind")
 end, {nargs="+"})
 
 vim.api.nvim_create_user_command("MatchaLocal", function(params)
-	vim.fn.setloclist(0, findLocations(unquote(params.fargs)))
+	local locations = findLocations(unquote(params.fargs))
+	if not locations[1] then return print("Nothing found") end
+	vim.fn.setloclist(0, locations)
 	vim.cmd("lopen")
 	vim.cmd("lrewind")
 end, {nargs="+"})
