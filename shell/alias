@@ -23,6 +23,9 @@ alias wmu='wake-me-up'
 alias tmfa='tmux-fzf'
 alias gp='git interactive-push'
 
+alias upper='lua -e "for line in io.lines() do print(line:upper()) end"'
+alias lower='lua -e "for line in io.lines() do print(line:lower()) end"'
+
 bat_theme() {
 	if [ -e $HOME/.dark ]
 	then echo 'Monokai Extended Bright'
