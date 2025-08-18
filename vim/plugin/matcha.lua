@@ -32,21 +32,21 @@ local function colmatch(str, pattern)
 end
 
 local function findLocations(args)
-	local files = vim.fs.find(function(file)
-		if #args>1 then
+	local files if #args>1 then
+		files = vim.fs.find(function(file)
 			for _, pattern in ipairs(args), args, 1 do
 				if vim.fs.basename(file):find(pattern) then
 					return true
 				end
 			end
-		else
-			return true
-		end
-		return false
-	end, {
-		limit=math.huge;
-		type="file";
-	})
+			return false
+		end, {
+			limit=math.huge;
+			type="file";
+		})
+	else
+		files = vim.fn.argv()
+	end
 
 	local locations = {}
 
