@@ -16,4 +16,6 @@ set foldlevelstart=99
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 
+cnoreabbrev matcha Matcha -l
+
 nnoremap g# :b #<CR>
