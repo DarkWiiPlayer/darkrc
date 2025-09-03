@@ -6,39 +6,45 @@ local function nextcol(state)
 	end
 end
 
+local function isfile(path)
+	return vim.fn.isdirectory(path) == 0
+end
+
 local function colmatch(str, pattern)
 	return nextcol, {str=str,pattern=pattern,last=0}
 end
 
 local function findLocations(pattern, first_glob, ...)
-	local files if first_glob then
-		files = vim.fn.glob(first_glob, false, true)
+	local paths if first_glob then
+		paths = vim.fn.glob(first_glob, false, true)
 		if ... then
 			for _, glob in ipairs { ... } do
-				for _, file in ipairs(vim.fn.glob(glob, false, true)) do
+				for _, path in ipairs(vim.fn.glob(glob, false, true)) do
 					-- Assume overhead of table.insert is outweighed by all the file ops anyway
-					table.insert(files, file)
+					table.insert(paths, path)
 				end
 			end
 		end
 	else
-		files = vim.fn.argv()
+		paths = vim.fn.argv()
 	end
 
 	local locations = {}
 
-	for _, file in ipairs(files) do
+	for _, path in ipairs(paths) do
 		local lnum = 0
-		for line in io.lines(file) do
-			lnum = lnum + 1
-			for from, to in colmatch(line, pattern) do
-				table.insert(locations, {
-					filename = file;
-					lnum = lnum;
-					col = from;
-					end_col = to;
-					text = line:sub(from, to)
-				})
+		if isfile(path) then
+			for line in io.lines(path) do
+				lnum = lnum + 1
+				for from, to in colmatch(line, pattern) do
+					table.insert(locations, {
+						filename = path;
+						lnum = lnum;
+						col = from;
+						end_col = to;
+						text = line:sub(from, to)
+					})
+				end
 			end
 		end
 	end
