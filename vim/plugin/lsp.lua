@@ -1,4 +1,3 @@
-local config = require 'lspconfig'
 local util = require 'lspconfig.util'
 
 local ensure_capabilities
@@ -23,7 +22,7 @@ end})
 
 -- init_options -> during server initialization
 -- settings -> sent as config change event right after initialization
-local configs = setmetatable({
+local config = setmetatable({
 	ruby_lsp = default {
 		init_options = {
 			formatter = "standard";
@@ -40,7 +39,12 @@ local configs = setmetatable({
 			}
 		}
 	},
-}, {__index = function() return default end})
+}, {
+	__index = function() return default end,
+	__call = function(self, language)
+		return vim.lsp.config(language, ensure_capabilities(self[language]))
+	end
+})
 
 for _, language in ipairs {
 	"clangd",
@@ -55,7 +59,7 @@ for _, language in ipairs {
 	"zls",
 	"yamlls", -- bun install --global yaml-language-server
 } do
-	config[language].setup(ensure_capabilities(configs[language]))
+	config(language)
 end
 
 -- function _G.ls(name)
@@ -69,6 +73,5 @@ end
 
 vim.api.nvim_create_user_command("LspAdd", function(params)
 	local language = params.args
-	local setup = config[language].setup -- temp variable for better stack trace
-	setup(ensure_capabilities(configs[language]))
+	config(language)
 end, {nargs = 1})
