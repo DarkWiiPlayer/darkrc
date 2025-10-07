@@ -1,7 +1,9 @@
 " Set up the runtime path
 set runtimepath=$VIMRUNTIME,$HOME/.config/nvim,$HOME/.vim
 let &rtp=&rtp.','.expand('<sfile>:p:h').'/vim'
-let &rtp=&rtp.','.expand('<sfile>:p:h').'/vim/pack/*/start/*'
+let &pp=&pp.','.expand('<sfile>:p:h').'/vim'
+
+packadd packer.nvim
 
 set nocompatible
 
