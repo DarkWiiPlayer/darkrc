@@ -1,4 +1,4 @@
 #!/bin/sh
 
 branch=$(git rev-parse --abbrev-ref HEAD)
-git remote | fzf --layout=reverse --select-1 --preview="git remote show {}" --multi | xargs -I {} git push {} $branch
+git remote | fzf --layout=reverse --select-1 --preview="git log --oneline {}/$branch..$branch; echo -----; git diff --stat {}/$branch..$branch" --multi | xargs -I {} git push {} $branch
