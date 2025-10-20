@@ -37,7 +37,7 @@
 	reword = commit --amend --no-verify
 [user]
 	useConfigOnly = true
-[user "darkwiiplayer"]
+[user "wii"]
 	# Public identity for Github & co. 
 	name = DarkWiiPlayer
 	email = darkwiiplayer@hotmail.com
