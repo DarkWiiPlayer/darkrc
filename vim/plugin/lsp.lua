@@ -42,7 +42,7 @@ local config = setmetatable({
 }, {
 	__index = function() return default end,
 	__call = function(self, language)
-		return vim.lsp.enable(language, ensure_capabilities(self[language]))
+		return vim.lsp.config(language, ensure_capabilities(self[language]))
 	end
 })
 
@@ -60,6 +60,7 @@ for _, language in ipairs {
 	"yamlls", -- bun install --global yaml-language-server
 } do
 	config(language)
+	vim.lsp.enable(language)
 end
 
 -- function _G.ls(name)
@@ -74,4 +75,5 @@ end
 vim.api.nvim_create_user_command("LspAdd", function(params)
 	local language = params.args
 	config(language)
+	vim.lsp.enable(language)
 end, {nargs = 1})
