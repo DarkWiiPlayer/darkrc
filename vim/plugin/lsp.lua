@@ -42,7 +42,7 @@ local config = setmetatable({
 }, {
 	__index = function() return default end,
 	__call = function(self, language)
-		return vim.lsp.config(language, ensure_capabilities(self[language]))
+		return vim.lsp.enable(language, ensure_capabilities(self[language]))
 	end
 })
 
