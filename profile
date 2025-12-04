@@ -1,6 +1,9 @@
 # vim: set noexpandtab filetype=sh :miv #
 
-export DARKRC="$(realpath $(dirname $0))"
+if [ -z "$BASH_SOURCE" ]
+	then export DARKRC="$(realpath $(dirname $0))"
+	else export DARKRC="$(realpath $(dirname $BASH_SOURCE))"
+fi
 
 if which nvim > /dev/null
 then export EDITOR=nvim
@@ -8,6 +11,4 @@ else export EDITOR=vim
 fi
 
 export LESSCHARSET=utf-8
-export PATH="$PATH"
-
-# export MANPATH="$HOME/.local/share/man:$(manpath)"
+export PATH="$DARKRC/bin:$PATH"
