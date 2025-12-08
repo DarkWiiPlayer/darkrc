@@ -109,3 +109,31 @@ chpwd() {
 }
 
 export SCAFFOLD_DIR="$(dirname $0)"
+
+if [ -z "$FAST_SHELL" ]
+then
+	install_zsh_autosuggestions() {
+		git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.config/zsh/zsh-autosuggestions 
+	}
+	if [ -f "$HOME/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" ]
+	then
+		export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+		. "$HOME/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
+	fi
+
+	install_fsh() {
+		git clone https://github.com/zdharma-continuum/fast-syntax-highlighting $HOME/.config/zsh/fast-syntax-highlighting
+	}
+	if [ -f "$HOME/.config/zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" ]
+	then
+		. "$HOME/.config/zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+	fi
+
+	install_z() {
+		git clone https://github.com/agkozak/zsh-z $HOME/.config/zsh/zsh-z
+	}
+	if [ -f "$HOME/.config/zsh/zsh-z/zsh-z.plugin.zsh" ]
+	then
+		. "$HOME/.config/zsh/zsh-z/zsh-z.plugin.zsh"
+	fi
+fi
