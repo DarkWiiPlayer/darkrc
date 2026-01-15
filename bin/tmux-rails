@@ -1,0 +1,15 @@
+#!/bin/sh
+
+tmux new-session -d
+tmux rename-window "Server"
+tmux send-keys "bin/dev" "C-m"
+
+tmux new-window
+tmux rename-window "Editor"
+tmux send-keys "nvim +COQnow +NeoTreeShow" "C-m"
+
+tmux new-window
+tmux rename-window "Terminal"
+
+tmux select-window -t "Editor"
+tmux attach
