@@ -7,6 +7,8 @@
 [commit]
 	# Sign commits by default
 	gpgSign = true
+[fetch]
+	prune = true
 [diff]
 	tool = nvimdiff
 [difftool]
