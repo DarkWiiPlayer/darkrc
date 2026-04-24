@@ -49,15 +49,15 @@ local config = setmetatable({
 for _, language in ipairs {
 	"clangd",
 	"cssls",
+	"eslint",
 	"html",
 	"lua_ls",
 	"ruby_lsp",
-	"solargraph",
 	"standardrb",
 	"svelte",
 	"ts_ls",
-	"zls",
 	"yamlls", -- bun install --global yaml-language-server
+	"zls",
 } do
 	config(language)
 	vim.lsp.enable(language)
