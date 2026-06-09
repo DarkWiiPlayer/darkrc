@@ -103,7 +103,7 @@ hook=$(basename $0)
 if [ -f "$WORK_DIR/.git/hooks/$hook" ]
 then
 	echo Running project-level hook: "$WORK_DIR"/.git/hooks/$hook
-	"$WORK_DIR"/.git/hooks/$hook
+	"$WORK_DIR"/.git/hooks/$hook "$@"
 	error=$?
 	if [ -n "$error" ]
 	then exit $error
