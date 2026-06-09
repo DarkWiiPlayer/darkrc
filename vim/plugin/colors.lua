@@ -67,4 +67,9 @@ else
 end
 
 -- Reset background color to match terminal
-vim.cmd("hi Normal ctermbg=NONE guibg=NONE")
+local function transparent()
+	vim.cmd("hi Normal ctermbg=NONE guibg=NONE")
+end
+
+vim.api.nvim_create_user_command("Transparent", transparent, {})
+transparent()
