@@ -1,14 +1,5 @@
 local util = require 'lspconfig.util'
 
-local ensure_capabilities
-xpcall(function()
-	ensure_capabilities = require("coq").lsp_ensure_capabilities
-end, function()
-	function ensure_capabilities(...)
-		return ...
-	end
-end)
-
 local default = { on_attach = require 'lsp.attach' }
 setmetatable(default, {__call = function(self, other)
 	local new = {}
@@ -42,7 +33,7 @@ local config = setmetatable({
 }, {
 	__index = function() return default end,
 	__call = function(self, language)
-		return vim.lsp.config(language, ensure_capabilities(self[language]))
+		return vim.lsp.config(language, self[language])
 	end
 })
 

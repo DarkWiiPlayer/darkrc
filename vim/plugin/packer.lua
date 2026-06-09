@@ -1,5 +1,13 @@
 vim.cmd [[packadd packer.nvim]]
 
+local function bind(fn, ...)
+	local unpack = unpack or table.unpack
+	local args = {...}
+	return function()
+		-- return fn(unpack(args))
+	end
+end
+
 local function use(plugins)
 	return require('packer').startup(function(use)
 		for _, plugin in ipairs(plugins) do
@@ -43,7 +51,7 @@ use {
 	};
 	'folke/twilight.nvim';
 	'leafo/moonscript-vim';
-	{'ms-jpq/coq_nvim', config = function() return require 'config.coq' () end};
+	{'ms-jpq/coq_nvim'};
 	'ms-jpq/coq.artifacts';
 	'ms-jpq/coq.thirdparty';
 	'neovim/nvim-lspconfig';
