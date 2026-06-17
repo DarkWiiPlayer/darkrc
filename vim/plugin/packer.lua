@@ -1,13 +1,5 @@
 vim.cmd [[packadd packer.nvim]]
 
-local function bind(fn, ...)
-	local unpack = unpack or table.unpack
-	local args = {...}
-	return function()
-		-- return fn(unpack(args))
-	end
-end
-
 local function use(plugins)
 	return require('packer').startup(function(use)
 		for _, plugin in ipairs(plugins) do
@@ -21,6 +13,7 @@ end
 
 use {
 	'wbthomason/packer.nvim';
+	{ "hedyhli/outline.nvim", config = require "config.outline" };
 	{ 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } };
 	{ 'nvim-treesitter/nvim-treesitter', { cmd = ':TSUpdate' } };
 	{ 'nvim-neo-tree/neo-tree.nvim',
@@ -38,9 +31,6 @@ use {
 		end
 	};
 	{
-		"hedyhli/outline.nvim", config = require 'config.outline';
-	};
-	{
 		'folke/trouble.nvim';
 		tag = "v3.4.3";
 		cmd = "Trouble";
@@ -51,7 +41,7 @@ use {
 	};
 	'folke/twilight.nvim';
 	'leafo/moonscript-vim';
-	{'ms-jpq/coq_nvim', config = bind(require, "config.coq")};
+	{'ms-jpq/coq_nvim', config = require "config.coq"};
 	'ms-jpq/coq.artifacts';
 	'ms-jpq/coq.thirdparty';
 	'neovim/nvim-lspconfig';
@@ -65,7 +55,6 @@ use {
 	'EdenEast/nightfox.nvim';
 	'axvr/photon.vim';
 	'ayu-theme/ayu-vim';
-	'comfysage/evergarden';
 	'dracula/vim';
 	'jaredgorski/fogbell.vim';
 	'kvrohit/mellow.nvim';

@@ -1,2 +1,3 @@
-require("coq").setup()
-vim.api.nvim_command("command COQ COQnow --shut-up")
+return function()
+	require("coq").setup()
+end
