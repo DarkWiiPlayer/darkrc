@@ -137,3 +137,11 @@ then
 		. "$HOME/.config/zsh/zsh-z/zsh-z.plugin.zsh"
 	fi
 fi
+
+if which flatpak > /dev/null
+then
+	flatpak list --columns=application --app | while read app
+	do
+		alias $(echo $app | sed 's/.*\.//g' | tr '[:upper:]' '[:lower:]')="flatpak run $app"
+	done
+fi
