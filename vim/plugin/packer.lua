@@ -15,7 +15,7 @@ use {
 	'wbthomason/packer.nvim';
 	{ "hedyhli/outline.nvim", config = require "config.outline" };
 	{ 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } };
-	{ 'nvim-treesitter/nvim-treesitter', { cmd = ':TSUpdate' } };
+	{ 'nvim-treesitter/nvim-treesitter', { cmd = {"TSUpdate", "TSEnable highlight", "TSEnable incremental_selection", "TSEnable indent"} } };
 	{ 'nvim-neo-tree/neo-tree.nvim',
 		branch = "v2.x",
 		requires = {
