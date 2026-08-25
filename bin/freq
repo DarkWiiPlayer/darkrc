@@ -1,0 +1,3 @@
+#!/bin/sh
+
+seq $(nproc) | sed 's/.*/\0-1/' | bc | xargs -I{} sudo cpufreq-set -c {} "$@"
